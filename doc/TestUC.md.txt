@@ -1,1 +1,9 @@
-test
+## <name of Use Case>
+
+## Objectives
+
+## Preconditions
+
+## Postconditions
+
+### Basic Flow
