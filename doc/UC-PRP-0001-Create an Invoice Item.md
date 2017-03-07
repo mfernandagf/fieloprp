@@ -52,50 +52,55 @@ An Invoice Item is created
    2. The system updates the Total Price field with the value received
    3. End of flow
    
-##### 5. Only the Quantity field or the Unit Price field is filled (step 4 of the basic flow)
-   1. The system receives only the value of one field Unit Price or Quantity
+##### 5. Only the Quantity field is filled (step 4 of the basic flow)
+   1. The system receives only the value for Quantity field
+   2. The system updates the Unit Price field with the 0 (zero)
+   3. The system calculates the value of Total Price field by multiplying the value in the Quantity field by 0 (zero)
+   4. The system updates the Total Price field with the value calculated in the previous step
+   5. End of flow
+   
+#### 6. Only the Unit Price field is filled (step 4 of the basic flow)
+   1. The system receives only the value for Unit Price field
    2. The system displays an error message
    3. End of flow
    
-##### 6. None of the fields are filled (step 4 of the basic flow)
+##### 7. None of the fields are filled (step 4 of the basic flow)
    1. The system does not receive any value for the fields Quantity, Unit Price and Total Price
    2. The system displays an error message
    3. End of flow
    
-##### 7. The field Quantity is filled with an invalid value (step 4 of the basic flow)
+##### 8. The field Quantity is filled with an invalid value (step 4 of the basic flow)
    1. The system verifies that the Quantity field is filled with 0 (zero) or a negative value
    2. The system displays an error message
    3. End of flow
    
-##### 8. The administrator edits the fields Unit Price, Quantity or Total Price of the invoice item (step 2 of the basic flow)
+##### 9. The administrator edits the fields Unit Price, Quantity or Total Price of the invoice item (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is set to Draft
    2. The administrator edits one or more of the following fields: Unit Price, Quantity or Total Price
    3. The administrator presses the Save button
    4. Back to step 3 of the basic flow
 
-##### 9. The administrator tries to edit the Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
+##### 10. The administrator tries to edit the Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is different from Draft
    2. The administrator presses the Edit button in the detail view of the Invoice Item
    3. The system displays an error message
    4. End of flow
 
-##### 10. The administrator deletes an Invoice Item (step 2 of the basic flow)
+##### 11. The administrator deletes an Invoice Item (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is set to Draft
    2. The administrator presses the Delete button in the detail view of the Invoice Item
    3. The system updates Amount field of the corresponding Invoice with the summarize of the Total Price field of its the related Invoice Items
    4. End of flow
    
-##### 11. The administrator tries to delete an Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
+##### 12. The administrator tries to delete an Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is different from Draft
    2. The administrator presses the Delete button in the detail view of the Invoice Item
    3. The system displays an error message
    4. End of flow
 
-##### 12. The administrator tries to edit the Invoice Lookup (step 2 of the basic flow)
+##### 13. The administrator tries to edit the Invoice Lookup (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is set to Draft
    2. The administrator presses the Edit button in the detail view of the Invoice Item 
    3. The administrator tries to edit the Invoice Lookup field
    4. The system displays an error message
    5.	End of flow
-
-
