@@ -21,56 +21,56 @@ An Invoice Item is created
    - Unit Price
    - Total Price
 3. The system analyzes the following fields of each Invoice Item: Quantity, Unit Price and Total Price
-4. The system checks that the Unit Price and Quantity fields are filled
+4. The system checks that the Unit Price and Quantity fields were received
 5. The system calculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
-6. The system updates the Total Price field with the value calculated in the previous step
+6. The system fills the Total Price field with the value calculated in the previous step
 7. Enf of flow
 
 
 ### Alternative Flows
 
-##### 1. The filled fields are Total Price and Quantity (step 4 of the basic flow)
-   1. The system checks that the Total Price and Quantity fields are filled
+##### 1. The received fields are Total Price and Quantity (step 4 of the basic flow)
+   1. The system checks that the Total Price and Quantity fields were received
    2. The system calculates the value of Unit Price field by dividing the value in the Total Price field by the value in the Quantity field.
-   3. The system updates the Unit Price field with the value calculated in the previous step.
+   3. The system fills the Unit Price field with the value calculated in the previous step.
    4. End of flow
 
-##### 2. The filled fields are Unit Price and Total Price (step 4 of the basic flow)
-   1. The system checks that the Total Price and Unit Price fields are filled
+##### 2. The received fields are Unit Price and Total Price (step 4 of the basic flow)
+   1. The system checks that the Total Price and Unit Price fields were received
    2. The system calculates the value of Quantity field by dividing the value in the Total Price field by the value in the Unit Price field.
-   3. The system updates the Quantity field with the value calculated in the previous step.
+   3. The system fills the Quantity field with the value calculated in the previous step.
    4. End of flow
    
-##### 3. All three fields are filled (step 4 of the basic flow)
+##### 3. All three fields were received (step 4 of the basic flow)
    1. The system receives values for all three fields (Unit price, Quantity and Total price)
    2. The system calculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field.
-   3. The system updates the Total Price field with the value calculated in the previous step.
+   3. The system ignores the received Total Price and fills the Total Price field with the value calculated in the previous step.
    4. End of flow
 
-##### 4. Only the Total Price field is filled (step 4 of the basic flow)
+##### 4. Only the Total Price field is received (step 4 of the basic flow)
    1. The system receives only the value of the Total Price field
-   2. The system updates the Total Price field with the value received
+   2. The system fills the Total Price field with the received value
    3. End of flow
    
-##### 5. Only the Quantity field is filled (step 4 of the basic flow)
+##### 5. Only the Quantity field is received (step 4 of the basic flow)
    1. The system receives only the value for Quantity field
-   2. The system updates the Unit Price field with the 0 (zero)
+   2. The system fills the Unit Price field with 0 (zero)
    3. The system calculates the value of Total Price field by multiplying the value in the Quantity field by 0 (zero)
-   4. The system updates the Total Price field with the value calculated in the previous step
+   4. The system fills the Total Price field with the value calculated in the previous step
    5. End of flow
    
-#### 6. Only the Unit Price field is filled (step 4 of the basic flow)
+#### 6. Only the Unit Price field is received (step 4 of the basic flow)
    1. The system receives only the value for Unit Price field
    2. The system displays an error message
    3. End of flow
    
-##### 7. None of the fields are filled (step 4 of the basic flow)
+##### 7. None of the fields are received (step 4 of the basic flow)
    1. The system does not receive any value for the fields Quantity, Unit Price and Total Price
    2. The system displays an error message
    3. End of flow
    
-##### 8. The field Quantity is filled with an invalid value (step 4 of the basic flow)
-   1. The system verifies that the Quantity field is filled with 0 (zero) or a negative value
+##### 8. The received Quantity value is invalid (step 4 of the basic flow)
+   1. The system verifies that the Quantity field is filled with 0 (zero) or with a negative value
    2. The system displays an error message
    3. End of flow
    
