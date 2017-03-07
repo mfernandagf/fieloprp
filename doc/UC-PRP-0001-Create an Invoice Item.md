@@ -52,19 +52,19 @@ An Invoice Item is created
    2. The system updates the Total Price field with the value received
    3. End of flow
    
-##### 5.Only the Quantity field or the Unit Price field is filled (step 4 of the basic flow)
+##### 5. Only the Quantity field or the Unit Price field is filled (step 4 of the basic flow)
    1. The system receives only the value of one field Unit Price or Quantity
    2. The system displays an error message
    3. End of flow
    
 ##### 6. None of the fields are filled (step 4 of the basic flow)
-   1.The system does not receive any value for the fields Quantity, Unit Price and Total Price
-   2.The system displays an error message
+   1. The system does not receive any value for the fields Quantity, Unit Price and Total Price
+   2. The system displays an error message
    3. End of flow
    
 ##### 7. The field Quantity is filled with an invalid value (step 4 of the basic flow)
-   1.The system verifies that the Quantity field is filled with 0 (zero) or a negative value
-   2.The system displays an error message
+   1. The system verifies that the Quantity field is filled with 0 (zero) or a negative value
+   2. The system displays an error message
    3. End of flow
    
 ##### 8. The administrator edits the fields Unit Price, Quantity or Total Price of the invoice item (step 2 of the basic flow)
