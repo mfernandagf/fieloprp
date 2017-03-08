@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>AllPriceFieldsZero</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AllPriceFieldsZero</shortDescription>
+        <value>Total Price, Quantity and Unit Price can not be zerot</value>
+    </labels>
+    <labels>
+        <fullName>AmountUpdateDisabled</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AmountUpdateDisabled</shortDescription>
+        <value>Programs with Detailed Invoice set to true have the hability to update the Amount of the Invoice disabled.t</value>
+    </labels>
+    <labels>
+        <fullName>DraftNotEditable</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DraftNotEditable</shortDescription>
+        <value>Only Invoices with status Pending are editable.t</value>
+    </labels>
+    <labels>
+        <fullName>QuantityZero</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>QuantityZero</shortDescription>
+        <value>Quantity can not be zero.t</value>
+    </labels>
+    <labels>
+        <fullName>TotalAndUnitPriceZero</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TotalAndUnitPriceZero</shortDescription>
+        <value>Total Price and Unit Price can not be zerot</value>
+    </labels>
+    <labels>
+        <fullName>TotalPriceAndQuantityZero</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TotalPriceAndQuantityZero</shortDescription>
+        <value>Total Price and Quantity can not be zerot</value>
+    </labels>
+    <labels>
+        <fullName>UnitPriceZero</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>UnitPriceZero</shortDescription>
+        <value>Unit Price can not be zero.t</value>
+    </labels>
+</CustomLabels>
