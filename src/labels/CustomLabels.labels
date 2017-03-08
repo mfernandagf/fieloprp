@@ -56,4 +56,12 @@
         <shortDescription>UnitPriceZero</shortDescription>
         <value>Unit Price can not be zero.t</value>
     </labels>
+    <labels>
+        <fullName>HasDetailsNotEditable</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>HasDetailsNotEditable</shortDescription>
+        <value>Has Details is a system field, you can not update it.t</value>
+    </labels>
 </CustomLabels>
