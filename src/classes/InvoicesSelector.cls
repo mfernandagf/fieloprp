@@ -78,7 +78,7 @@ public class InvoicesSelector extends SObjectSelector{
 
         List<String> whereConditions = new List<String>();
         if (programId != null) {
-            whereConditions.add(' Program__c =: programId ');
+            whereConditions.add(' Member__r.FieloPLT__Program__c =: programId ');
         }
         if (status != null) {
             whereConditions.add(' Status__c IN : status ');
@@ -87,7 +87,7 @@ public class InvoicesSelector extends SObjectSelector{
             query += 'WHERE ' + String.join(whereConditions, 'AND');
         }
         
-        query += 'order by {2} {3} {4}';
+        query += 'order by {2} {3} {4}';        
         return (List<Invoice__c>) Database.query(String.format(query,
                 new List<String> {
                     getFieldListString(),

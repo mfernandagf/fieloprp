@@ -18,7 +18,7 @@
       programSelector="true"
       helpUrl="http://documentation.fielo.com/docs/incentives"
       
-      parameters="{ 'FieloPRP__Member__r.FieloPLT__Program__c' : '{!currentProgram.Id}'}"
+      parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}"
       
     /><!--buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'promotionForm', 'CssClass': 'fielosf-create-promotion' }"-->
 
@@ -144,7 +144,7 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloTabs','FieloPaginator','FieloRecentRecords','FieloFilter','FieloIncentives', {!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter','FieloIncentives'" packageResource="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
 </body>
 </html>
 </apex:page>

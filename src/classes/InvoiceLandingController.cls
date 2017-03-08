@@ -7,7 +7,8 @@ public with sharing class InvoiceLandingController {
 
     public FieloPLT__Program__c currentProgram { get {
         if ( currentProgram == null) {
-            currentProgram = [SELECT Id FROM FieloPLT__Program__c LIMIT 1];//ProgramService.getActiveProgram();
+            currentProgram = ProgramService.getActiveProgram();
+            system.debug('currentprogram: ' + currentprogram.id);
         }
         return currentProgram;
     }set;}
@@ -44,8 +45,9 @@ public with sharing class InvoiceLandingController {
     @RemoteAction
     public static List<SObject> getInvoices( String objectName, String fields, Integer offset, String orderBy, String filter, Integer recordsPerPage ) {
         Set<String> fieldset = new Set<String> { 'Name', 'Status__c'};
+        system.debug('filter: ' + filter);
         Map<String,Object> jsonObject = (Map<String, Object>) JSON.deserializeUntyped( filter);
-        Id programId = (String)jsonObject.get('program__c');
+        Id programId = (String)jsonObject.get('member__r.fieloplt__program__c');
         String currentView =  (String)jsonObject.get('viewName');
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';
