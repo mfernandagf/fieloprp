@@ -144,7 +144,7 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloTabs','FieloPaginator','FieloRecentRecords','FieloFilter','FieloIncentives'"/>
+<c:BackendFooter helpers="'FieloForm','FieloTabs','FieloPaginator','FieloRecentRecords','FieloFilter','FieloIncentives', {!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
 </body>
 </html>
 </apex:page>

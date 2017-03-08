@@ -6,6 +6,5 @@ public with sharing class InvoiceService {
         selector.setLimit(quantity);
         selector.setOffset(offset);
         return selector.selectByProgramAndStatus(status, programId);
-    }   
-
+    }
 }
