@@ -120,27 +120,26 @@ An Invoice Item is created
    4. The system updates the Total Price field with the calculated value
    5. End of flow
 
-##### 16. The administrator tries to edit the Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
-   1. The system verifies that the status of the corresponding Invoice is different from Draft
+##### 16. The administrator tries to edit the Invoice Item that is related to an Invoice not in status Pending (step 7 of the basic flow)
+   1. The system verifies that the status of the related Invoice is different from Pending
    2. The administrator presses the Edit button in the detail view of the Invoice Item
    3. The system displays an error message
    4. End of flow
-
-##### 17. The administrator deletes an Invoice Item (step 2 of the basic flow)
-   1. The system verifies that the status of the corresponding Invoice is set to Draft
-   2. The administrator presses the Delete button in the detail view of the Invoice Item
-   3. The system updates Amount field of the corresponding Invoice with the summarize of the Total Price field of its the related Invoice Items
-   4. End of flow
    
-##### 18. The administrator tries to delete an Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
-   1. The system verifies that the status of the corresponding Invoice is different from Draft
-   2. The administrator presses the Delete button in the detail view of the Invoice Item
-   3. The system displays an error message
-   4. End of flow
+##### 17. The administrator tries to edit the Invoice Item with an invalid value for the Quantity field (step 7 of the basic flow)
+   1. The system verifies that the Quantity field is updated with 0 (zero) or with a negative value
+   2. The system displays an error message
+   3. End of flow
 
-##### 19. The administrator tries to edit the Invoice Lookup (step 2 of the basic flow)
-   1. The system verifies that the status of the corresponding Invoice is set to Draft
-   2. The administrator presses the Edit button in the detail view of the Invoice Item 
-   3. The administrator tries to edit the Invoice Lookup field
+##### 18. The administrator deletes an Invoice Item (step 7 of the basic flow)
+   1. The administrator selects the option to Delete the Invoice Item
+   2. The system verifies that the status of the related Invoice is Pending
+   3. The system delets the invoice item
+   4. The system updates the Amount field of the related Invoice with the summarize of the Total Price field of its remaining related Invoice Items
+   5. End of flow
+   
+##### 19. The administrator tries to edit the Invoice Lookup (step 7 of the basic flow)
+   1. The system verifies that the status of the related Invoice is set to Pending
+   2. The administrator tries to edit the Invoice Lookup field
    4. The system displays an error message
    5.	End of flow
