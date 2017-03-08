@@ -40,6 +40,9 @@ public with sharing class Invoices extends SObjectDomain {
                 if( invoice.Amount__c != ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c )
                     if( !disabledUpdateinvoices.containsKey( invoice.Id ) )
                         invoice.addError( Label.AmountUpdateDisabled );
+
+                if( invoice.HasDetails__c != ((Invoice__c)existingRecords.get(invoice.Id)).HasDetails__c )
+                    invoice.addError( Label.HasDetailsNotEditable );
             }
         }
     }
@@ -60,10 +63,18 @@ public with sharing class Invoices extends SObjectDomain {
     }
 
     public override void onApplyDefaults() {
+        for(Invoice__c invoice: (List<Invoice__c>)records){
+            processedIds.add(invoice.Id);
+        }
+
+        Map<Id,Invoice__c> detailessInvoices = new Map<Id, Invoice__c>( new InvoicesSelector().selectByItemIdWithDetailedInvoiceDisabled(processedIds));
+
         for(Invoice__c record : (List<Invoice__c>)records){
             if(record.Status__c == null){
                 record.Status__c = 'Pending';
             }
+
+            record.HasDetails__c = !detailessInvoices.containsKey( record.Id );
         }
     }
 
