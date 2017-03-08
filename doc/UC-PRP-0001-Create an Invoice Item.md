@@ -4,6 +4,7 @@
 This use case describes the creation of an Invoice Item
 
 ### Preconditions
+The option to Consider Invoice Detail in the Member’s Program is set to true  
 The administrator must be logged in
 
 ### Postconditions
@@ -15,16 +16,12 @@ An Invoice Item is created
 
 1. The system receives the information for the Invoice items
 2. The system creates an Invoice Item with some of its fields filled up with the received information
-   - Invoice
-   - Product
-   - Quantity
-   - Unit Price
-   - Total Price
 3. The system analyzes the following fields of each Invoice Item: Quantity, Unit Price and Total Price
 4. The system checks that the Unit Price and Quantity fields were received
 5. The system calculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
 6. The system fills the Total Price field with the value calculated in the previous step
-7. Enf of flow
+7. The system saves the Invoice Item
+8. Enf of flow
 
 
 ### Alternative Flows
@@ -74,31 +71,74 @@ An Invoice Item is created
    2. The system displays an error message
    3. End of flow
    
-##### 9. The administrator edits the fields Unit Price, Quantity or Total Price of the invoice item (step 2 of the basic flow)
-   1. The system verifies that the status of the corresponding Invoice is set to Draft
-   2. The administrator edits one or more of the following fields: Unit Price, Quantity or Total Price
-   3. The administrator presses the Save button
-   4. Back to step 3 of the basic flow
+##### 9. The administrator edits the Total Price field (step 3 of the basic flow)
+   1. The system verifies that the status of the related Invoice is Pending
+   2. The administrator edits the Total Price field
+   3. The system does not recalculate the Total Price
+   4. The system maintains the edited value in the Total Price field
+   5. End of flow
+   
+##### 10. The administrator edits the Quantity field (step 3 of the basic flow)
+   1. The system verifies that the status of the related Invoice is Pending
+   2. The administrator edits the Quantity field 
+   3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   4. The system updates the Total Price field with the calculated value
+   5. End of flow
+   
+##### 11. The administrator edits Quantity and Total Price fields (step 3 of the basic flow)
+   1. The system verifies that the status of the related Invoice is Pending
+   2. The administrator edits the Quantity and Total Price fields
+   3. The system recalculates the value of Unit Price field by dividing the value in the Total Price field by the value in the Quantity field.
+   4. The system updates the Unit Price field with the calculated value
+   5. End of flow
+   
+##### 12. The administrator edits the Unit Price field (step 3 of the basic flow)
+   1. The system verifies that the status of the related Invoice is Pending
+   2. The administrator edits the Unit Price field
+   3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   4. The system updates the Total Price field with the calculated value
+   5. End of flow
+   
+##### 13. The administrator edits the Unit Price and Total Price fields (step 3 of the basic flow)
+   1. The system verifies that the status of the related Invoice is Pending
+   2. The administrator edits the Unit Price and the Total Price fields
+   3. The system recalculates the value of Quantity field by dividing the value in the Total Price field by the value in the Unit Price field.
+   4. The system updates the Quantity field with the calculated value
+   5. End of flow
+   
+##### 14. The administrator edits the Unit Price and Quantity fields (step 3 of the basic flow)
+   1. The system verifies that the status of the related Invoice is Pending
+   2. The administrator edits the Unit Price and the Quantity fields
+   3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   4. The system updates the Total Price field with the calculated value
+   5. End of flow
+   
+##### 15. The administrator edits the Unit Price, Quantity and Total Price fields (step 3 of the basic flow)
+   1. The system verifies that the status of the related Invoice is set to Pending
+   2. The administrator edits the Unit Price, Quantity and Total Price fields
+   3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   4. The system updates the Total Price field with the calculated value
+   5. End of flow
 
-##### 10. The administrator tries to edit the Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
+##### 16. The administrator tries to edit the Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is different from Draft
    2. The administrator presses the Edit button in the detail view of the Invoice Item
    3. The system displays an error message
    4. End of flow
 
-##### 11. The administrator deletes an Invoice Item (step 2 of the basic flow)
+##### 17. The administrator deletes an Invoice Item (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is set to Draft
    2. The administrator presses the Delete button in the detail view of the Invoice Item
    3. The system updates Amount field of the corresponding Invoice with the summarize of the Total Price field of its the related Invoice Items
    4. End of flow
    
-##### 12. The administrator tries to delete an Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
+##### 18. The administrator tries to delete an Invoice Item that is related to an Invoice not anymore in status Draft (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is different from Draft
    2. The administrator presses the Delete button in the detail view of the Invoice Item
    3. The system displays an error message
    4. End of flow
 
-##### 13. The administrator tries to edit the Invoice Lookup (step 2 of the basic flow)
+##### 19. The administrator tries to edit the Invoice Lookup (step 2 of the basic flow)
    1. The system verifies that the status of the corresponding Invoice is set to Draft
    2. The administrator presses the Edit button in the detail view of the Invoice Item 
    3. The administrator tries to edit the Invoice Lookup field
