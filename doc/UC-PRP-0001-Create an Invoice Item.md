@@ -4,7 +4,7 @@
 This use case describes the creation of an Invoice Item
 
 ### Preconditions
-The option to Consider Invoice Detail in the Member’s Program is set to true
+The option to Consider Invoice Detail in the Member’s Program is set to true  
 The administrator must be logged in
 
 ### Postconditions
