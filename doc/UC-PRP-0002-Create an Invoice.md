@@ -42,3 +42,8 @@ An Invoice is created
    2. The system verifies that the option "Consider Invoice Detail" is set to true
    3. The system displays an error message
    4. End of flow
+   
+##### 4. The administrator tries to create an Invoice with no member (step 3 of the basic flow)
+   1. The administrator tries to save the Invoice without filling the Member field
+   2. The system displays an error message
+   3. End of flow
