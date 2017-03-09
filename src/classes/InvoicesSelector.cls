@@ -4,7 +4,8 @@ public class InvoicesSelector extends SObjectSelector{
         return new List<Schema.SObjectField> {
                 Invoice__c.Id,
                 Invoice__c.Name,
-                Invoice__c.Amount__c
+                Invoice__c.Amount__c,
+                Invoice__c.HasDetails__c
             };
     }
 

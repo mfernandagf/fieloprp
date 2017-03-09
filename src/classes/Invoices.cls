@@ -15,15 +15,17 @@ public with sharing class Invoices extends SObjectDomain {
         if(validateAdminFields){
             Set<Id> memberIds = new Set<Id>();
             for(Invoice__c invoice: (List<Invoice__c>)records){
-                memberIds.add(invoice.Member__c);
+                if(invoice.Member__c!=null)
+                    memberIds.add(invoice.Member__c);
             }
 
             Map<Id,FieloPLT__Member__c> disabledUpdateMembers = new Map<Id, FieloPLT__Member__c>( new MembersSelector().selectByIdAndProgramWithDetailedInvoiceFalse(memberIds));
 
             for(Invoice__c invoice: (List<Invoice__c>)records){
                 if( invoice.Amount__c != null && invoice.Amount__c != 0.0 )
-                    if( !disabledUpdateMembers.containsKey( invoice.Member__c ) )
-                        invoice.addError( Label.AmountUpdateDisabled );
+                    if(invoice.Member__c!=null)
+                        if( !disabledUpdateMembers.containsKey( invoice.Member__c ) )
+                            invoice.addError( Label.AmountUpdateDisabled );
 
             }
         }
@@ -31,19 +33,21 @@ public with sharing class Invoices extends SObjectDomain {
 
     public override void onValidate( Map<Id,SObject> existingRecords ){
         if(validateAdminFields){
-            for(Invoice__c invoice: (List<Invoice__c>)records){
-                processedIds.add(invoice.Id);
-            }
-
-            Map<Id,Invoice__c> disabledUpdateinvoices = new Map<Id, Invoice__c>( new InvoicesSelector().selectByItemIdWithDetailedInvoiceDisabled(processedIds));
+            Map<Id,Invoice__c> disabledUpdateinvoices = new Map<Id, Invoice__c>( new InvoicesSelector().selectByItemIdWithDetailedInvoiceDisabled(new Map<Id,Invoice__c>((List<Invoice__c>)records).keyset()));
 
             for(Invoice__c invoice: (List<Invoice__c>)records){
-                if( invoice.Amount__c != ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c )
-                    if( !disabledUpdateinvoices.containsKey( invoice.Id ) )
-                        invoice.addError( Label.AmountUpdateDisabled );
+
+                if( invoice.Amount__c!=null && ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c!=null )
+                    if( invoice.Amount__c.setScale(2) != ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c.setScale(2) )
+                        if( !disabledUpdateinvoices.containsKey( invoice.Id ) )
+                            invoice.addError( Label.AmountUpdateDisabled );
 
                 if( invoice.HasDetails__c != ((Invoice__c)existingRecords.get(invoice.Id)).HasDetails__c )
                     invoice.addError( Label.HasDetailsNotEditable );
+
+                if( ((Invoice__c)existingRecords.get(invoice.Id)).Status__c != 'Pending' ){
+                    invoice.addError( Label.DraftNotEditable );
+                }
             }
         }
     }
@@ -51,6 +55,7 @@ public with sharing class Invoices extends SObjectDomain {
     public override void onAfterUpdate(Map<Id,SObject> existingRecords) {
         List<Invoice__c> recordsToProcess = new List<Invoice__c>();
         Map<Id,Invoice__c> mapExistingRecordsToProcess = new Map<Id,Invoice__c>();
+
         for(Invoice__c record : (List<Invoice__c>)records){
             if(!processedIds.contains(record.Id)){
                 recordsToProcess.add(record);
@@ -59,23 +64,25 @@ public with sharing class Invoices extends SObjectDomain {
             }
         }
         if(!recordsToProcess.isEmpty()){
+            system.debug('records: '+recordsToProcess);
             FieloPLT.SObjectService.processRecords(recordsToProcess, mapExistingRecordsToProcess);
         }
     }
 
     public override void onApplyDefaults() {
+        Set<Id> memberIds = new Set<Id>();
         for(Invoice__c invoice: (List<Invoice__c>)records){
-            processedIds.add(invoice.Id);
+            memberIds.add(invoice.Member__c);
         }
 
-        Map<Id,Invoice__c> detailessInvoices = new Map<Id, Invoice__c>( new InvoicesSelector().selectByItemIdWithDetailedInvoiceDisabled(processedIds));
+        Map<Id,FieloPLT__Member__c> detailessInvoiceMembers = new Map<Id, FieloPLT__Member__c>( new MembersSelector().selectByIdAndProgramWithDetailedInvoiceFalse(memberIds));
 
         for(Invoice__c record : (List<Invoice__c>)records){
             if(record.Status__c == null){
                 record.Status__c = 'Pending';
             }
 
-            record.HasDetails__c = !detailessInvoices.containsKey( record.Id );
+            record.HasDetails__c = !detailessInvoiceMembers.containsKey( record.Member__c );
         }
     }
 

@@ -6,6 +6,13 @@ public class InvoiceItems extends SObjectDomain {
     public static Boolean quantityChanged = false;
     public static Boolean quantityZero = false;
 
+    public static Double newQuantity;
+    public static Double newTotalPrice;
+    public static Double newUnitPrice;
+    public static Double oldQuantity;
+    public static Double oldTotalPrice;
+    public static Double oldUnitPrice;
+
     public static Boolean validateAdminFields = true;
 
     public static Set<Id> processedIds = new Set<Id>();
@@ -32,18 +39,62 @@ public class InvoiceItems extends SObjectDomain {
             if(item.UnitPrice__c==null){
                 item.UnitPrice__c=0.0;   
             }
+        }
+    }
 
+    public override void onValidate(){
+        Set<Id> invoiceIds = new Set<Id>();
+        for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
+            invoiceIds.add(item.Invoice__c);
+        }
+
+        Map<Id,Invoice__c> invoices = new Map<Id,Invoice__c>(new InvoicesSelector().selectById(invoiceIds));
+
+        for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
+            if(invoices.containsKey( item.Invoice__c )){
+                if( !invoices.get(item.Invoice__c).HasDetails__c )
+                    item.addError(Label.InvoiceDetailInsertDisabled);
+
+                //Init and Defaults Prices and Quantity Fields
+                setPriceFields(item,null);
+
+                //Vars set by the method setPriceFields
+                totalPriceZero = newTotalPrice == 0.0;
+                quantityZero = newQuantity == 0.0;
+                unitPriceZero = newUnitPrice == 0.0;
+
+                //All zero
+                if( totalPriceZero && quantityZero && unitPriceZero ){
+                    item.addError( Label.AllPriceFieldsZero );
+                }
+
+                //Only Unit Price is set
+                else if( totalPriceZero && quantityZero && !unitPriceZero ){
+                    item.addError( Label.TotalPriceAndQuantityZero );
+                }
+
+                //Quantity is zero
+                else if( quantityZero && totalPriceZero){
+                    item.addError( Label.QuantityZero ); 
+                }
+
+                //Quantity is negative
+                else if(newQuantity < 0){
+                    item.addError( Label.QuantityGreaterThenZero );
+                }
+            }
         }
     }
 
     public override void onValidate( Map<Id,SObject> existingRecords ){
-        
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
-            processedIds.add(item.Id);
+            //Init and Defaults Prices and Quantity Fields
+            setPriceFields(item,null);
 
-            totalPriceZero = item.TotalPrice__c == 0.0;
-            quantityZero = item.Quantity__c == 0.0;
-            unitPriceZero = item.UnitPrice__c == 0.0;
+            //Vars set by the method setPriceFields
+            totalPriceZero = newTotalPrice == 0.0;
+            quantityZero = newQuantity == 0.0;
+            unitPriceZero = newUnitPrice == 0.0;
 
             //All zero
             if( totalPriceZero && quantityZero && unitPriceZero ){
@@ -56,15 +107,22 @@ public class InvoiceItems extends SObjectDomain {
             }
 
             //Quantity is zero
-            else if( quantityZero ){
-                item.addError( Label.QuantityZero );  
+            else if( quantityZero && totalPriceZero){
+                item.addError( Label.QuantityZero ); 
+            }
+
+            //Quantity is negative
+            else if(newQuantity < 0){
+                item.addError( Label.QuantityGreaterThenZero );
             }
         }
 
-        Map<Id, InvoiceItem__c> itemsWithDraftInvoice = new Map<Id,InvoiceItem__c>(new InvoiceItemsSelector().selectByIdWithInvoiceStatusPending(processedIds));
+        Map<Id, InvoiceItem__c> itemsWithPendingInvoice = new Map<Id,InvoiceItem__c>(
+            new InvoiceItemsSelector().selectByIdWithInvoiceStatusPending( new Map<Id,InvoiceItem__c>( (List<InvoiceItem__c>)records ).keySet() )
+            );
 
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
-            if( !itemsWithDraftInvoice.containsKey(item.Id) ){
+            if( !itemsWithPendingInvoice.containsKey(item.Id) ){
                 item.addError( Label.DraftNotEditable );
             }
         }
@@ -88,6 +146,8 @@ public class InvoiceItems extends SObjectDomain {
                     mapInvoices.get(item.Invoice__c).Amount__c = mapInvoices.get(item.Invoice__c).Amount__c != null
                         ? mapInvoices.get(item.Invoice__c).Amount__c + item.TotalPrice__c
                         : item.TotalPrice__c;
+
+                    mapInvoices.get(item.Invoice__c).Amount__c = mapInvoices.get(item.Invoice__c).Amount__c.setScale(2);
             }
 
             if(invoicesList.size()>0){
@@ -110,25 +170,30 @@ public class InvoiceItems extends SObjectDomain {
 
     public override void onBeforeInsert(){
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
-            totalPriceZero = item.TotalPrice__c == 0 ? true: false;
-            quantityZero = item.Quantity__c == 0 ? true: false;
-            unitPriceZero = item.UnitPrice__c == 0 ? true: false;
+            
+            //Init and Defaults Prices and Quantity Fields
+            setPriceFields(item,null);
+
+            //Vars set by the method setPriceFields
+            totalPriceZero = newTotalPrice == 0.0;
+            quantityZero = newQuantity == 0.0;
+            unitPriceZero = newUnitPrice == 0.0;
 
             if( !(!totalPriceZero && quantityZero && unitPriceZero) ){
 
                 //UnitPrice and Quantity set
                 if( !quantityZero && !unitPriceZero ){
-                    item.TotalPrice__c = item.Quantity__c * item.UnitPrice__c;
+                    item.TotalPrice__c = newQuantity * newUnitPrice;
                 }
                 
                 //Total Price and Unit Price set
                 else if( !totalPriceZero && quantityZero && !unitPriceZero ){
-                    item.Quantity__c = item.TotalPrice__c / item.UnitPrice__c;
+                    item.Quantity__c = newTotalPrice / newUnitPrice;
                 }
                 
                 //Quantity and Total Price set
                 else if( !totalPriceZero && !quantityZero && unitPriceZero ){
-                    item.UnitPrice__c = item.TotalPrice__c / item.Quantity__c;
+                    item.UnitPrice__c = newTotalPrice / newQuantity;
                 }
                 
             }
@@ -137,44 +202,58 @@ public class InvoiceItems extends SObjectDomain {
 
     public override void onBeforeUpdate(Map<Id,SObject> existingRecords){
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
-            totalPriceChanged = item.TotalPrice__c != ((InvoiceItem__c)existingRecords.get(item.Id)).TotalPrice__c;
-            unitPriceChanged = item.Quantity__c != ((InvoiceItem__c)existingRecords.get(item.Id)).Quantity__c;
-            quantityChanged = item.UnitPrice__c != ((InvoiceItem__c)existingRecords.get(item.Id)).UnitPrice__c;
-            totalPriceZero = item.TotalPrice__c == 0.0;
-            quantityZero = item.Quantity__c == 0.0;
-            unitPriceZero = item.UnitPrice__c == 0.0;
+            //Init and Defaults Prices and Quantity Fields
+            setPriceFields(item,((InvoiceItem__c)existingRecords.get(item.Id)));
+
+            //Vars set by the method setPriceFields
+            totalPriceZero = newTotalPrice == 0.0;
+            quantityZero = newQuantity == 0.0;
+            unitPriceZero = newUnitPrice == 0.0;
+
+            totalPriceChanged = newTotalPrice != oldTotalPrice;
+            unitPriceChanged = newUnitPrice != oldUnitPrice;
+            quantityChanged = newQuantity != oldQuantity;
 
             if( totalPriceChanged || unitPriceChanged || quantityChanged ){
 
+                //Only Total Price Changed, but unitprice and quantity are set
+                if( totalPriceChanged && !unitPriceChanged && !quantityChanged ){
+                    if( !quantityZero || !unitPriceZero )
+                        item.TotalPrice__c = newQuantity * newUnitPrice;
+                }
+
                 //Only Quantity is changed
                 if( !totalPriceChanged && !unitPriceChanged && quantityChanged ){
-                    item.TotalPrice__c = item.Quantity__c * item.UnitPrice__c;
+                    item.TotalPrice__c = newQuantity * newUnitPrice;
                 }
 
                 //Quantity and Total Price are changed
                 else if( totalPriceChanged && !unitPriceChanged && quantityChanged ){
                     if( !quantityZero )
-                        item.UnitPrice__c = item.TotalPrice__c / item.Quantity__c;
+                        item.UnitPrice__c = newTotalPrice / newQuantity;
                     else
-                        item.Quantity__c.addError( Label.QuantityZero );
+                        item.addError( Label.QuantityZero );
                 }
 
                 //Only Unit Price is changed
                 else if( !totalPriceChanged && unitPriceChanged ){
-                    item.TotalPrice__c = item.Quantity__c * item.UnitPrice__c;
+                    item.TotalPrice__c = newQuantity * newUnitPrice;
                 }
 
                 //Total Price and Unit Price are changed
                 else if( totalPriceChanged && unitPriceChanged && !quantityChanged ){
                     if( !unitPriceZero )
-                        item.Quantity__c = item.TotalPrice__c / item.UnitPrice__c;
+                        item.Quantity__c = newTotalPrice / newUnitPrice;
                     else
-                        item.UnitPrice__c.addError( Label.UnitPriceZero );
+                        item.addError( Label.UnitPriceZero );
                 }
 
                 //Everything changed
                 else if( totalPriceChanged && unitPriceChanged && quantityChanged ){
-                    item.TotalPrice__c = item.Quantity__c * item.UnitPrice__c;
+                    if( !totalPriceZero && quantityZero && unitPriceZero)
+                        item.TotalPrice__c = newTotalPrice;
+                    else
+                        item.TotalPrice__c = newQuantity * newUnitPrice;
                 }
             }
         }
@@ -220,6 +299,7 @@ public class InvoiceItems extends SObjectDomain {
 
             for( InvoiceItem__c item: (List<InvoiceItem__c>)records ){
                 mapInvoices.get(item.Invoice__c).Amount__c -= item.TotalPrice__c;
+                mapInvoices.get(item.Invoice__c).Amount__c = mapInvoices.get(item.Invoice__c).Amount__c.setScale(2);
             }
 
             if(invoicesList.size()>0){
@@ -250,6 +330,7 @@ public class InvoiceItems extends SObjectDomain {
             for(InvoiceItem__c invoiceItem: invoice.InvoiceItems__r){
                 invoice.Amount__c += invoiceItem.TotalPrice__c;
             }
+            invoice.Amount__c = invoice.Amount__c.setScale(2);
         }
 
         if(invoicesList.size()>0){
@@ -268,6 +349,24 @@ public class InvoiceItems extends SObjectDomain {
                 throw e;
             }
             
+        }
+    }
+
+    /* This function initiates the vars that contains the fields 
+        that validation is needed:
+         - TotalPrice__c, Quantity__c and UnitPrice__c
+    */
+    public static void setPriceFields(InvoiceItem__c newItem, InvoiceItem__c oldItem){
+        if(newItem!=null){
+            newQuantity = newItem.Quantity__c != null ? newItem.Quantity__c : 0.0;
+            newTotalPrice = newItem.TotalPrice__c != null ? newItem.TotalPrice__c : 0.0;
+            newUnitPrice = newItem.UnitPrice__c != null ? newItem.UnitPrice__c : 0.0;    
+        }
+
+        if(oldItem!=null){
+            oldQuantity = oldItem.Quantity__c != null ? oldItem.Quantity__c : 0.0;
+            oldTotalPrice = oldItem.TotalPrice__c != null ? oldItem.TotalPrice__c : 0.0;
+            oldUnitPrice = oldItem.UnitPrice__c != null ? oldItem.UnitPrice__c : 0.0;
         }
     }
 }
