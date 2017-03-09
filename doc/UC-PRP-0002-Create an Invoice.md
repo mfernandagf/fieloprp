@@ -47,3 +47,9 @@ An Invoice is created
    1. The administrator tries to save the Invoice without filling the Member field
    2. The system displays an error message
    3. End of flow
+
+##### 5. The administrator tries to edit the Member Lookup (step 7 of the basic flow)
+   1. The system verifies that the status of the Invoice is set to Pending
+   2. The administrator tries to edit the Member Lookup field
+   4. The system displays an error message
+   5. End of flow
