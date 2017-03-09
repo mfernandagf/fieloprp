@@ -56,7 +56,7 @@ An Invoice Item is created
    4. The system fills the Total Price field with the value calculated in the previous step
    5. End of flow
    
-#### 6. Only the Unit Price field is received (step 4 of the basic flow)
+##### 6. Only the Unit Price field is received (step 4 of the basic flow)
    1. The system receives only the value for Unit Price field
    2. The system displays an error message
    3. End of flow
