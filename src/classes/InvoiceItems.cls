@@ -20,6 +20,22 @@ public class InvoiceItems extends SObjectDomain {
         }
     }
 
+    public override void onApplyDefaults() {
+        for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
+
+            if(item.Quantity__c==null){
+                item.Quantity__c=0.0;
+            }
+            if(item.TotalPrice__c==null){
+                item.TotalPrice__c=0.0;
+            }
+            if(item.UnitPrice__c==null){
+                item.UnitPrice__c=0.0;   
+            }
+
+        }
+    }
+
     public override void onValidate( Map<Id,SObject> existingRecords ){
         
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){

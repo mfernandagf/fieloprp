@@ -13,15 +13,16 @@ public with sharing class Invoices extends SObjectDomain {
 
     public override void onValidate(){
         if(validateAdminFields){
+            Set<Id> memberIds = new Set<Id>();
             for(Invoice__c invoice: (List<Invoice__c>)records){
-                processedIds.add(invoice.Id);
+                memberIds.add(invoice.Member__c);
             }
 
-            Map<Id,Invoice__c> disabledUpdateinvoices = new Map<Id, Invoice__c>( new InvoicesSelector().selectByItemIdWithDetailedInvoiceDisabled(processedIds));
+            Map<Id,FieloPLT__Member__c> disabledUpdateMembers = new Map<Id, FieloPLT__Member__c>( new MembersSelector().selectByIdAndProgramWithDetailedInvoiceFalse(memberIds));
 
             for(Invoice__c invoice: (List<Invoice__c>)records){
-                if( invoice.Amount__c != null && invoice.Amount__c != null )
-                    if( !disabledUpdateinvoices.containsKey( invoice.Id ) )
+                if( invoice.Amount__c != null && invoice.Amount__c != 0.0 )
+                    if( !disabledUpdateMembers.containsKey( invoice.Member__c ) )
                         invoice.addError( Label.AmountUpdateDisabled );
 
             }

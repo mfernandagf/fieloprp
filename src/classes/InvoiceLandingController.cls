@@ -8,7 +8,6 @@ public with sharing class InvoiceLandingController {
     public FieloPLT__Program__c currentProgram { get {
         if ( currentProgram == null) {
             currentProgram = ProgramService.getActiveProgram();
-            system.debug('currentprogram: ' + currentprogram.id);
         }
         return currentProgram;
     }set;}
