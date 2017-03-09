@@ -67,7 +67,7 @@ An Invoice Item is created
    3. End of flow
    
 ##### 8. The received Quantity value is invalid (step 4 of the basic flow)
-   1. The system verifies that the Quantity field is filled with 0 (zero) or with a negative value
+   1. The system verifies that the Quantity field is filled with a negative value
    2. The system displays an error message
    3. End of flow
    
@@ -126,8 +126,8 @@ An Invoice Item is created
    3. The system displays an error message
    4. End of flow
    
-##### 17. The administrator tries to edit the Invoice Item with an invalid value for the Quantity field (step 7 of the basic flow)
-   1. The system verifies that the Quantity field is updated with 0 (zero) or with a negative value
+##### 17. The administrator tries to edit the Invoice Item with invalid values (step 7 of the basic flow)
+   1. The system verifies that the Quantity or Unit Price fields are updated with 0 (zero) and The Total Price is updated with a valid value 
    2. The system displays an error message
    3. End of flow
 
