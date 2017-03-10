@@ -143,3 +143,8 @@ An Invoice Item is created
    2. The administrator tries to edit the Invoice Lookup field
    4. The system displays an error message
    5.	End of flow
+   
+##### 20. The administrator tries to edit all the fields Quantity, Unit Price and Total Price with zero or null (step 7 of the basic flow)
+   1. The system verifies that the Quantity, Unit Price and Total Price fields are updated with 0 (zero) or are left blank
+   2. The system displays an error message
+   3. End of flow
