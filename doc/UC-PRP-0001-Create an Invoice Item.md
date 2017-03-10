@@ -149,7 +149,12 @@ An Invoice Item is created
    2. The system displays an error message
    3. End of flow
    
-##### 21.The received Unit Price value is invalid (step 4 of the basic flow)
+##### 21. The received Unit Price value is invalid (step 4 of the basic flow)
    1. The system verifies that the Unit Price field is filled with a negative value
+   2. The system displays an error message
+   3. End of flow
+   
+##### 22. The administrator tries to edit the Unit Price field with an invalid value (step 7 of the basic flow)
+   1. The system verifies that the Unit Price field is updated with a negative value
    2. The system displays an error message
    3. End of flow
