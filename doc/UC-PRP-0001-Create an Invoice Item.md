@@ -158,3 +158,14 @@ An Invoice Item is created
    1. The system verifies that the Unit Price field is updated with a negative value
    2. The system displays an error message
    3. End of flow
+
+##### 23. The administrator tries to edit the Invoice Item with invalid values for Quantity and Total Price (step 7 of the basic flow)
+   1. The system verifies that both Quantity and Total Price fields are updated with 0 (zero) or are left blank
+   2. The system displays an error message
+   3. End of flow
+   
+##### 24. The administrator tries to edit the Invoice Item with invalid values for Unit Price and a valid value for Total Price (step 7 of the basic flow)
+   1. The system verifies that the Unit Price field is updated with 0 (zero) or is left blank
+   2. The system verifies that Total Price waas updated with a valid value
+   3. The system displays an error message
+   4. End of flow
