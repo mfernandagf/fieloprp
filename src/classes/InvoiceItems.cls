@@ -73,14 +73,14 @@ public class InvoiceItems extends SObjectDomain {
                     item.addError( Label.TotalPriceAndQuantityZero );
                 }
 
-                //Quantity is zero
-                else if( quantityZero && totalPriceZero){
-                    item.addError( Label.QuantityZero ); 
-                }
-
                 //Quantity is negative
                 else if(newQuantity < 0){
-                    item.addError( Label.QuantityGreaterThenZero );
+                    item.addError( Label.QuantityGreaterThanZero );
+                }
+
+                //UnitPrice is negative
+                else if(newUnitPrice < 0){
+                    item.addError( Label.UnitPriceGreaterThanZero );
                 }
             }
         }
@@ -106,14 +106,14 @@ public class InvoiceItems extends SObjectDomain {
                 item.addError( Label.TotalPriceAndQuantityZero );
             }
 
-            //Quantity is zero
-            else if( quantityZero && totalPriceZero){
-                item.addError( Label.QuantityZero ); 
-            }
-
             //Quantity is negative
             else if(newQuantity < 0){
-                item.addError( Label.QuantityGreaterThenZero );
+                item.addError( Label.QuantityGreaterThanZero );
+            }
+
+            //UnitPrice is negative
+            else if(newUnitPrice < 0){
+                item.addError( Label.UnitPriceGreaterThanZero );
             }
         }
 
@@ -202,6 +202,13 @@ public class InvoiceItems extends SObjectDomain {
 
     public override void onBeforeUpdate(Map<Id,SObject> existingRecords){
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
+            if(item.TotalPrice__c==null)
+                item.TotalPrice__c = 0.0;
+            if(item.Quantity__c==null)
+                item.Quantity__c = 0.0;
+            if(item.UnitPrice__c==null)
+                item.UnitPrice__c = 0.0;
+
             //Init and Defaults Prices and Quantity Fields
             setPriceFields(item,((InvoiceItem__c)existingRecords.get(item.Id)));
 
@@ -265,10 +272,7 @@ public class InvoiceItems extends SObjectDomain {
         //Check for updates that may affect TotalPrice
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){
             //Add only updated items.
-            if( item.TotalPrice__c != ((InvoiceItem__c)existingRecords.get(item.Id)).TotalPrice__c
-                || item.Quantity__c != ((InvoiceItem__c)existingRecords.get(item.Id)).Quantity__c 
-                || item.UnitPrice__c != ((InvoiceItem__c)existingRecords.get(item.Id)).UnitPrice__c ){
-
+            if( item.TotalPrice__c != ((InvoiceItem__c)existingRecords.get(item.Id)).TotalPrice__c ){
                 itemIds.add(item.Id);
             }
             

@@ -38,22 +38,32 @@ public class TestCreateInvoiceItem {
         insert invoices;
 
         //When
-        InvoiceItem__c item = new InvoiceItem__c(
-            Invoice__c = invoices[0].Id,
-            Quantity__c = 15.0,
-            UnitPrice__c = 50.0
+        List<InvoiceItem__c> items = new List<InvoiceItem__c>();
+
+        items.add( new InvoiceItem__c(
+                Invoice__c = invoices[0].Id,
+                Quantity__c = 15.0,
+                UnitPrice__c = 50.0
+            )
+        );
+
+        items.add( new InvoiceItem__c(
+                Invoice__c = invoices[0].Id,
+                Quantity__c = 10.0,
+                UnitPrice__c = 50.0
+            )
         );
 
         
         Test.startTest();
 
-        insert item;
+        insert items;
 
         Test.stopTest();        
 
         //Then
-        System.assertEquals(1, [Select Id From InvoiceItem__c].size());
-        System.assertEquals(750.0, ((InvoiceItem__c)[Select Id, TotalPrice__c From InvoiceItem__c]).TotalPrice__c.setScale(1));
+        System.assertEquals(2, [Select Id From InvoiceItem__c].size());
+        System.assertEquals(750.0, ((List<InvoiceItem__c>)[Select Id, TotalPrice__c From InvoiceItem__c])[0].TotalPrice__c.setScale(1));
     }
 
     /*  TEST-1556
@@ -884,4 +894,250 @@ public class TestCreateInvoiceItem {
 
         Test.stopTest();
      }
+
+     /*  TEST-1587
+        Create an Invoice Item
+        – Validations
+        – Edition when Unit Price, Quantity and Total Price fields are null or zero
+     */
+     @isTest static void temp_test_001(){
+        //Given
+        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = true;
+        insert programs;
+
+        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        insert members;
+
+        invoices = RTMockUpFactory.createInvoices(members[0].Id,2);
+        insert invoices;
+
+        //When
+        InvoiceItem__c item = new InvoiceItem__c(
+            Invoice__c = invoices[0].Id,
+            Quantity__c = 10.0,
+            UnitPrice__c = 50.0
+        );
+
+        insert item;
+
+        Test.startTest();
+
+        item.TotalPrice__c = null;
+        item.UnitPrice__c = null;
+        item.Quantity__c = null;
+
+        try{
+            update item;
+        }
+        catch(Exception e){
+            System.assertEquals(10.0, ((InvoiceItem__c)[Select Id, Quantity__c From InvoiceItem__c]).Quantity__c);
+            System.assertEquals(50.0, ((InvoiceItem__c)[Select Id, UnitPrice__c From InvoiceItem__c]).UnitPrice__c);
+            System.assertEquals(500.0, ((InvoiceItem__c)[Select Id, TotalPrice__c From InvoiceItem__c]).TotalPrice__c);
+        }
+
+        Test.stopTest();
+     }
+
+     /* TEST-1588
+        Create an Invoice Item
+        - Validations
+        - Creation with invalid Unit Price field received
+     */
+     @isTest static void PRP_0001_FA21(){
+        //Given
+        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = true;
+        insert programs;
+
+        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        insert members;
+
+        invoices = RTMockUpFactory.createInvoices(members[0].Id,2);
+        insert invoices;
+
+        //When
+        InvoiceItem__c item = new InvoiceItem__c(
+            Invoice__c = invoices[0].Id,
+            Quantity__c = 10.0,
+            UnitPrice__c = -50.0
+        );
+
+        Test.startTest();
+
+        //Then
+        try{
+            insert item;
+        }
+        catch(Exception e){
+            System.assertEquals(0, [Select Id From InvoiceItem__c].size());
+        }
+
+        Test.stopTest();
+     }
+
+     /* TEST-1589
+        Create an Invoice Item
+        – Validations
+        – Edition when Unit Price is invalid
+     */
+     @isTest static void PRP_0001_FA22(){
+        //Given
+        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = true;
+        insert programs;
+
+        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        insert members;
+
+        invoices = RTMockUpFactory.createInvoices(members[0].Id,2);
+        insert invoices;
+
+        //When
+        InvoiceItem__c item = new InvoiceItem__c(
+            Invoice__c = invoices[0].Id,
+            Quantity__c = 10.0,
+            UnitPrice__c = 50.0
+        );
+
+        insert item;
+
+        item.UnitPrice__c = -50.0;
+
+        Test.startTest();
+
+        //Then
+        try{
+            update item;
+        }
+        catch(Exception e){
+            System.assertEquals(50.0, ((InvoiceItem__c)[Select Id, UnitPrice__c From InvoiceItem__c]).UnitPrice__c);
+        }
+
+        Test.stopTest();
+     }
+
+     /* TEST-1590
+        Create an Invoice Item
+        – Validations
+        – Edition when both Quantity and Total Price fields are null or zero
+     */
+     @isTest static void PRP_0001_FA23(){
+        //Given
+        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = true;
+        insert programs;
+
+        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        insert members;
+
+        invoices = RTMockUpFactory.createInvoices(members[0].Id,2);
+        insert invoices;
+
+        //When
+        InvoiceItem__c item = new InvoiceItem__c(
+            Invoice__c = invoices[0].Id,
+            Quantity__c = 10.0,
+            UnitPrice__c = 50.0
+        );
+
+        insert item;
+
+        item.Quantity__c = 0.0;
+        item.TotalPrice__c = 0.0;
+
+        Test.startTest();
+
+        //Then
+        try{
+            update item;
+        }
+        catch(Exception e){
+            System.assertEquals(50.0, ((InvoiceItem__c)[Select Id, UnitPrice__c From InvoiceItem__c]).UnitPrice__c);
+        }
+
+        Test.stopTest();
+     }
+
+     /* TEST-1591
+        Create an Invoice Item
+        - Validations
+        – Edition when both Unit Price and Total Price fields are edited, but Unit Price is null or zero
+     */
+     @isTest static void PRP_0001_FA24(){
+        //Given
+        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = true;
+        insert programs;
+
+        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        insert members;
+
+        invoices = RTMockUpFactory.createInvoices(members[0].Id,2);
+        insert invoices;
+
+        //When
+        InvoiceItem__c item = new InvoiceItem__c(
+            Invoice__c = invoices[0].Id,
+            Quantity__c = 10.0,
+            UnitPrice__c = 50.0
+        );
+
+        insert item;
+
+        item.UnitPrice__c = 0.0;
+        item.TotalPrice__c = 100.0;
+
+        Test.startTest();
+
+        //Then
+        try{
+            update item;
+        }
+        catch(Exception e){
+            System.assertEquals(50.0, ((InvoiceItem__c)[Select Id, UnitPrice__c From InvoiceItem__c]).UnitPrice__c);
+        }
+
+        Test.stopTest();
+     }
+
+     /* TEST-1592
+        Create an Invoice Item
+        – Edit Invoice Item
+        – Only Total Price field is edited when Quantity and Unit Price fields are not zero
+     */
+     @isTest static void PRP_0001_FA25(){
+        //Given
+        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = true;
+        insert programs;
+
+        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        insert members;
+
+        invoices = RTMockUpFactory.createInvoices(members[0].Id,2);
+        insert invoices;
+
+        //When
+        InvoiceItem__c item = new InvoiceItem__c(
+            Invoice__c = invoices[0].Id,
+            Quantity__c = 10.0,
+            UnitPrice__c = 50.0
+        );
+
+        insert item;
+
+        item.TotalPrice__c = 100.0;
+
+        Test.startTest();
+
+        //Then
+        update item;
+
+        System.assertEquals(500.0, ((InvoiceItem__c)[Select Id, TotalPrice__c From InvoiceItem__c]).TotalPrice__c);
+
+        Test.stopTest();
+     }
+
+
 }

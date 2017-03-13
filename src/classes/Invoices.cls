@@ -2,6 +2,8 @@ public with sharing class Invoices extends SObjectDomain {
 	
 	public static Set<Id> processedIds = new Set<Id>();
     public static Boolean validateAdminFields = true;
+    public static Decimal newAmount;
+    public static Decimal oldAmount;
 
     public Invoices(List<Invoice__c> records) {
         super(records);
@@ -36,11 +38,16 @@ public with sharing class Invoices extends SObjectDomain {
             Map<Id,Invoice__c> disabledUpdateinvoices = new Map<Id, Invoice__c>( new InvoicesSelector().selectByItemIdWithDetailedInvoiceDisabled(new Map<Id,Invoice__c>((List<Invoice__c>)records).keyset()));
 
             for(Invoice__c invoice: (List<Invoice__c>)records){
+                newAmount = invoice.Amount__c==null
+                    ? 0.0
+                    : invoice.Amount__c;
+                oldAmount = ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c==null
+                    ? 0.0
+                    : ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c;
 
-                if( invoice.Amount__c!=null && ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c!=null )
-                    if( invoice.Amount__c.setScale(2) != ((Invoice__c)existingRecords.get(invoice.Id)).Amount__c.setScale(2) )
-                        if( !disabledUpdateinvoices.containsKey( invoice.Id ) )
-                            invoice.addError( Label.AmountUpdateDisabled );
+                if( newAmount.setScale(2) != oldAmount.setScale(2) )
+                    if( !disabledUpdateinvoices.containsKey( invoice.Id ) )
+                        invoice.addError( Label.AmountUpdateDisabled );
 
                 if( invoice.HasDetails__c != ((Invoice__c)existingRecords.get(invoice.Id)).HasDetails__c )
                     invoice.addError( Label.HasDetailsNotEditable );
@@ -64,7 +71,6 @@ public with sharing class Invoices extends SObjectDomain {
             }
         }
         if(!recordsToProcess.isEmpty()){
-            system.debug('records: '+recordsToProcess);
             FieloPLT.SObjectService.processRecords(recordsToProcess, mapExistingRecordsToProcess);
         }
     }
@@ -97,11 +103,19 @@ public with sharing class Invoices extends SObjectDomain {
     }
 
     public static void deleteCriteria(List<Invoice__c> invoices){
-
-        if(SecurityUtils.checkSObjectIsDeletable(InvoiceItem__c.sObjectType)){
-            delete [SELECT Id FROM InvoiceItem__c WHERE Invoice__c IN : invoices];
-        }else{
-            throw new FieloPLT.FieloException('You can not delete these records');
+        try{
+            if(SecurityUtils.checkSObjectIsDeletable(InvoiceItem__c.sObjectType)){
+                delete [SELECT Id FROM InvoiceItem__c WHERE Invoice__c IN : invoices];
+            }else{
+                for(Invoice__c invoice: invoices){
+                    invoice.addError('You can not delete this record');
+                }
+            }
+        }
+        catch(Exception e){
+            for(Invoice__c invoice: invoices){
+                invoice.addError(e.getMessage());
+            }
         }
     }
 }
