@@ -104,13 +104,7 @@ public with sharing class Invoices extends SObjectDomain {
 
     public static void deleteCriteria(List<Invoice__c> invoices){
         try{
-            if(SecurityUtils.checkSObjectIsDeletable(InvoiceItem__c.sObjectType)){
-                delete [SELECT Id FROM InvoiceItem__c WHERE Invoice__c IN : invoices];
-            }else{
-                for(Invoice__c invoice: invoices){
-                    invoice.addError('You can not delete this record');
-                }
-            }
+            delete [SELECT Id FROM InvoiceItem__c WHERE Invoice__c IN : invoices];
         }
         catch(Exception e){
             for(Invoice__c invoice: invoices){
