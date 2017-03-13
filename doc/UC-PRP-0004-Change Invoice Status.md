@@ -37,22 +37,34 @@ The Invoice has its status changed
 
 ##### 2. The administrator reverts an approved Invoice (step 8 of the basic flow)
    1. The administrator presses the “Revert” button
-   2. The system totally or partially removes the points given to the related member when the Invoice was approved
-   3. The system changes the Invoice status to “Reverted”
-   4. The system hides the “Revert” and “Review” buttons
-   5. End of flow
+   2. The system changes the Invoice status to “Reverted”
+   3. The system totally or partially removes the points given to the related member when the Invoice was approved
+   4. The system refreshes the Invoice Detail page
+   5. The system hides the “Revert” button
+   6. The system displays the “Review” button
+   7. End of flow
 
 ##### 3. The administrator reviews an approved Invoice (step 8 of the basic flow)
    1. The administrator presses the “Review” button
-   2. The system removes totally or partially the points given to the related member when the Invoice was approved
-   3. The system changes the Invoice status to “Pending”
-   4. The system hides the “Revert” and “Review” buttons
-   5. The system displays the “Approve” and “Reject” buttons
-   6. End of flow
+   2. The system changes the Invoice status to “Pending”
+   3. The system totally or partially removes the points given to the related member when the Invoice was approved
+   4. The system refreshes the Invoice Detail page
+   5. The system hides the “Revert” and “Review” buttons
+   6. The system displays the “Approve” and “Reject” buttons
+   7. End of flow
    
 ##### 4. The administrator reviews a rejected Invoice (step 6 of the alternative flow 1)
    1. The administrator presses the “Review” button
    2. The system changes the Invoice status to “Pending” 
-   3. The system hides the “Review” button
-   4. The system displays the “Approve” and “Reject” buttons
-   5. End of flow
+   3. The system refreshes the Invoice Detail page
+   4. The system hides the “Review” button
+   5. The system displays the “Approve” and “Reject” buttons
+   6. End of flow
+
+##### 5. The administrator reviews a reverted Invoice (step 6 of the alternative flow 2)
+   1. The administrator presses the “Review” button
+   2. The system changes the Invoice status to “Pending”
+   3. The system refreshes the Invoice Detail page
+   4. The system hides the “Review” button
+   5. The system displays the “Approve” and “Reject” buttons
+   6. End of flow
