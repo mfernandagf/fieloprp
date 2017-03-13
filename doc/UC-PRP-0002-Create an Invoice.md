@@ -59,3 +59,8 @@ An Invoice is created
    2. The administrator tries to edit the Invoice
    4. The system displays an error message
    5. End of flow
+
+##### 7. The administrator tries to create a new Invoice with an existing Invoice Number (step 3 of the basic flow and step 3 of alternative flow 1)
+   1. The system verifies that the received Invoice Number already exists for an Invoice
+   2. The system displays an error message
+   3. End of flow
