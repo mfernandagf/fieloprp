@@ -7,4 +7,10 @@ public with sharing class InvoiceService {
         selector.setOffset(offset);
         return selector.selectByProgramAndStatus(status, programId);
     }
+
+    public static void revertInvoices(Set<Id> invoiceIds){
+    	List<Id> idsToRevert = new List<Id>(new Map<Id,FieloPLT__Transaction__c>(new TransactionsSelector().selectByInvoiceIdAndNotReverted(invoiceIds)).keySet());
+    	if(!idsToRevert.isEmpty())
+    		FieloPLT.TransactionService.revertTransactions( idsToRevert );
+    }
 }

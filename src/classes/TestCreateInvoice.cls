@@ -6,18 +6,18 @@ private class TestCreateInvoice {
     private static List<FieloPRP__Invoice__c> invoices;
 
     private static void createPrograms() {
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = true;
         insert programs;
     }
 
     private static void createMembers(){
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
     }
 
     private static void createInvoice(){
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         insert invoices;
     }
 	
@@ -27,14 +27,14 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FB(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = true;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         
         invoices[0].Amount__c = 10;
 
@@ -74,14 +74,14 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA1_1(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = false;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         //When
         invoices[0].Amount__c = 10;
 
@@ -110,14 +110,14 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA1_2(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = false;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         //When
         invoices[0].Amount__c = 10;
 
@@ -154,14 +154,14 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA2(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = true;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         insert invoices;
         
         InvoiceItem__c item = new InvoiceItem__c(
@@ -191,14 +191,14 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA3(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = true;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         insert invoices;
 
         invoices[0].Amount__c = 10;
@@ -219,14 +219,14 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA4(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = true;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
 
         //when
         invoices[0].Member__c = null;
@@ -246,14 +246,14 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA5(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = true;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
 
         //when
         invoices[0].Member__c = members[1].Id;
@@ -273,18 +273,20 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA6_1(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs = MockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = false;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         invoices[0].Status__c='Approved';
         insert invoices;
         
-        invoices[0].Description__c = 'Testing Validation!';
+        String oldInvoiceNumber = invoices[0].InvoiceNumber__c;
+
+        invoices[0].InvoiceNumber__c = 'Teste';
 
         //when
         try{
@@ -292,7 +294,7 @@ private class TestCreateInvoice {
         }
         catch(Exception e){
         	//then
-        	System.assertEquals( null, ((Invoice__c)[SELECT Id,Description__c FROM Invoice__c]).Description__c );
+        	System.assertEquals( oldInvoiceNumber, ((Invoice__c)[SELECT Id,InvoiceNumber__c FROM Invoice__c]).InvoiceNumber__c );
         }
 	}
 
@@ -303,18 +305,20 @@ private class TestCreateInvoice {
 	*/
 	@isTest static void PRP_0002_FA6_2(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs = MockUpFactory.createPrograms('Default', 1);
+        programs[0].FieloPRP__DetailedInvoice__c = false;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         invoices[0].Status__c='Rejected';
         insert invoices;
         
-        invoices[0].Description__c = 'Testing Validation!';
+        String oldInvoiceNumber = invoices[0].InvoiceNumber__c;
+
+        invoices[0].InvoiceNumber__c = 'Teste';
 
         //when
         try{
@@ -322,20 +326,20 @@ private class TestCreateInvoice {
         }
         catch(Exception e){
         	//then
-        	System.assertEquals( null, ((Invoice__c)[SELECT Id,Description__c FROM Invoice__c]).Description__c );
+        	System.assertEquals( oldInvoiceNumber, ((Invoice__c)[SELECT Id,InvoiceNumber__c FROM Invoice__c]).InvoiceNumber__c );
         }
 	}
 
 	@isTest static void validateHasDetailsAccess(){
 		//Given
-        programs = RTMockUpFactory.createPrograms('Default', 1);
+        programs = MockUpFactory.createPrograms('Default', 1);
         programs[0].FieloPRP__DetailedInvoice__c = true;
         insert programs;
 
-        members = RTMockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
 
-        invoices = RTMockUpFactory.createInvoices(members[0].Id,1);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         
         insert invoices;
 
