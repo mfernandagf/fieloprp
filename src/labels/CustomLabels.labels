@@ -25,6 +25,30 @@
         <value>Only Invoices with status Pending are editable.t</value>
     </labels>
     <labels>
+        <fullName>HasDetailsNotEditable</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>HasDetailsNotEditable</shortDescription>
+        <value>Has Details is a system field, you can not update it.t</value>
+    </labels>
+    <labels>
+        <fullName>InvoiceDetailInsertDisabled</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>InvoiceDetailInsertDisabled</shortDescription>
+        <value>The hability to create an invoice item is disabled when the Program has the field Detailed Invoice set to false.t</value>
+    </labels>
+    <labels>
+        <fullName>QuantityGreaterThanZero</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>QuantityGreaterThanZero</shortDescription>
+        <value>Quantity must be greater than zerot</value>
+    </labels>
+    <labels>
         <fullName>QuantityZero</fullName>
         <categories>InvoiceItems.cls</categories>
         <language>en_US</language>
@@ -49,19 +73,19 @@
         <value>Total Price and Quantity can not be zerot</value>
     </labels>
     <labels>
+        <fullName>UnitPriceGreaterThanZero</fullName>
+        <categories>InvoiceItems.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>UnitPriceGreaterThanZero</shortDescription>
+        <value>Unit Price must be greater than zero.t</value>
+    </labels>
+    <labels>
         <fullName>UnitPriceZero</fullName>
         <categories>InvoiceItems.cls</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>UnitPriceZero</shortDescription>
         <value>Unit Price can not be zero.t</value>
-    </labels>
-    <labels>
-        <fullName>HasDetailsNotEditable</fullName>
-        <categories>Invoices.cls</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>HasDetailsNotEditable</shortDescription>
-        <value>Has Details is a system field, you can not update it.t</value>
     </labels>
 </CustomLabels>
