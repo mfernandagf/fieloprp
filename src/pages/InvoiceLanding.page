@@ -15,12 +15,12 @@
     <c:BackendHeaderRecord firstHeading="Invoices"
       secondHeading=""
       icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#campaign"
-      
       helpUrl="http://documentation.fielo.com/docs/incentives"
       
-      parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}"
-      
-    /><!--buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'promotionForm', 'CssClass': 'fielosf-create-promotion' }"-->
+      parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}">
+        <c:BackEndProgramSelector/>
+    </c:BackendHeaderRecord>
+    <!--buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'promotionForm', 'CssClass': 'fielosf-create-promotion' }"-->
 
     <!--tools="
       {'Label': 'Export', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLExport,null,[ retURL = $CurrentPage.url, type = 'incentives'])}', 'CssClass': '' },
