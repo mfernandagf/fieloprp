@@ -17,7 +17,7 @@ An Invoice is created
 2. The system receives the information for the invoice and for the invoice items
 3. The system creates an Invoice with some of its fields filled up with the received information
 4. The system sets the status Pending for the Invoice
-5. The system calls the use case [Create Invoice Item](UC-PRP-0001-Create an Invoice Item.md)
+5. The system calls the use case [Create Invoice Item](?name=UC-PRP-0001-Create an Invoice Item.md)
 6. The system updates Amount field with the summarize of the Total Price field of the related Invoice Items 
 7. The system saves the Invoice
 8. End of flow
