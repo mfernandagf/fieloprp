@@ -15,7 +15,7 @@
     <c:BackendHeaderRecord firstHeading="Invoices"
       secondHeading=""
       icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#campaign"
-      programSelector="true"
+      
       helpUrl="http://documentation.fielo.com/docs/incentives"
       
       parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}"
@@ -144,7 +144,7 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter','FieloIncentives'" packageResource="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter','FieloIncentives'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
 </body>
 </html>
 </apex:page>
