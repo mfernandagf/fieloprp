@@ -25,6 +25,10 @@
         <name>CustomTab</name>
     </types>
     <types>
+        <members>*</members>
+        <name>Layout</name>
+    </types>
+    <types>
         <members>FieloPLT__Program__c</members>
         <members>FieloPLT__Tracker__c</members>
         <members>FieloPLT__Transaction__c</members>
