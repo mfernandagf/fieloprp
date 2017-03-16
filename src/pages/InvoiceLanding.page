@@ -17,14 +17,21 @@
       icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#campaign"
       helpUrl="http://documentation.fielo.com/docs/incentives"
       
-      parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}">
-        <c:BackEndProgramSelector/>
+      parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}"
+      buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'invoiceForm' }">
+        <c:BackEndProgramSelector />
     </c:BackendHeaderRecord>
     <!--buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'promotionForm', 'CssClass': 'fielosf-create-promotion' }"-->
 
     <!--tools="
       {'Label': 'Export', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLExport,null,[ retURL = $CurrentPage.url, type = 'incentives'])}', 'CssClass': '' },
       {'Label': 'Import', 'CssClass': '', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLImport,null,[retURL = $CurrentPage.url, type = 'incentives'])}'}"-->
+
+    <c:Form formId="invoiceForm"
+      heading="New {!$ObjectType.Invoice__c.label}"
+      fieldset="{'Name': 'Information', 'Rows':[[{'Name':'FieloPRP__Member__c','Type':'input'}],[{'Name': 'Name', 'Type':'input'}],[{ 'Name': 'FieloPRP__Status__c', 'Type': 'picklist'},{'Name':'FieloPRP__Amount__c', 'Type':'input'}],[{'Name':'FieloPRP__Description__c','Type':'input'}],[{'Name':'FieloPRP__Date__c','Type':'input'}]]}"
+      sObjectName="FieloPRP__Invoice__c"
+    />
 
     <!-- Content -->
     <div class="fielosf-body">

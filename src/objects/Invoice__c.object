@@ -44,7 +44,9 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <content>InvoiceView</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
@@ -153,6 +155,10 @@
                 <fullName>Rejected</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Reverted</fullName>
+                <default>false</default>
+            </picklistValues>
             <restrictedPicklist>true</restrictedPicklist>
             <sorted>false</sorted>
         </picklist>
@@ -184,7 +190,7 @@
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>ValidateInvoiceStatus</fullName>
-        <active>true</active>
+        <active>false</active>
         <errorConditionFormula>AND(
  NOT(TEXT(Status__c)=&apos;Pending&apos;),
  OR(
@@ -223,7 +229,11 @@ PRIORVALUE(Member__c )!=Member__c
         <errorConditionFormula>AND(
   ISCHANGED(Status__c),
   NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Pending&apos;, TEXT(Status__c)=&apos;Approved&apos;)),
-  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Pending&apos;, TEXT(Status__c)=&apos;Rejected&apos;))
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Pending&apos;, TEXT(Status__c)=&apos;Rejected&apos;)),
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Approved&apos;, TEXT(Status__c)=&apos;Pending&apos;)),
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Approved&apos;, TEXT(Status__c)=&apos;Reverted&apos;)),
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Rejected&apos;, TEXT(Status__c)=&apos;Pending&apos;)),
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Reverted&apos;, TEXT(Status__c)=&apos;Pending&apos;))
 )</errorConditionFormula>
         <errorMessage>Status transition not allowed</errorMessage>
     </validationRules>
