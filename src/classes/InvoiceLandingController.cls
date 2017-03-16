@@ -25,6 +25,7 @@ public with sharing class InvoiceLandingController {
         options.add(new SelectOption('Pending', 'Pending'));
         options.add(new SelectOption('Approved', 'Approved'));
         options.add(new SelectOption('Rejected', 'Rejected'));
+        options.add(new SelectOption('Reverted', 'Reverted'));
         return options;
     }
 

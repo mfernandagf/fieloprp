@@ -19,7 +19,12 @@
       ,{ 'Name': 'FieloPRP__InvoiceNumber__c', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__InvoiceNumber__c'].label}'}
       ,{ 'Name': 'FieloPRP__Member__r.Name', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Member__c'].label}'}"
       buttons="{'Label': 'Edit', 'Type': 'Modal', 'Action': 'invoiceForm' }"
-    />
+    >
+      <!-- Temporary: Remove when edit button is ok -->
+      <a class="slds-button slds-button--neutral slds-float--right" href="{! IF(isBlank(record.Id), '', '/'+record.Id+'?nooverride=1') }">Switch to Classic</a>
+      <!-- Temporary -->
+
+    </c:BackendHeaderRecord>
     <!-- TODO:
       Fieldset: Member
       Acciones: Revert y deliver
