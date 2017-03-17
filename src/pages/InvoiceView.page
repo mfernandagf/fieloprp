@@ -17,7 +17,8 @@
       sObjectName="Invoice__c"
       fieldset="{ 'Name': 'FieloPRP__Status__c', 'Label':'{!$ObjectType.Invoice__c.fields['Status__c'].label}'}
       ,{ 'Name': 'FieloPRP__InvoiceNumber__c', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__InvoiceNumber__c'].label}'}
-      ,{ 'Name': 'FieloPRP__Member__r.Name', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Member__c'].label}'}"
+      ,{ 'Name': 'FieloPRP__Member__r.Name', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Member__c'].label}'}
+      ,{ 'Name': 'FieloPRP__Amount__c', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Amount__c'].label}'}"
       buttons="{'Label': 'Edit', 'Type': 'Modal', 'Action': 'invoiceForm' }"
     >
       <!-- Temporary: Remove when edit button is ok -->
@@ -50,6 +51,7 @@
       ,{ 'Name': 'FieloPRP__Quantity__c', 'Label':'{!$ObjectType.FieloPRP__InvoiceItem__c.fields['FieloPRP__Quantity__c'].label}', 'Type':'{!$ObjectType.FieloPRP__InvoiceItem__c.fields['FieloPRP__Quantity__c'].type}'}
       ,{'Name':'FieloPRP__TotalPrice__c','Label':'{!$ObjectType.FieloPRP__InvoiceItem__c.fields['FieloPRP__TotalPrice__c'].label}', 'Type':'{!$ObjectType.FieloPRP__InvoiceItem__c.fields['FieloPRP__TotalPrice__c'].type}'}"
       actions=""
+      rendered="{!record.HasDetails__c}"
     />
     <!--
     <c:RelatedList heading="{! $ObjectType.Attachment.labelPlural}"
@@ -61,6 +63,132 @@
       actions=""
     />
     -->
+
+    <article class="slds-card slds-m-around--medium">
+      <div class="slds-card__header slds-grid">
+        <header class="slds-media slds-media--center slds-has-flexi-truncate">
+          <div class="slds-media__figure">
+            <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+              <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                <use xlink:href="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#image"></use>
+              </svg>
+            </span>
+          </div>
+          <div class="slds-media__body">
+            <h2>
+                <span class="slds-text-heading--small">Images ({!images.size})</span>
+            </h2>
+          </div>
+        </header>
+      </div>
+      <div class="slds-card__body">
+      <ul class="slds-card__body--inner slds-grid slds-wrap slds-grid--pull-padded">
+        <apex:repeat value="{!images}" var="image">
+          <li class="slds-p-around--small slds-size--1-of-3 slds-medium-size--1-of-4">
+            <figure class="slds-image slds-image--card">
+              <a href="javascript:void(0);" class="slds-image__crop slds-image__crop--16-by-9">
+                <img src="{!URLFOR($Action.Attachment.Download, image.Id)}" alt="{!image.Name}" onclick="openImage('{!URLFOR($Action.Attachment.Download, image.Id)}','{!image.Name}');"/>
+              </a>
+              <div class="slds-button-group slds-image__actions" role="group">
+                <button class="slds-button slds-button--icon-border-filled" title="Download" onclick="downloadURI('{!URLFOR($Action.Attachment.Download, image.Id)}','{!image.Name}');">
+                  <svg class="slds-button__icon" aria-hidden="true">
+                    <use xlink:href="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#download"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Download</span>
+                </button>
+                <!--
+                <button class="slds-button slds-button--icon-border-filled" title="More Actions">
+                  <svg class="slds-button__icon" aria-hidden="true">
+                    <use xlink:href="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#down"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Settings</span>
+                </button>
+                -->
+              </div>
+              <figcaption class="slds-image__title slds-image__title--card">
+                <span class="slds-icon_container slds-m-right--x-small" title="image">
+                  <svg class="slds-icon slds-icon--x-small" aria-hidden="true">
+                    <use xlink:href="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/doctype-sprite/svg/symbols.svg#image"></use>
+                  </svg>
+                  <span class="slds-assistive-text">{!image.Name}</span>
+                </span>
+                <span class="slds-image__text slds-truncate" title="Image Title">{!image.Name}</span>
+              </figcaption>
+            </figure>
+          </li>
+        </apex:repeat>
+      </ul>
+
+        <!--
+        <apex:repeat value="{!images}" var="image">
+          <img style="max-width:100%; max-height:500px; margin:auto" class="fielosf-recordImg " src="{!URLFOR($Action.Attachment.Download, image.Id)}" onclick="openImage('{!URLFOR($Action.Attachment.Download, image.Id)}','{!image.Name}');"/>
+        </apex:repeat>
+        -->
+      </div>
+    </article>
+
+    
+
+    <div id="modalInvoiceImage" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal">
+      <div class="slds-modal__container">
+        <div class="slds-modal__header">
+          <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="closeModal();">
+            <svg class="slds-button__icon slds-button__icon--large" aria-hidden="true">
+                <use xlink:href="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 id="header43" class="slds-text-heading--medium">Modal Header</h2>
+        </div>
+        <div id="imgContainer" class="slds-modal__content slds-p-around--medium">
+          
+        </div>
+        <!--<div class="slds-modal__footer">
+          <button class="slds-button slds-button--neutral">Cancel</button>
+          <button class="slds-button slds-button--brand">Save</button>
+        </div>-->
+      </div>
+    </div>
+    <div id="backDropItem" class=""></div>
+
+    <script>
+      function openImage(imgUrl,imgName){
+        //clean existing image
+        var imgContainer = document.getElementById('imgContainer');        
+        while(imgContainer.hasChildNodes()){
+          imgContainer.removeChild(imgContainer.firstChild);
+        }
+
+        //create image element
+        var imgElement = document.createElement('img');
+        imgElement.setAttribute('id', 'openedImg');
+        imgElement.setAttribute('src', imgUrl);
+        imgElement.setAttribute('class', 'slds-align--absolute-center');
+        imgElement.setAttribute('style', 'max-width:100%; max-height:100%; margin:auto; ');
+
+        imgContainer.appendChild(imgElement);
+
+        document.getElementById('modalInvoiceImage').className = 'slds-modal slds-modal--large slds-fade-in-open';
+        document.getElementById('backDropItem').className = 'slds-backdrop slds-backdrop--open';
+        document.getElementById('header43').innerHTML = imgName;        
+      }
+
+      function closeModal(){
+        document.getElementById('modalInvoiceImage').className = 'slds-modal';
+        document.getElementById('backDropItem').className = 'slds-backdrop';         
+      }
+
+      function downloadURI(uri, name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+      }
+    </script>
+
   </div>
   <c:BackendFooter helpers="'FieloPaginator', 'FieloRelatedRecords'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
 </body>
