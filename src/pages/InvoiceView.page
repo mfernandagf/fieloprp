@@ -18,8 +18,9 @@
       fieldset="{ 'Name': 'FieloPRP__Status__c', 'Label':'{!$ObjectType.Invoice__c.fields['Status__c'].label}'}
       ,{ 'Name': 'FieloPRP__InvoiceNumber__c', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__InvoiceNumber__c'].label}'}
       ,{ 'Name': 'FieloPRP__Member__r.Name', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Member__c'].label}'}
-      ,{ 'Name': 'FieloPRP__Amount__c', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Amount__c'].label}'}"
-      buttons="{'Label': 'Edit', 'Type': 'Modal', 'Action': 'invoiceForm' }"
+      ,{ 'Name': 'FieloPRP__Amount__c', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Amount__c'].label}'}
+      ,{ 'Name': 'FieloPRP__Date__c', 'Label':'{!$ObjectType.Invoice__c.fields['FieloPRP__Date__c'].label}'}"
+      buttons="{!buttonString}"
     >
       <!-- Temporary: Remove when edit button is ok -->
       <a class="slds-button slds-button--neutral slds-float--right" href="{! IF(isBlank(record.Id), '', '/'+record.Id+'?nooverride=1') }">Switch to Classic</a>

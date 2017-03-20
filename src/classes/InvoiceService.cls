@@ -13,4 +13,18 @@ public with sharing class InvoiceService {
     	if(!idsToRevert.isEmpty())
     		FieloPLT.TransactionService.revertTransactions( idsToRevert );
     }
+
+    public static void updateInvoiceStatus(Set<Id> invoiceIds, String status){
+        List<Invoice__c> invoices = new InvoicesSelector().selectById(invoiceIds);
+        if(!invoices.isEmpty()){
+            for(Invoice__c invoice: invoices){
+                invoice.Status__c = status;
+            }
+
+            SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Invoice__c.SObjectType});
+            uow.registerDirty(invoices);
+            uow.commitWork();
+        }
+            
+    }
 }
