@@ -44,7 +44,6 @@ The present use case describes how the system shows the Invoice details and the 
 ##### 2. The administrator selects an Invoice which status is Approved belonging to a Program that considers Invoice Items (step 4 of basic flow)
    1. The administrator selects one of the Invoices of the selected Program, which status is Approved
    2. The system displays the Invoice details page, containing:
-        - Edit button
         - Revert button
         - Review button
         - Fieldset of Invoice fields
@@ -55,7 +54,6 @@ The present use case describes how the system shows the Invoice details and the 
 ##### 3. The administrator selects an Invoice which status is Approved belonging to a Program that does not consider Invoice Items (step 2 of alternative flow 1)
    1. The administrator selects one of the Invoices of the selected Program, which status is Approved
    2. The system displays the Invoice details page, containing:
-        - Edit button
         - Revert button
         - Review button
         - Fieldset of Invoice fields
@@ -65,7 +63,6 @@ The present use case describes how the system shows the Invoice details and the 
 ##### 4. The administrator selects an Invoice which status is Rejected belonging to a Program that considers Invoice Items (step 4 of basic flow)
    1. The administrator selects one of the Invoices of the selected Program, which status is Rejected
    2. The system displays the Invoice details page, containing:
-        - Edit button
         - Review button
         - Fieldset of Invoice fields
         - Related list of invoice items
@@ -75,7 +72,6 @@ The present use case describes how the system shows the Invoice details and the 
 ##### 5. The administrator selects an Invoice which status is Rejected belonging to a Program that does not consider Invoice Items (step 2 of alternative flow 1)
    1. The administrator selects one of the Invoices of the selected Program, which status is Rejected
    2. The system displays the Invoice details page, containing:
-        - Edit button
         - Review button
         - Fieldset of Invoice fields
         - Images of the invoice
@@ -84,7 +80,6 @@ The present use case describes how the system shows the Invoice details and the 
 ##### 6. The administrator selects an Invoice which status is Reverted belonging to a Program that considers Invoice Items (step 4 of basic flow)
    1. The administrator selects one of the Invoices of the selected Program, which status is Reverted
    2. The system displays the Invoice details page, containing:
-        - Edit button
         - Review button
         - Fieldset of Invoice fields
         - Related list of invoice items
@@ -94,7 +89,6 @@ The present use case describes how the system shows the Invoice details and the 
 ##### 7. The administrator selects an Invoice which status is Reverted belonging to a Program that does not consider Invoice Items (step 2 of alternative flow 1)
    1. The administrator selects one of the Invoices of the selected Program, which status is Reverted
    2. The system displays the Invoice details page, containing:
-        - Edit button
         - Review button
         - Fieldset of Invoice fields
         - Images of the invoice
@@ -130,6 +124,6 @@ The present use case describes how the system shows the Invoice details and the 
    2. The system calls the alternative flow 5 of use case [Change Invoice Status](?name=UC-PRP-0004)
    3. End of flow
    
-##### 14. The administrator presses the Edit Button (step 5 of basic flow, step 3 of alternative flow 1 and step 2 of alternative flows 3 to 7)
+##### 14. The administrator presses the Edit Button (step 5 of basic flow and step 3 of alternative flow 1)
    1. The system displays the Invoice Edit form with all its information already loaded
    2. End of flow  
