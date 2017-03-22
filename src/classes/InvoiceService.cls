@@ -27,4 +27,20 @@ public with sharing class InvoiceService {
         }
             
     }
+
+    public static void createInvoice(List<Invoice__c> invoices){
+        SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType});
+        for(Invoice__c invoice: invoices){
+            uow.registerNew(invoice);
+            for(InvoiceItem__c item: invoice.InvoiceItems__r){
+                uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
+            }
+        }
+
+        try {
+           uow.commitWork();
+        }catch(DMLException e){
+            throw e;
+        }
+    }
 }

@@ -72,5 +72,58 @@ public class InvoicesSelector extends SObjectSelector{
                     getOrderBy(),
                     getLimitCondition(),
                     getOffsetCondition() } ));
-    } 
+    }
+
+    public List<Invoice__c> selectByMemberIdAndInvoiceIdBetweenDates(Set<Id> invoiceIds, Id memberId, Date fromdate, Date todate){
+        String query = 'SELECT {0} ' + ' FROM {1} ';
+
+        List<String> whereConditions = new List<String>();
+        if (memberId != null) {
+            whereConditions.add(' Member__c =: memberId ');
+        }
+        if( !invoiceIds.isEmpty() ) {
+            whereConditions.add(' Id IN : invoiceIds ');
+        }
+        if(fromdate!=null){
+            whereConditions.add(
+                'FieloPRP__Date__c >= ' + String.format(
+                    '{0}-{1}-{2}'
+                    ,new List<String>{
+                            String.valueOf(fromdate.year()),
+                            ('0'+String.valueOf(fromdate.month())).right(2),
+                            ('0'+String.valueOf(fromdate.day())).right(2)
+                        }
+                    )
+            );
+        }
+        if(todate!=null){
+            whereConditions.add(
+                'FieloPRP__Date__c <= ' + String.format(
+                    '{0}-{1}-{2}'
+                    ,new List<String>{
+                            String.valueOf(todate.year()),
+                            ('0'+String.valueOf(todate.month())).right(2),
+                            ('0'+String.valueOf(todate.day())).right(2)
+                        }
+                    )
+            );
+        }
+        if(!whereConditions.isEmpty()){
+            query += 'WHERE ' + String.join(whereConditions, ' AND ');
+        }
+        
+        query += ' order by {2} {3} {4}';
+
+        query = String.format(query,
+                new List<String> {
+                    getFieldListString(),
+                    getSObjectName(),
+                    getOrderBy(),
+                    getLimitCondition(),
+                    getOffsetCondition() } );
+
+        System.debug('query'+ query);
+        
+        return (List<Invoice__c>) Database.query(query);
+    }
 }

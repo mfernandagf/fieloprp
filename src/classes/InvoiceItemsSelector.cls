@@ -39,4 +39,29 @@ public class InvoiceItemsSelector extends SObjectSelector{
                     getSObjectName(),
                     getOrderBy() } ));
     }
+
+    public List<InvoiceItem__c> selectByMemberIdAndInvoiceId(Set<Id> invoiceIds, Id memberId){
+        String query = 'SELECT {0} ' + ' FROM {1} ';
+
+        List<String> whereConditions = new List<String>();
+        if (memberId != null) {
+            whereConditions.add(' Invoice__r.Member__c =: memberId ');
+        }
+        if( !invoiceIds.isEmpty() ) {
+            whereConditions.add(' Invoice__c IN : invoiceIds ');
+        }
+        if(!whereConditions.isEmpty()){
+            query += 'WHERE ' + String.join(whereConditions, 'AND');
+        }
+        
+        query += 'order by {2} {3} {4}';        
+        
+        return (List<InvoiceItem__c>) Database.query(String.format(query,
+                new List<String> {
+                    getFieldListString(),
+                    getSObjectName(),
+                    getOrderBy(),
+                    getLimitCondition(),
+                    getOffsetCondition() } ));
+    }
 }
