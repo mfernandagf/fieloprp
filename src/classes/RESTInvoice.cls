@@ -213,7 +213,11 @@ global with sharing class RESTInvoice {
             } else {
                 response = new List<Map<String,Object>>{
                     new Map<String,Object>{
-                        'statusCode' => 200
+                        'statusCode' => 200,
+                        'response' => new Map<String,String>{
+                            'errorcode' => 'RECORD_NOT_FOUND',
+                            'message' => 'No invoice found'
+                        }
                     }
                 };
                 RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
@@ -282,7 +286,11 @@ global with sharing class RESTInvoice {
             } else {
                 response = new List<Map<String,Object>>{
                     new Map<String,Object>{
-                        'statusCode' => 200
+                        'statusCode' => 200,
+                        'response' => new Map<String,String>{
+                            'errorcode' => 'RECORD_NOT_FOUND',
+                            'message' => 'No invoice items found'
+                        }
                     }
                 };
                 RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
