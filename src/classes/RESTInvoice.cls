@@ -25,70 +25,107 @@ global with sharing class RESTInvoice {
      * @endcode
      */
     global static void getInvoices(){
-        
-        if( RestContext.request.requestUri.contains('/invoices/') && RestContext.request.requestUri.contains('/invoiceItems') ){
-            //Get Related List
-            getRelatedList();
-        } else if( RestContext.request.requestUri.contains('/invoices/') && !RestContext.request.requestUri.contains('/invoiceItems') ){
-            //Get Detail
-            getSingleRecord();
-        } else {
-            //Get List
-            getList();
+        RestAPIResponse response = new RestAPIResponse();
+        RestResponse resp = RestContext.response;
+        try{
+            checkPermissions();
+            if( RestContext.request.requestUri.contains('/invoices/') && RestContext.request.requestUri.contains('/invoiceItems') ){
+                //Get Related List
+                getRelatedList();
+            } else if( RestContext.request.requestUri.contains('/invoices/') && !RestContext.request.requestUri.contains('/invoiceItems') ){
+                //Get Detail
+                getSingleRecord();
+            } else {
+                //Get List
+                getList();
+            }
         }
+        catch(Exception e){
+            response.message = e.getMessage();
+            response.errorcode = 'FORBIDDEN';
+            resp.statusCode = 403;
+            resp.responseBody = Blob.valueOf( JSON.serialize(response) );
+        }
+        
+    }
+
+    global class RESTInvoiceWrappler{
+        public Invoice__c invoice;
+        public List<InvoiceItem__c> invoiceItems;
     }
 
     @HttpPost
     global static void createInvoice(){
-        //MemberId
-        String requestUri = RestContext.request.requestUri;
-        String memberId = requestUri.substring( requestUri.indexOf('/members/')  , requestUri.length() );
-        memberId = memberId.replace('/members/', '');
-        memberId = memberId.replace('/invoices', '');
-
-        List<Map<String,Object>> response;
-        RestRequest req = RestContext.request;//.requestBody;
+        RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
-        resp.addHeader('Accept', 'application/json');
-        resp.addHeader('Content-Type', 'application/json');
-
+        RestAPIResponse response = new RestAPIResponse();
         try{
-            if( MemberService.isMemberBlocked(memberId) == true ){
-                response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 404,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'FIELO_ACCOUNT_BLOCKED',
-                            'message' => Label.ErrorFieloAccountBlocked
+            checkPermissions();
+            try{
+                //MemberId
+                String requestUri = RestContext.request.requestUri;
+                String memberId = requestUri.substring( requestUri.indexOf('/members/')  , requestUri.length() );
+                memberId = memberId.replace('/members/', '');
+                memberId = memberId.replace('/invoices', '');
+
+                resp.addHeader('Accept', 'application/json');
+                resp.addHeader('Content-Type', 'application/json');
+
+            
+                if( MemberService.isMemberBlocked(memberId) == true ){
+                    response.message = Label.ErrorFieloAccountBlocked;
+                    response.errorcode = 'FIELO_ACCOUNT_BLOCKED';
+                    resp.statusCode = 404;
+                    resp.responseBody = Blob.valueOf( JSON.serialize(response) );
+                    RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+                } else {
+                    List<InvoiceService.InvoiceWrappler> invoiceWrapperList = new List<InvoiceService.InvoiceWrappler>();
+
+                    List<RESTInvoiceWrappler> invoices = (List<RESTInvoiceWrappler>) JSON.deserialize(RestContext.request.requestBody.toString(), List<RESTInvoiceWrappler>.class);
+
+                    InvoiceService.InvoiceWrappler invoiceWrappler;
+
+                    for(RESTInvoiceWrappler riw: invoices){
+                        invoiceWrappler = new InvoiceService.InvoiceWrappler();
+                        invoiceWrappler.invoice = riw.invoice;
+                        invoiceWrappler.invoice.Member__c = memberId;
+
+                        if(riw.invoiceItems!=null){
+                            if(riw.invoiceItems.size()>0){
+                                invoiceWrappler.invoiceItems = new List<InvoiceItem__c>();
+                                for(InvoiceItem__c item: riw.invoiceItems){
+                                    invoiceWrappler.invoiceItems.add(item);
+                                }
+                            }
                         }
+                        invoiceWrapperList.add(invoiceWrappler);
                     }
-                };
-                RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
-            } else {
-                List<Invoice__c> invoices = (List<Invoice__c>) System.JSON.deserialize( req.requestBody.toString(), List<Invoice__c>.class);
 
-                for(Invoice__c invoice:invoices){
-                    invoice.Member__c = memberId;
+                    List<Invoice__c> createdInvoices = InvoiceService.createInvoice(invoiceWrapperList);
+
+                    resp.statusCode = 201;
+                    resp.responseBody = Blob.valueOf( JSON.serialize(createdInvoices) );
                 }
-
-                InvoiceService.createInvoice(invoices);
-
-                resp.statusCode = 201;
-                resp.responseBody = Blob.valueOf( JSON.serialize(invoices) );
+            }
+            catch(Exception e){
+                response.message = e.getMessage();
+                response.errorcode = 'EXCEPTION';
+                resp.statusCode = 404;
+                resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
             }
         }
         catch(Exception e){
-            response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 404,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'EXCEPTION',
-                            'message' => e.getMessage()
-                        }
-                    }
-                };
-            RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+            response.message = e.getMessage();
+            response.errorcode = 'FORBIDDEN';
+            resp.statusCode = 403;
+            resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
         }
+    }
+
+    private static void checkPermissions(){
+        if( !Invoice__c.sObjectType.getDescribe().isAccessible() )
+            throw new SObjectDomain.DomainException(
+                'Permission to access ' + Invoice__c.sObjectType.getDescribe().getName() + ' denied.');
     }
 
     private static void getSingleRecord() {
@@ -108,22 +145,16 @@ global with sharing class RESTInvoice {
             fields.add((s));
         }
 
-        List<Map<String,Object>> response;
+        RestAPIResponse response = new RestAPIResponse();
         RestResponse resp = RestContext.response;
         resp.addHeader('Accept', 'application/json');
         resp.addHeader('Content-Type', 'application/json');
 
         if( MemberService.isMemberBlocked(memberId) == true ){
-            response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 404,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'FIELO_ACCOUNT_BLOCKED',
-                            'message' => Label.ErrorFieloAccountBlocked
-                        }
-                    }
-                };
-            RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+            response.message = Label.ErrorFieloAccountBlocked;
+            response.errorcode = 'FIELO_ACCOUNT_BLOCKED';
+            resp.statusCode = 404;
+            resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
         } else {
             InvoicesSelector selector = new InvoicesSelector(fields);
 
@@ -137,16 +168,10 @@ global with sharing class RESTInvoice {
             if( !invoices.isEmpty() ){
                 RestContext.response.responseBody = Blob.valueOf( JSON.serialize( invoices ) );
             } else {
-                response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 200,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'RECORD_NOT_FOUND',
-                            'message' => 'Record not found'
-                        }
-                    }
-                };
-                RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+                response.message = 'Record not found';
+                response.errorcode = 'RECORD_NOT_FOUND';
+                resp.statusCode = 200;
+                resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
             }
         }
     }
@@ -172,22 +197,16 @@ global with sharing class RESTInvoice {
         String fromdate = RestContext.request.params.get('fromdate');
         String todate = RestContext.request.params.get('todate');
 
-        List<Map<String,Object>> response;
+        RestAPIResponse response = new RestAPIResponse();
         RestResponse resp = RestContext.response;
         resp.addHeader('Accept', 'application/json');
         resp.addHeader('Content-Type', 'application/json');
 
         if( MemberService.isMemberBlocked(memberId) == true ){
-            response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 404,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'FIELO_ACCOUNT_BLOCKED',
-                            'message' => Label.ErrorFieloAccountBlocked
-                        }
-                    }
-                };
-            RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+            response.message = Label.ErrorFieloAccountBlocked;
+            response.errorcode = 'FIELO_ACCOUNT_BLOCKED';
+            resp.statusCode = 404;
+            resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
         } else {
             InvoicesSelector selector = new InvoicesSelector(fields);
             
@@ -211,16 +230,10 @@ global with sharing class RESTInvoice {
             if( !invoices.isEmpty() ){
                 RestContext.response.responseBody = Blob.valueOf( JSON.serialize( invoices ) );
             } else {
-                response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 200,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'RECORD_NOT_FOUND',
-                            'message' => 'No invoice found'
-                        }
-                    }
-                };
-                RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+                response.message = 'No invoice found';
+                response.errorcode = 'RECORD_NOT_FOUND';
+                resp.statusCode = 200;
+                resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
             }
         }
     }
@@ -247,22 +260,16 @@ global with sharing class RESTInvoice {
         String queryLimit = RestContext.request.params.get('limit');
         String orderby = RestContext.request.params.get('orderby');
 
-        List<Map<String,Object>> response;
+        RestAPIResponse response = new RestAPIResponse();
         RestResponse resp = RestContext.response;
         resp.addHeader('Accept', 'application/json');
         resp.addHeader('Content-Type', 'application/json');
 
         if( MemberService.isMemberBlocked(memberId) == true ){
-            response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 404,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'FIELO_ACCOUNT_BLOCKED',
-                            'message' => Label.ErrorFieloAccountBlocked
-                        }
-                    }
-                };
-            RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+            response.message = Label.ErrorFieloAccountBlocked;
+            response.errorcode = 'FIELO_ACCOUNT_BLOCKED';
+            resp.statusCode = 404;
+            resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
         } else {
             InvoiceItemsSelector selector = new InvoiceItemsSelector(fields);
             
@@ -284,16 +291,10 @@ global with sharing class RESTInvoice {
             if( !items.isEmpty() ){
                 RestContext.response.responseBody = Blob.valueOf( JSON.serialize( items ) );
             } else {
-                response = new List<Map<String,Object>>{
-                    new Map<String,Object>{
-                        'statusCode' => 200,
-                        'response' => new Map<String,String>{
-                            'errorcode' => 'RECORD_NOT_FOUND',
-                            'message' => 'No invoice items found'
-                        }
-                    }
-                };
-                RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+                response.message = 'No invoice items found';
+                response.errorcode = 'RECORD_NOT_FOUND';
+                resp.statusCode = 200;
+                resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
             }
         }
     }

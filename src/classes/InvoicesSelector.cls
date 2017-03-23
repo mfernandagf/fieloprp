@@ -75,6 +75,7 @@ public class InvoicesSelector extends SObjectSelector{
     }
 
     public List<Invoice__c> selectByMemberIdAndInvoiceIdBetweenDates(Set<Id> invoiceIds, Id memberId, Date fromdate, Date todate){
+        assertIsAccessible();
         String query = 'SELECT {0} ' + ' FROM {1} ';
 
         List<String> whereConditions = new List<String>();

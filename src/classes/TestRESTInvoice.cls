@@ -8,8 +8,13 @@ public class TestRESTInvoice {
 
     private static String getFakeId(Schema.SObjectType sot){
         String result = String.valueOf(s_num++);
-        return sot.getDescribe().getKeyPrefix() + 
+        return sot.getDescribe().getKeyPrefix() +
         '0'.repeat(12-result.length()) + result;
+    }
+
+    public class RestAPIResponse {    
+        public String errorcode {get;set;}
+        public String message {get;set;}
     }
 
 	@isTest
@@ -46,7 +51,7 @@ public class TestRESTInvoice {
         RestResponse res = new RestResponse();
 
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices';
-        
+
         req.params.put('fields','Id, Name, FieloPRP__InvoiceNumber__c, FieloPRP__Date__c, FieloPRP__Member__c');
         req.params.put('offset','0');
         req.params.put('limit','2');
@@ -78,7 +83,7 @@ public class TestRESTInvoice {
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
-        
+
         members[0].FieloPLT__Status__c='Blocked';
         update members;
 
@@ -114,14 +119,11 @@ public class TestRESTInvoice {
             RESTInvoice.getInvoices();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
-
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
-
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
+        System.assertEquals(404, RestContext.response.statusCode );
         
-        System.assertEquals('404',statusCode);
-        System.assertEquals('FIELO_ACCOUNT_BLOCKED',errorCode);
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+
+        System.assertEquals('FIELO_ACCOUNT_BLOCKED', String.valueOf(responseBody.get('errorcode') ) );
     }
 
     @isTest
@@ -217,14 +219,11 @@ public class TestRESTInvoice {
             RESTInvoice.getInvoices();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
-
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
-
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
+        System.assertEquals(404, RestContext.response.statusCode );
         
-        System.assertEquals('404',statusCode);
-        System.assertEquals('FIELO_ACCOUNT_BLOCKED',errorCode);
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+
+        System.assertEquals('FIELO_ACCOUNT_BLOCKED', String.valueOf(responseBody.get('errorcode') ) );
     }
 
     @isTest
@@ -271,14 +270,11 @@ public class TestRESTInvoice {
             RESTInvoice.getInvoices();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
-
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
-
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
+        System.assertEquals(200, RestContext.response.statusCode );
         
-        System.assertEquals('200',statusCode);
-        System.assertEquals('RECORD_NOT_FOUND',errorCode);
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+
+        System.assertEquals('RECORD_NOT_FOUND', String.valueOf(responseBody.get('errorcode') ) );
     }
 
     @isTest
@@ -315,18 +311,18 @@ public class TestRESTInvoice {
         RestResponse res = new RestResponse();
 
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices';
-        
+
         req.params.put('fields','Id, Name, FieloPRP__InvoiceNumber__c, FieloPRP__Date__c, FieloPRP__Member__c');
         req.params.put('offset','0');
         req.params.put('limit','2');
         req.params.put('orderby','FieloPRP__Date__c');
-        
+
         //no record will return: wrong date range to cover all the method code
         req.params.put('fromdate','2017-02-01'); // YYYY-MM-DD - Supported
         req.params.put('todate','01/05/2017'); // MM/DD/YYYY - Supported
 
         req.httpMethod = 'GET';
-        
+
         // When
         RestContext.request = req;
         RestContext.response = res;
@@ -335,14 +331,11 @@ public class TestRESTInvoice {
             RESTInvoice.getInvoices();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
-
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
-
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
+        System.assertEquals(200, RestContext.response.statusCode );
         
-        System.assertEquals('200',statusCode);
-        System.assertEquals('RECORD_NOT_FOUND',errorCode);
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+
+        System.assertEquals('RECORD_NOT_FOUND', String.valueOf(responseBody.get('errorcode') ) );
     }
 
     @isTest
@@ -379,7 +372,7 @@ public class TestRESTInvoice {
         RestResponse res = new RestResponse();
 
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices/'+invoices[0].Id+'/invoiceItems';
-        
+
         req.params.put('fields','Id, Name, FieloPRP__Quantity__c, FieloPRP__UnitPrice__c, FieloPRP__Invoice__c');
         req.params.put('offset','0');
         req.params.put('limit','2');
@@ -440,7 +433,7 @@ public class TestRESTInvoice {
         RestResponse res = new RestResponse();
 
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices/'+invoices[0].Id+'/invoiceItems';
-        
+
         req.params.put('fields','Id, Name, FieloPRP__Quantity__c, FieloPRP__UnitPrice__c, FieloPRP__Invoice__c');
         req.params.put('offset','0');
         req.params.put('limit','2');
@@ -458,14 +451,11 @@ public class TestRESTInvoice {
             RESTInvoice.getInvoices();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
-
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
-
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
+        System.assertEquals(404, RestContext.response.statusCode );
         
-        System.assertEquals('404',statusCode);
-        System.assertEquals('FIELO_ACCOUNT_BLOCKED',errorCode);
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+
+        System.assertEquals('FIELO_ACCOUNT_BLOCKED', String.valueOf(responseBody.get('errorcode') ) );
     }
 
     @isTest
@@ -503,7 +493,7 @@ public class TestRESTInvoice {
 
         //Using the second Invoice Id to make the method returns no invoice item at all
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices/'+invoices[1].Id+'/invoiceItems';
-        
+
         req.params.put('fields','Id, Name, FieloPRP__Quantity__c, FieloPRP__UnitPrice__c, FieloPRP__Invoice__c');
         req.params.put('offset','0');
         req.params.put('limit','2');
@@ -521,14 +511,11 @@ public class TestRESTInvoice {
             RESTInvoice.getInvoices();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
-
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
-
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
+        System.assertEquals(200, RestContext.response.statusCode );
         
-        System.assertEquals('200',statusCode);
-        System.assertEquals('RECORD_NOT_FOUND',errorCode);
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+
+        System.assertEquals('RECORD_NOT_FOUND', String.valueOf(responseBody.get('errorcode') ) );
     }
 
     @isTest
@@ -545,8 +532,6 @@ public class TestRESTInvoice {
         invoices[0].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
         invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
 
-        insert invoices;
-
         items = new List<InvoiceItem__c>{
             new InvoiceItem__c(
                 Invoice__c = invoices[0].Id,
@@ -559,28 +544,33 @@ public class TestRESTInvoice {
                 UnitPrice__c = 50.0
             )
         };
-        insert items;
 
-        List<Invoice__c> newInvoices = [SELECT Id, Name, FieloPRP__Date__c, FieloPRP__Description__c, 
-            (SELECT Id, Name, FieloPRP__Quantity__c, FieloPRP__UnitPrice__c FROM InvoiceItems__r ) FROM FieloPRP__Invoice__c LIMIT 2];
+        List<RESTInvoice.RESTInvoiceWrappler> restInvoiceWrapplerList = new List<RESTInvoice.RESTInvoiceWrappler>();
+        
+        RESTInvoice.RESTInvoiceWrappler riw;
 
-        for(Invoice__c invoice: newInvoices){
-            invoice.Id = null;
-            for(InvoiceItem__c item: invoice.InvoiceItems__r){
-                item.Id=null;
-            }
-        }
+        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw.invoice = invoices[0];
+        riw.invoiceItems = new List<InvoiceItem__c>();
+        riw.invoiceItems.addAll(items);
+
+        restInvoiceWrapplerList.add(riw);
+
+        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw.invoice = invoices[1];
+
+        restInvoiceWrapplerList.add(riw);
 
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
 
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices';
-        
+
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(newInvoices));
-        // When
+        req.requestBody = Blob.valueOf(JSON.serialize(restInvoiceWrapplerList));
 
+        // When
         RestContext.request = req;
         RestContext.response = res;
 
@@ -593,7 +583,7 @@ public class TestRESTInvoice {
         System.assert( svcInvoices[0].Id != null );
         System.assert( svcInvoices[1].Id != null );
 
-        System.assert( svcInvoices[0].InvoiceItems__r.size()>0 || svcInvoices[1].InvoiceItems__r.size()>0 );
+        System.assert( [SELECT Id, Name From FieloPRP__InvoiceItem__c WHERE Invoice__c in :svcInvoices].size()>0 );
     }
 
     @isTest
@@ -614,8 +604,6 @@ public class TestRESTInvoice {
         invoices[0].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
         invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
 
-        insert invoices;
-
         items = new List<InvoiceItem__c>{
             new InvoiceItem__c(
                 Invoice__c = invoices[0].Id,
@@ -628,26 +616,31 @@ public class TestRESTInvoice {
                 UnitPrice__c = 50.0
             )
         };
-        insert items;
 
-        List<Invoice__c> newInvoices = [SELECT Id, Name, FieloPRP__Date__c, FieloPRP__Description__c, 
-            (SELECT Id, Name, FieloPRP__Quantity__c, FieloPRP__UnitPrice__c FROM InvoiceItems__r ) FROM FieloPRP__Invoice__c LIMIT 2];
+        List<RESTInvoice.RESTInvoiceWrappler> restInvoiceWrapplerList = new List<RESTInvoice.RESTInvoiceWrappler>();
+        
+        RESTInvoice.RESTInvoiceWrappler riw;
 
-        for(Invoice__c invoice: newInvoices){
-            invoice.Id = null;
-            for(InvoiceItem__c item: invoice.InvoiceItems__r){
-                item.Id=null;
-            }
-        }
+        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw.invoice = invoices[0];
+        riw.invoiceItems = new List<InvoiceItem__c>();
+        riw.invoiceItems.addAll(items);
+
+        restInvoiceWrapplerList.add(riw);
+
+        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw.invoice = invoices[1];
+
+        restInvoiceWrapplerList.add(riw);
 
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
 
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices';
-        
+
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(newInvoices));
+        req.requestBody = Blob.valueOf(JSON.serialize(restInvoiceWrapplerList));
         // When
 
         RestContext.request = req;
@@ -657,14 +650,11 @@ public class TestRESTInvoice {
             RESTInvoice.createInvoice();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
-
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
-
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
+        System.assertEquals(404, RestContext.response.statusCode );
         
-        System.assertEquals('404',statusCode);
-        System.assertEquals('FIELO_ACCOUNT_BLOCKED',errorCode);
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+
+        System.assertEquals('FIELO_ACCOUNT_BLOCKED', String.valueOf(responseBody.get('errorcode') ) );
     }
 
     @isTest
@@ -681,8 +671,6 @@ public class TestRESTInvoice {
         invoices[0].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
         invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
 
-        insert invoices;
-
         items = new List<InvoiceItem__c>{
             new InvoiceItem__c(
                 Invoice__c = invoices[0].Id,
@@ -695,29 +683,35 @@ public class TestRESTInvoice {
                 UnitPrice__c = 50.0
             )
         };
-        insert items;
 
+        List<RESTInvoice.RESTInvoiceWrappler> restInvoiceWrapplerList = new List<RESTInvoice.RESTInvoiceWrappler>();
+        
+        RESTInvoice.RESTInvoiceWrappler riw;
+
+        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw.invoice = invoices[0];
+        riw.invoiceItems = new List<InvoiceItem__c>();
+        riw.invoiceItems.addAll(items);
+
+        restInvoiceWrapplerList.add(riw);
+
+        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw.invoice = invoices[1];
+
+        restInvoiceWrapplerList.add(riw);
+
+        //Cause Exception
         programs[0].FieloPRP__DetailedInvoice__c = false;
         update programs;
-
-        List<Invoice__c> newInvoices = [SELECT Id, Name, FieloPRP__Date__c, FieloPRP__Description__c, 
-            (SELECT Id, Name, FieloPRP__Quantity__c, FieloPRP__UnitPrice__c FROM InvoiceItems__r ) FROM FieloPRP__Invoice__c LIMIT 2];
-
-        for(Invoice__c invoice: newInvoices){
-            invoice.Id = null;
-            for(InvoiceItem__c item: invoice.InvoiceItems__r){
-                item.Id=null;
-            }
-        }
 
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
 
         req.requestURI = '/services/apexrest/FieloPLT/v1/members/' + members[0].Id + '/invoices';
-        
+
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(newInvoices));
+        req.requestBody = Blob.valueOf(JSON.serialize(restInvoiceWrapplerList));
         // When
 
         RestContext.request = req;
@@ -727,13 +721,10 @@ public class TestRESTInvoice {
             RESTInvoice.createInvoice();
         Test.stopTest();
 
-        String statusCode = String.valueOf( ((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('statusCode') );
+        System.assertEquals(404, RestContext.response.statusCode );
 
-        Map<String,Object> responseMap = (Map<String,Object>)((Map<String,Object>)((List<Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() ))[0]).get('response');
+        Map<String,Object> responseBody = (Map<String,Object>)JSON.deserializeUntyped(RestContext.response.responseBody.toString());
 
-        String errorCode = String.valueOf( responseMap.get('errorcode'));
-        
-        System.assertEquals('404',statusCode);
-        System.assertEquals('EXCEPTION',errorCode);
+        System.assertEquals('EXCEPTION', String.valueOf(responseBody.get('errorcode') ) );
     }
 }

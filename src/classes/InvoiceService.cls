@@ -28,17 +28,27 @@ public with sharing class InvoiceService {
             
     }
 
-    public static void createInvoice(List<Invoice__c> invoices){
+    public class InvoiceWrappler{
+        public Invoice__c invoice;
+        public List<InvoiceItem__c> invoiceItems;
+    }
+
+    public static List<Invoice__c> createInvoice(List<InvoiceWrappler> invoices){
         SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType});
-        for(Invoice__c invoice: invoices){
-            uow.registerNew(invoice);
-            for(InvoiceItem__c item: invoice.InvoiceItems__r){
-                uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
+        
+        for(InvoiceWrappler invoiceWrappler: invoices){
+            uow.registerNew(invoiceWrappler.invoice);
+            if(invoiceWrappler.invoiceItems!=null){
+                for(InvoiceItem__c item: invoiceWrappler.invoiceItems){
+                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoiceWrappler.invoice);
+                }
             }
         }
 
         try {
            uow.commitWork();
+
+           return (List<Invoice__c>)uow.m_newListByType.get('FieloPRP__Invoice__c');
         }catch(DMLException e){
             throw e;
         }
