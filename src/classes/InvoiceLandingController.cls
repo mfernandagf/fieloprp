@@ -2,7 +2,7 @@
 * @description Class to Controller the Incentives Landing Page.
 */
 public with sharing class InvoiceLandingController {
-
+    private ApexPages.StandardSetController controller {get;set;}
     public String currentView {get;set;}
 
     public FieloPLT__Program__c currentProgram { get {
@@ -13,47 +13,27 @@ public with sharing class InvoiceLandingController {
     }set;}
 
     public InvoiceLandingController(ApexPages.StandardSetController stController) {
-        if ( Apexpages.currentPage().getParameters().containsKey('view') ) {
-            currentView = Apexpages.currentPage().getParameters().get('view');
-        } else {
-            currentView = 'Pending';
-        }
+        this.controller = stController;
     }
 
-    public static List<SelectOption> getStatusViews(){
-        List<SelectOption> options = new List<SelectOption>();
-        options.add(new SelectOption('Pending', 'Pending'));
-        options.add(new SelectOption('Approved', 'Approved'));
-        options.add(new SelectOption('Rejected', 'Rejected'));
-        options.add(new SelectOption('Reverted', 'Reverted'));
-        return options;
-    }
-
-    private static Set<String> getViewStatus(String currentView) {
-        /*Set<String> status;
-        if ( currentView  == 'Active' ) {
-            status = new Set<String> {'Active', 'Scheduled'};
-        } else if ( currentView  == 'Inactive' ) {
-            status = new Set<String> {'Inactive', 'Finished'};
-        } else {*/
-            //status = new Set<String> {'Pending', 'Rejected', 'Approved'};
-        //}
-        //return status;
-        return new Set<String>{currentView};
+    public List<SelectOption> getListViews() {
+        return controller.getListViewOptions();
     }
 
     @RemoteAction
     public static List<SObject> getInvoices( String objectName, String fields, Integer offset, String orderBy, String filter, Integer recordsPerPage ) {
-        Set<String> fieldset = new Set<String> { 'Name', 'Status__c'};
-        system.debug('filter: ' + filter);
+        
+        Set<String> fieldset = new Set<String>(fields.split(','));
+
         Map<String,Object> jsonObject = (Map<String, Object>) JSON.deserializeUntyped( filter);
-        Id programId = (String)jsonObject.get('member__r.fieloplt__program__c');
-        String currentView =  (String)jsonObject.get('viewName');
+
+        Id programId = (String)jsonObject.get('program__c');
+
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';
         }
 
-        return InvoiceService.getInvoices( fieldset, getViewStatus(currentView), programId, recordsPerPage,  offset, orderBy);
+        return InvoiceService.getInvoices( fieldset, null, programId, recordsPerPage,  offset, orderBy);
     }
 
 

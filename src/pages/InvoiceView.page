@@ -11,7 +11,7 @@
   <div class="fielosf fielosf-redemption-view">
     <c:BackendHeaderRecord firstHeading="{!$ObjectType.Invoice__c.labelPlural}"
       secondHeading="{!record['name']}"
-      icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#campaign"
+      icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#contract"
       helpUrl="http://documentation.fielo.com/docs/redemption"
       record="{!IF(isBlank(record.Id), '', Invoice__c)}"
       sObjectName="Invoice__c"
@@ -42,7 +42,7 @@
     <!-- fieldset="{ 'Name': 'FieloPRP__Status__c' },{ 'Name': 'FieloPRP__InvoiceNumber__c'}" -->
 
     <c:RelatedList heading="{! $ObjectType.FieloPRP__InvoiceItem__c.labelPlural}"
-      icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#goals"
+      icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#product"
       sObjectName="FieloPRP__InvoiceItem__c"
       dataFilters="{ 'Invoice__c' : '{!Invoice__c.Id}' }"
       parameters="{ 'Invoice__c' : '{!Invoice__c.Id}' }"
@@ -54,6 +54,23 @@
       actions=""
       rendered="{!record.HasDetails__c}"
     />
+
+    <c:RelatedList heading="{! $ObjectType.FieloPLT__Transaction__c.labelPlural}"
+      icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#process"
+      sObjectName="FieloPLT__Transaction__c"
+      dataFilters="{ 'Invoice__c' : '{!Invoice__c.Id}' }"
+      parameters="{ 'Invoice__c' : '{!Invoice__c.Id}' }"
+      fieldset="
+      {'Name':'FieloPLT__IsProcessed__c','Label':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__IsProcessed__c'].label}', 'Type':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__IsProcessed__c'].type}'}
+      ,{ 'Name': 'FieloPLT__Value__c', 'Label':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__Value__c'].label}', 'Type':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__Value__c'].type}'}
+      ,{ 'Name': 'FieloPLT__Points__c', 'Label':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__Points__c'].label}', 'Type':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__Points__c'].type}'}
+      ,{'Name':'FieloPLT__IsReverted__c','Label':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__IsReverted__c'].label}', 'Type':'{!$ObjectType.FieloPLT__Transaction__c.fields['FieloPLT__IsReverted__c'].type}'}
+      ,{'Name':'CreatedDate','Label':'{!$ObjectType.FieloPLT__Transaction__c.fields['CreatedDate'].label}', 'Type':'{!$ObjectType.FieloPLT__Transaction__c.fields['CreatedDate'].type}'}"
+      actions=""
+      
+    />
+
+
     <!--
     <c:RelatedList heading="{! $ObjectType.Attachment.labelPlural}"
       icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#goals"
