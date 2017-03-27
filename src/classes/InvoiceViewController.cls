@@ -11,7 +11,10 @@ public class InvoiceViewController{
     public InvoiceViewController(ApexPages.StandardController controller) {
         this.controller = controller;
 
-        this.controller.addFields(new List<String>{'Name','HasDetails__c','Status__c'});
+        if(!Test.isRunningTest()){
+            this.controller.addFields(new List<String>{'Name','HasDetails__c','Status__c'});
+        }
+
         record = (Invoice__c)controller.getRecord();
 
         images = [SELECT Id, Name FROM Attachment WHERE ParentId =: record.Id];
