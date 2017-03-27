@@ -13,21 +13,24 @@
   <div class="fielosf fielosf-invoices-landing">
     <!--HEADER -->
     <c:BackendHeaderRecord firstHeading="Invoices"
-      secondHeading=""
+      secondHeading="Recent Invoices"
+      sObjectName="FieloPRP__Invoice__c"
       icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#campaign"
       helpUrl="http://documentation.fielo.com/docs/incentives"
-      
+      listviewoptions="{!listViews}"
       parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}"
-      buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'invoiceForm' }">
+      buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'invoiceForm' }"
+      >
         <c:BackEndProgramSelector />
     </c:BackendHeaderRecord>
+
     <!--buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'promotionForm', 'CssClass': 'fielosf-create-promotion' }"-->
 
     <!--tools="
       {'Label': 'Export', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLExport,null,[ retURL = $CurrentPage.url, type = 'incentives'])}', 'CssClass': '' },
       {'Label': 'Import', 'CssClass': '', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLImport,null,[retURL = $CurrentPage.url, type = 'incentives'])}'}"-->
 
-    <c:Form formId="invoiceForm"
+    <c:Form namespace="FieloPRP" formId="invoiceForm"
       heading="New {!$ObjectType.Invoice__c.label}"
       fieldset="{'Name': 'Information', 'Rows':[[{'Name':'FieloPRP__Member__c','Type':'input'}],[{'Name': 'Name', 'Type':'input'}],[{ 'Name': 'FieloPRP__Status__c', 'Type': 'picklist'},{'Name':'FieloPRP__Amount__c', 'Type':'input'}],[{'Name':'FieloPRP__Description__c','Type':'input'}],[{'Name':'FieloPRP__Date__c','Type':'input'}]]}"
       sObjectName="FieloPRP__Invoice__c"
@@ -36,36 +39,24 @@
     <!-- Content -->
     <div class="fielosf-body">
       <div class="slds-grid slds-wrap slds-grid--pull-padded">
-        <div class="slds-p-horizontal--small slds-size--2-of-12">
-          <div class="slds-grid slds-grid--vertical slds-navigation-list--vertical fielosf-filter fielosf-view-selector" data-binding="fielosf-invoices-landing--binding">
-            <!-- Vistas de Status -->
-            <h2 class="slds-text-title--caps slds-p-around--medium" id="entity-header">Views</h2>
-            <ul class="fielosf-invoices-landing__status fielosf-filter__list">
-              <apex:repeat value="{!statusViews}" var="st">
-              <li class="fielosf-list__item {! IF ( st.value == currentView, 'slds-is-active', '' ) }">
-                <a data-filters='{"viewName":"{!st.value}"}' class="fielosf-link slds-navigation-list--vertical__action slds-text-link--reset" aria-describedby="entity-header">{!st.label}</a>
-              </li>
-            </apex:repeat>
-          </ul>
-        </div>
-      </div>
-      <div class="slds-p-horizontal--small slds-size--10-of-12">
+          
+      <div class="slds-p-horizontal--small slds-size--12-of-12">
         <div class="slds-tabs--default slds-p-around--x-small slds-clearfix">
           <!--<ul class="slds-tabs--default__nav" role="tablist">
             <li class="slds-tabs--default__item slds-text-heading--label slds-active" title="{!$ObjectType.Promotion__c.Label}s" role="presentation"  id="promotions-tab"><a class="slds-tabs--default__link" href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="promotions-panel" id="promotions-link">{!$ObjectType.Promotion__c.labelPlural}</a></li>
             <li class="slds-tabs--default__item slds-text-heading--label" title="{!$ObjectType.Challenge__c.Label}s" role="presentation" id="challenges-tab"><a class="slds-tabs--default__link" href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="challenges-panel" id="challenge-link">{!$ObjectType.Challenge__c.labelPlural}</a></li>
           </ul>-->
           <div id="promotions-panel" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
-            <c:RecentRecords sObjectName="FieloPRP__Invoice__c"
+            <c:RecentRecords namespace="FieloPRP" sObjectName="FieloPRP__Invoice__c"
               fieldset="
-              {'Name':'Name','Label':'{!$ObjectType.Invoice__c.fields.Name.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Name.type}'},
-              {'Name':'FieloPRP__Status__c','Label':'{!$ObjectType.Invoice__c.fields.Status__c.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Status__c.type}'}"
+              {'Name':'FieloPRP__Member__r.Name','Label':'{!$ObjectType.Invoice__c.fields.Member__c.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Member__c.type}'}, 
+              {'Name':'FieloPRP__Status__c','Label':'{!$ObjectType.Invoice__c.fields.Status__c.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Status__c.type}'},
+              {'Name':'FieloPRP__Amount__c','Label':'{!$ObjectType.Invoice__c.fields.Amount__c.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Amount__c.type}'}"
               async="true"
-              dataController="FieloPRP.InvoiceLandingController.getInvoices"
+              dataController="InvoiceLandingController.getInvoices"
               dataBinding="fielosf-invoices-landing--binding"
-              dataFilters="{'member__r.fieloplt__program__c':'{!currentProgram.Id}', 'viewName':'{!currentView}'}"
+              dataFilters="{'program__c':'{!currentProgram.Id}'}"
             />
-            
             <!--<c:Form saveController="FieloPLT.IncentivesLandingController.createPromotion"
               formId="promotionForm"
               heading="New {!$ObjectType.Promotion__c.label}"
@@ -151,7 +142,8 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter','FieloIncentives'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" /><!--{!URLFOR($Resource.FieloPRP__FieloSalesforce_Backend, 'fielo/scripts/core.min.js')}-->
+<script src="{!URLFOR($Resource.FieloPRP__programSelector)}"></script>
 </body>
 </html>
 </apex:page>
