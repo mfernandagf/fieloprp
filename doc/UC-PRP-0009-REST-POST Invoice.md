@@ -12,8 +12,8 @@ The system creates an invoice and all its related items for a particular member
 
 ### Basic Flow
 1. The user makes a POST request for the resource /members/member_id/invoices, containing the following required parameters in its body:  
-         - Invoice header
-         - Invoice Items
+   - Invoice header
+   - Invoice Items
 2. The system validates that the user of the request has permission to write records
 3. The system identifies the member from the the resource URI 
 4. The system calls the use case [Create an Invoice](?name=UC-PRP-0002)
