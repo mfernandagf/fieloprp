@@ -78,7 +78,7 @@ The present use case describes how the system shows the Invoice details and the 
    2. The administrator selects one of the Invoices of the selected Program, which status is "Approved"
    3. The system displays the Invoice details page, containing:
         - Reprocess button
-        - Reopen button
+        - Cancel button
         - Fieldset for Invoice
         - Images of the invoice
    4. End of flow
@@ -87,7 +87,7 @@ The present use case describes how the system shows the Invoice details and the 
    1. The administrator selects one of the Invoices of the selected Program, which status is "Rejected"
    2. The system displays the Invoice details page, containing:
         - Reopen button
-        - Fieldset oforf Invoice
+        - Fieldset for Invoice
         - Related list of invoice items
         - Images of the invoice
    3. End of flow
