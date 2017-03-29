@@ -70,7 +70,7 @@ The Invoice has its status changed
 
 ##### 6. The administrator reprocesses an approved Invoice (step 5 of the alternative flow 1 or step 5 of the alternative flow 2)
    1. The administrator presses the “Reprocess” button
-   2. The system changes the Invoice status to “Approved”
+   2. The system maintains the Invoice status in “Approved”
    3. The system reprocesses the invoice
    4. The system refreshes the Invoice Detail page
    5. The system maintains the “Cancel” and “Reprocess” buttons
