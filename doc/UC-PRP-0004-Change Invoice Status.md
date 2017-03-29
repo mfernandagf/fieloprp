@@ -19,7 +19,7 @@ The Invoice has its status changed
 3. The system displays the buttons “Approve” and “Submit for Approval”
 4. The administrator presses the “Submit for Approval” button
 5. The system changes the Invoice status to “Pending”
-6. The invoice is submitted to the defined approval process
+6. The system submits the invoice to the defined approval process
 7. The system refreshes the Invoice Detail page
 8. The system hides the “Submit for Approval” button
 9. The system displays the “Approve”, “Reject” and “Reopen” buttons
