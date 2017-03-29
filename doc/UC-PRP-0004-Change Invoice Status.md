@@ -19,11 +19,12 @@ The Invoice has its status changed
 3. The system displays the buttons “Approve” and “Submit for Approval”
 4. The administrator presses the “Submit for Approval” button
 5. The system changes the Invoice status to “Pending”
-6. The system refreshes the Invoice Detail page
-7. The system hides the “Submit for Approval” button
-8. The system displays the “Approve”, “Reject” and “Reopen” buttons
-9. The administrator does not press any button
-10. End of flow
+6. The invoice is submitted to the defined approval process
+7. The system refreshes the Invoice Detail page
+8. The system hides the “Submit for Approval” button
+9. The system displays the “Approve”, “Reject” and “Reopen” buttons
+10. The administrator does not press any button
+11. End of flow
 
 ### Alternative Flows
 
@@ -35,7 +36,7 @@ The Invoice has its status changed
    5. The system displays the “Reprocess” and “Cancel” buttons
    6. End of flow
 
-##### 2. The administrator approves the pending Invoice (step 9 of basic flow)
+##### 2. The administrator approves the pending Invoice (step 10 of basic flow)
    1. The administrator presses the “Approve” button
    2. The system changes the Invoice status to “Approved”
    3. The system refreshes the Invoice Detail page
@@ -43,7 +44,7 @@ The Invoice has its status changed
    5. The system displays the “Reprocess” and “Cancel” buttons
    6. End of flow
 
-##### 3. The administrator rejects the pending Invoice (step 9 of basic flow)
+##### 3. The administrator rejects the pending Invoice (step 10 of basic flow)
    1. The administrator presses the “Reject” button
    2. The system changes the Invoice status to “Rejected”
    3. The system refreshes the Invoice Detail page
@@ -51,7 +52,7 @@ The Invoice has its status changed
    5. The system displays the “Reopen” button
    6. End of flow
 
-##### 4. The administrator reopens the pending Invoice (step 9 of basic flow)
+##### 4. The administrator reopens the pending Invoice (step 10 of basic flow)
    1. The administrator presses the “Reopen” button
    2. The system changes the Invoice status to “Draft”
    3. The system refreshes the Invoice Detail page
