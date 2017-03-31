@@ -66,7 +66,7 @@ The Invoice has its status changed
    3. The system removes the points previously given to the related member
    4. The system refreshes the Invoice Detail page
    5. The system hides the “Cancel” button
-   6. The system displays the “Reopen” and “Reprocess” button
+   6. The system displays the “Reopen” button and maintains the “Reprocess” button
    7. End of flow
 
 ##### 6. The administrator reprocesses an approved Invoice (step 5 of the alternative flow 1 or step 5 of the alternative flow 2)
