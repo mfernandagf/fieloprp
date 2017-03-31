@@ -40,7 +40,7 @@ The Invoice has its status changed
    1. The administrator presses the “Approve” button
    2. The system changes the Invoice status to “Approved”
    3. The system refreshes the Invoice Detail page
-   4. The system hides the “Approve” and “Reject” buttons
+   4. The system hides the “Approve”, “Reject” and "Reopen" buttons
    5. The system displays the “Reprocess” and “Cancel” buttons
    6. End of flow
 
@@ -49,7 +49,7 @@ The Invoice has its status changed
    2. The system changes the Invoice status to “Rejected”
    3. The system refreshes the Invoice Detail page
    4. The system hides the “Approve” and “Reject” buttons
-   5. The system displays the “Reopen” button
+   5. The system maintains the “Reopen” button
    6. End of flow
 
 ##### 4. The administrator reopens the pending Invoice (step 10 of basic flow)
