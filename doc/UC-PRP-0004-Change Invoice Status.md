@@ -57,7 +57,7 @@ The Invoice has its status changed
    2. The system changes the Invoice status to “Draft”
    3. The system refreshes the Invoice Detail page
    4. The system hides the “Reject” and “Reopen” buttons
-   5. The system displays the “Approve” and “Submit for Approval” buttons
+   5. The system maintains the “Approve” button and displays the “Submit for Approval” button
    6. End of flow
 
 ##### 5. The administrator cancels an approved Invoice (step 5 of the alternative flow 1 or step 5 of the alternative flow 2)
