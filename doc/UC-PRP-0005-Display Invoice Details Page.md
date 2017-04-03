@@ -46,25 +46,21 @@ The present use case describes how the system shows the Invoice details and the 
 ##### 2. The administrator selects an Invoice which status is “Pending” belonging to a Program that considers invoice items (step 4 of basic flow)
    1. The administrator selects one of the Invoices of the selected Program, which status is "Pending"
    2. The system displays the Invoice details page, containing:
-      - Approve button
-      - Reject button
       - Reopen button
       - Fieldset for Invoice
       - Related list of invoice items
       - Images of the invoice
-      - Approval process steps
+      - Approval process steps containing link to Approve or Reject the invoice
    3. End of flow
 
 ##### 3. The administrator selects an Invoice which status is "Pending" belonging to a Program that does not consider invoice items (step 3 of basic flow)
    1. The administrator selects a Program that does not consider invoice items
    2. The administrator selects one of the Invoices of the selected Program, which status is "Pending"
    3. The system displays the Invoice details page, containing:
-       - Approve button
-       - Reject button
        - Reopen button
        - Fieldset for Invoice
        - Images of the invoice
-       - Approval process steps
+       - Approval process steps containing link to Approve or Reject the invoice
    4. End of flow
    
 ##### 4. The administrator selects an Invoice which status is "Approved" belonging to a Program that considers Invoice Items (step 4 of basic flow)
