@@ -32,7 +32,7 @@
 
     <c:Form namespace="FieloPRP" formId="invoiceForm"
       heading="New {!$ObjectType.Invoice__c.label}"
-      fieldset="{'Name': 'Information', 'Rows':[[{'Name':'FieloPRP__Member__c','Type':'input'}],[{'Name': 'Name', 'Type':'input'}],[{ 'Name': 'FieloPRP__Status__c', 'Type': 'picklist'},{'Name':'FieloPRP__Amount__c', 'Type':'input'}],[{'Name':'FieloPRP__Description__c','Type':'input'}],[{'Name':'FieloPRP__Date__c','Type':'input'}]]}"
+      fieldset="{!newSettings.FieloPLT__Fieldset__c}"
       sObjectName="FieloPRP__Invoice__c"
     />
 
@@ -47,15 +47,14 @@
             <li class="slds-tabs--default__item slds-text-heading--label" title="{!$ObjectType.Challenge__c.Label}s" role="presentation" id="challenges-tab"><a class="slds-tabs--default__link" href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="challenges-panel" id="challenge-link">{!$ObjectType.Challenge__c.labelPlural}</a></li>
           </ul>-->
           <div id="promotions-panel" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
+            
             <c:RecentRecords namespace="FieloPRP" sObjectName="FieloPRP__Invoice__c"
-              fieldset="
-              {'Name':'FieloPRP__Member__r.Name','Label':'{!$ObjectType.Invoice__c.fields.Member__c.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Member__c.type}'}, 
-              {'Name':'FieloPRP__Status__c','Label':'{!$ObjectType.Invoice__c.fields.Status__c.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Status__c.type}'},
-              {'Name':'FieloPRP__Amount__c','Label':'{!$ObjectType.Invoice__c.fields.Amount__c.label}', 'Type':'{!$ObjectType.Invoice__c.fields.Amount__c.type}'}"
-              async="true"
+              fieldset="{!landingSettings.FieloPLT__Fieldset__c}"
+              async="false"
               dataController="InvoiceLandingController.getInvoices"
               dataBinding="fielosf-invoices-landing--binding"
-              dataFilters="{'program__c':'{!currentProgram.Id}'}"
+              dataFilters="{'FieloPRP__Member__r.FieloPLT__Program__c':'{!currentProgram.Id}'}"
+              showCheckboxes="true"
             />
             <!--<c:Form saveController="FieloPLT.IncentivesLandingController.createPromotion"
               formId="promotionForm"
@@ -142,7 +141,7 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" /><!--{!URLFOR($Resource.FieloPRP__FieloSalesforce_Backend, 'fielo/scripts/core.min.js')}-->
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloPRP__FieloRecentRecords)}" namespace="FieloPRP" /><!--{!URLFOR($Resource.FieloPRP__FieloSalesforce_Backend, 'fielo/scripts/core.min.js')}-->
 <script src="{!URLFOR($Resource.FieloPRP__programSelector)}"></script>
 </body>
 </html>

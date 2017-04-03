@@ -49,7 +49,7 @@ global with sharing class RESTInvoice {
         
     }
 
-    global class RESTInvoiceWrappler{
+    global class RESTInvoiceWrapper{
         public Invoice__c invoice;
         public List<InvoiceItem__c> invoiceItems;
     }
@@ -79,26 +79,26 @@ global with sharing class RESTInvoice {
                     resp.responseBody = Blob.valueOf( JSON.serialize(response) );
                     RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
                 } else {
-                    List<InvoiceService.InvoiceWrappler> invoiceWrapperList = new List<InvoiceService.InvoiceWrappler>();
+                    List<InvoiceService.InvoiceWrapper> invoiceWrapperList = new List<InvoiceService.InvoiceWrapper>();
 
-                    List<RESTInvoiceWrappler> invoices = (List<RESTInvoiceWrappler>) JSON.deserialize(RestContext.request.requestBody.toString(), List<RESTInvoiceWrappler>.class);
+                    List<RESTInvoiceWrapper> invoices = (List<RESTInvoiceWrapper>) JSON.deserialize(RestContext.request.requestBody.toString(), List<RESTInvoiceWrapper>.class);
 
-                    InvoiceService.InvoiceWrappler invoiceWrappler;
+                    InvoiceService.InvoiceWrapper InvoiceWrapper;
 
-                    for(RESTInvoiceWrappler riw: invoices){
-                        invoiceWrappler = new InvoiceService.InvoiceWrappler();
-                        invoiceWrappler.invoice = riw.invoice;
-                        invoiceWrappler.invoice.Member__c = memberId;
+                    for(RESTInvoiceWrapper riw: invoices){
+                        InvoiceWrapper = new InvoiceService.InvoiceWrapper();
+                        InvoiceWrapper.invoice = riw.invoice;
+                        InvoiceWrapper.invoice.Member__c = memberId;
 
                         if(riw.invoiceItems!=null){
                             if(riw.invoiceItems.size()>0){
-                                invoiceWrappler.invoiceItems = new List<InvoiceItem__c>();
+                                InvoiceWrapper.invoiceItems = new List<InvoiceItem__c>();
                                 for(InvoiceItem__c item: riw.invoiceItems){
-                                    invoiceWrappler.invoiceItems.add(item);
+                                    InvoiceWrapper.invoiceItems.add(item);
                                 }
                             }
                         }
-                        invoiceWrapperList.add(invoiceWrappler);
+                        invoiceWrapperList.add(InvoiceWrapper);
                     }
 
                     List<Invoice__c> createdInvoices = InvoiceService.createInvoice(invoiceWrapperList);

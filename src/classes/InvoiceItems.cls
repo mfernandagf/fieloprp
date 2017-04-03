@@ -118,7 +118,7 @@ public class InvoiceItems extends SObjectDomain {
         }
 
         Map<Id, InvoiceItem__c> itemsWithPendingInvoice = new Map<Id,InvoiceItem__c>(
-            new InvoiceItemsSelector().selectByIdWithInvoiceStatusPending( new Map<Id,InvoiceItem__c>( (List<InvoiceItem__c>)records ).keySet() )
+            new InvoiceItemsSelector().selectByIdWithInvoiceStatusNotEditable( new Map<Id,InvoiceItem__c>( (List<InvoiceItem__c>)records ).keySet() )
             );
 
         for(InvoiceItem__c item: (List<InvoiceItem__c>)records){

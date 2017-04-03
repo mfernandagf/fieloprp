@@ -5,6 +5,7 @@ public class InvoicesSelector extends SObjectSelector{
                 Invoice__c.Id,
                 Invoice__c.Name,
                 Invoice__c.Amount__c,
+                Invoice__c.Status__c,
                 Invoice__c.HasDetails__c
             };
     }
@@ -126,5 +127,12 @@ public class InvoicesSelector extends SObjectSelector{
         System.debug('query'+ query);
         
         return (List<Invoice__c>) Database.query(query);
+    }
+
+    public static List<ProcessInstance> selectInvoiceApprovalProcessInstance(Set<Id> invoiceIds){
+        String query = 'SELECT Id, '
+                + ' (SELECT Id, StepStatus,Actor.Name, Comments FROM StepsAndWorkitems where StepStatus = \'Pending\')'
+                + ' FROM ProcessInstance WHERE TargetObjectId in :invoiceIds';
+        return (List<ProcessInstance>) Database.query(query);
     }
 }

@@ -26,8 +26,8 @@ public class InvoiceItemsSelector extends SObjectSelector{
         return (List<InvoiceItem__c>) selectSObjectsById(invoiceItemIds);
     }
 
-    public List<InvoiceItem__c> selectByIdWithInvoiceStatusPending(Set<Id> invoiceItemIds){
-        String draftStatus = 'Pending';
+    public List<InvoiceItem__c> selectByIdWithInvoiceStatusNotEditable(Set<Id> invoiceItemIds){
+        String draftStatus = 'Draft';
         return (List<InvoiceItem__c>) Database.query(String.format(
                 'select {0} ' +
                   'from {1} ' +
