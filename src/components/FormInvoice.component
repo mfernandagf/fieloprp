@@ -1,0 +1,42 @@
+<apex:component controller="FormController" extensions="FormInvoiceController" layout="none">
+  <apex:attribute name="formId" type="String" default="formModal" description="" />
+  <apex:attribute name="record" type="SObject" description="" assignTo="{!cRecord}"/>
+  <apex:attribute name="heading" type="String" default="" description="Text of First heading line" />
+  <apex:attribute name="programId" type="Id" description="" assignTo="{!cProgramId}"/>
+  <apex:attribute name="sObjectName" type="String" default="Invoice__c" description="" assignTo="{!csObjectName}" />
+  <apex:attribute name="mode" description="new, update, view" type="String" />
+  <apex:attribute name="fieldset" type="String" default="" description="Form Fields" assignTo="{!cFieldset}" />
+
+  <div id="{!formId}" role="dialog" tabindex="-1" aria-labelledby="{!formId}headerModal" class="slds-hide slds-modal slds-modal--large slds-fade-in-open slds-form fielosf-invoice" data-on-show="FieloForm_retrieve" data-object-name="{!sObjectName}" data-fields="Name, FieloPRP__Member__c, FieloPRP__Amount__c">
+
+    <div class="slds-modal__container">
+      <div class="slds-modal__header slds-text-heading--medium">
+        <button class="slds-button slds-modal__close slds-button--icon-inverse" data-aljs-dismiss="modal" title="Close">
+          <svg xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+            <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#close"></use>
+          </svg>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="{!formId}headerModal" class="slds-text-heading--medium">{!heading}</h2>
+      </div>
+      <div class="slds-modal__content slds-p-around--medium">
+        <c:Input formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields['Id']}" mode="hidden" />
+        <!--<c:Input formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields['FieloPLT__Promotion__c']}" mode="hidden" />-->
+
+        <fieldset class="slds-form--compound">
+          <legend class="slds-form-element__label slds-text-title--caps">Information</legend>
+          <div class="slds-form-element__group">
+            <div class="slds-form-element__row">
+              <c:Input formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields['Name']}" mode="{!mode}" />
+              <!--<c:Input formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields['Name']}" mode="{!mode}" />              -->
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="slds-modal__footer">
+        <a data-aljs-dismiss="modal" class="slds-button slds-button--neutral slds-form__cancel">{!$Label.Cancel}</a>
+        <a class="slds-button slds-button--brand slds-form__save">{!$Label.Save}</a>
+      </div>
+    </div>
+  </div>
+</apex:component>
