@@ -26,6 +26,7 @@ The present use case describes how the system shows the Invoice details and the 
    - Fieldset for the Invoice
    - Related list of invoice items
    - Images of the invoice
+   - Approval process steps
 6. End of flow
 
 ### Alternative Flows
@@ -39,6 +40,7 @@ The present use case describes how the system shows the Invoice details and the 
       - Submit for Approval button
       - Fieldset for Invoice
       - Images of the invoice
+      - Approval process steps
    4. End of flow
 
 ##### 2. The administrator selects an Invoice which status is “Pending” belonging to a Program that considers invoice items (step 4 of basic flow)
@@ -50,6 +52,7 @@ The present use case describes how the system shows the Invoice details and the 
       - Fieldset for Invoice
       - Related list of invoice items
       - Images of the invoice
+      - Approval process steps
    3. End of flow
 
 ##### 3. The administrator selects an Invoice which status is "Pending" belonging to a Program that does not consider invoice items (step 3 of basic flow)
@@ -61,6 +64,7 @@ The present use case describes how the system shows the Invoice details and the 
        - Reopen button
        - Fieldset for Invoice
        - Images of the invoice
+       - Approval process steps
    4. End of flow
    
 ##### 4. The administrator selects an Invoice which status is "Approved" belonging to a Program that considers Invoice Items (step 4 of basic flow)
@@ -71,6 +75,7 @@ The present use case describes how the system shows the Invoice details and the 
         - Fieldset for Invoice
         - Related list of invoice items
         - Images of the invoice
+        - Approval process steps
     3. End of flow
  
 ##### 5. The administrator selects an Invoice which status is "Approved" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
@@ -81,6 +86,7 @@ The present use case describes how the system shows the Invoice details and the 
         - Cancel button
         - Fieldset for Invoice
         - Images of the invoice
+        - Approval process steps
    4. End of flow
    
 ##### 6. The administrator selects an Invoice which status is "Rejected" belonging to a Program that considers Invoice Items (step 4 of basic flow)
@@ -90,6 +96,7 @@ The present use case describes how the system shows the Invoice details and the 
         - Fieldset for Invoice
         - Related list of invoice items
         - Images of the invoice
+        - Approval process steps
    3. End of flow
    
 ##### 7. The administrator selects an Invoice which status is "Rejected" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
@@ -99,6 +106,7 @@ The present use case describes how the system shows the Invoice details and the 
         - Reopen button
         - Fieldset for Invoice
         - Images of the invoice
+        - Approval process steps
    4. End of flow
    
 ##### 8. The administrator selects an Invoice which status is "Canceled" belonging to a Program that considers Invoice Items (step 4 of basic flow)
@@ -109,6 +117,7 @@ The present use case describes how the system shows the Invoice details and the 
         - Fieldset for Invoice
         - Related list of invoice items
         - Images of the invoice
+        - Approval process steps
    3. End of flow
    
 ##### 9. The administrator selects an Invoice which status is "Canceled" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
@@ -118,4 +127,5 @@ The present use case describes how the system shows the Invoice details and the 
         - Reopen button
         - Fieldset for Invoice
         - Images of the invoice
+        - Approval process steps
    3. End of flow
