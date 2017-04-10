@@ -88,4 +88,8 @@ public with sharing class ProgramService {
         settings.FieloPLT__CurrentProgramId__c = programId;
         upsert settings;
     }
+
+    public static Boolean hasPrograms(){
+        return getPrograms().size() > 0;
+    }
 }
