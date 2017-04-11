@@ -64,7 +64,7 @@ var platformSalesforceJs = [
     src: [
       // Components
       'resources/FieloPrp_Salesforce/scripts/programSelector.js',
-      // 'resources/FieloPlt_Salesforce/scripts/criteria.js',
+      'resources/FieloPlt_Salesforce/scripts/formInvoice.js'
       // 'resources/FieloPlt_Salesforce/scripts/items.js',
       // 'resources/FieloPlt_Salesforce/scripts/levelOrder.js',
       // 'resources/FieloPlt_Salesforce/scripts/fileUpload.js',
@@ -223,7 +223,7 @@ gulp.task('clean', () => del([
 // Build production site files
 gulp.task('build', ['clean'], cb => {
   runSequence(
-    'css', 'js', 'doc',
+    'css', 'js', // 'doc',
     cb
  );
 });
