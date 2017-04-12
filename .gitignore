@@ -15,15 +15,3 @@ raw/node_modules/
 raw/coverage/
 raw/docs/
 raw/resources/FieloSalesforce_Backend
-src/applications/standard__AppLauncher.app
-src/applications/standard__Chatter.app
-src/applications/standard__Community.app
-src/applications/standard__Content.app
-src/applications/standard__Insights.app
-src/applications/standard__Marketing.app
-src/applications/standard__Platform.app
-src/applications/standard__Sales.app
-src/applications/standard__Service.app
-src/applications/standard__ServiceConsole.app
-src/applications/standard__Sites.app
-src/applications/standard__Work.app
