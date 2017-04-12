@@ -42,36 +42,35 @@ public with sharing class InvoiceLandingController extends PageSettingsSetContro
     }
 
     @RemoteAction
-    public static RemoteActionResult save( Invoice__c record, List<InvoiceItem__c> items ){
+    public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items){
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
 
         try{
             sp = Database.setSavepoint();
+            List<InvoiceService.InvoiceWrapper> invoiceWrapperList = new List<InvoiceService.InvoiceWrapper>();
+            InvoiceService.InvoiceWrapper invoiceWrapper = new InvoiceService.InvoiceWrapper();
 
-            Map<Id, Integer> quantityPerReward = new Map<Id, Integer>();
-            for ( InvoiceItem__c i :items ) {
-                Integer q = i.Quantity__c.intValue();
-                if ( q >= 1 ) {
-                    quantityPerReward.put( i.Product__c, q );
+            invoiceWrapper.invoice = record;
+
+            if(items!=null){
+                if(items.size()>0){
+                    invoiceWrapper.invoiceItems = new List<InvoiceItem__c>();
+                    for(InvoiceItem__c item: items){
+                        invoiceWrapper.invoiceItems.add(item);
+                    }
                 }
             }
-            // Setea Type BackEnd
-            record.Origin__c = 'BackEnd';
+            invoiceWrapperList.add(invoiceWrapper);
 
-            // Verifica que la redemption tenga items
-            if ( quantityPerReward.isEmpty() ) {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,Label.ErrorRedemptionItemsRequired));
+            List<Invoice__c> invoices = InvoiceService.createInvoice(invoiceWrapperList);
+
+            if ( invoices.size() == 1  ) {
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The redemption was created successfully') );
+                result.redirectURL = '/'+invoices[0].Id;
             } else {
-                List<Redemption__c> rr = RedemptionService.createRedemptions( quantityPerReward, record.member__c);
-                if ( rr.size() == 1  ) {
-                    result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The redemption was created successfully') );
-                    result.redirectURL = '/'+rr[0].Id;
-                } else {
-                    result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple redemptions were created') );
-                }
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple redemptions were created') );
             }
-
         }catch(DMLException e){
             if(sp != null){
                 Database.rollback(sp);

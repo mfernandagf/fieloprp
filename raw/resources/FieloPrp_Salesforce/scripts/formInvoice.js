@@ -14,7 +14,7 @@
    * @private
    */
   FieloFormInvoice.prototype.Constant_ = {
-    SAVE_CONTROLLER: 'FieloPRP.RedemptionLandingController.save',
+    SAVE_CONTROLLER: 'FieloPRP.InvoiceLandingController.save',
     MEMBER: 'FieloPRP__Member__c',
     PRODUCT_RECENT: 'recentProductRecords',
     DATA_RECORD_ID: 'data-record-id'
@@ -64,16 +64,28 @@
     if (memberValue) {
       fielo.util.spinner.FieloSpinner.show();
       var formValues = this.getValues_();
+      if (formValues.Id === '') {
+        delete formValues.Id;
+      }
+      for (var field in formValues) {
+        if (field !== null) {
+          if (field === 'FieloPRP__Date__c') {
+            formValues[field] =
+              formValues[field].toDate().getTime();
+          }
+        }
+      }
+      console.log(formValues);
       var itemValues = this.itemsContainer_.FieloInvoiceItems.get();
       // verifico si hay al menos un item en cero o un reward sin elegir
       var quantityInCero = false;
-      var emptyReward = false;
+      var emptyProduct = false;
       itemValues.forEach(function(item) {
-        if (item.FieloPLT__Quantity__c === '0') {
+        if (item.FieloPRP__Quantity__c === '0') {
           quantityInCero = true;
         }
-        if (item.FieloPLT__Reward__c === null) {
-          emptyReward = true;
+        if (item.FieloPRP__Product__c === null) {
+          emptyProduct = true;
         }
       });
 
@@ -82,10 +94,10 @@
 
         event = {message: 'Quantity cannot be 0'};
         this.form_.processRemoteActionResult_(null, event);
-      } else if (emptyReward) {
+      } else if (emptyProduct) {
         fielo.util.spinner.FieloSpinner.hide();
 
-        event = {message: 'Reward cannot be empty'};
+        event = {message: 'Product cannot be empty'};
         this.form_.processRemoteActionResult_(null, event);
       } else {
         try {
@@ -111,8 +123,8 @@
 
   FieloFormInvoice.prototype.getValues_ = function() {
     this.form_.elements_ = [];
-    var redemptionValues = {};
-    // redemptionValues.sObjectType =
+    var invoiceValues = {};
+    // invoiceValues.sObjectType =
     //  this.form_.element_.getAttribute(this.form_.Constant_.OBJECT_NAME);
 
     [].forEach.call(this.invoiceElements_, function(element) {
@@ -120,11 +132,11 @@
         var property = element.FieloFormElement.get('fieldName');
         if (property) {
           this.form_.elements_[property] = element;
-          redemptionValues[property] = element.FieloFormElement.get('value');
+          invoiceValues[property] = element.FieloFormElement.get('value');
         }
       }
     }, this);
-    return redemptionValues;
+    return invoiceValues;
   };
 
   FieloFormInvoice.prototype.setValues_ = function() {
@@ -253,8 +265,6 @@
    * Inicializa el elemento
    */
   FieloFormInvoice.prototype.init = function() {
-    console.log('Behold! The Invoice Form!');
-
     if (this.element_) {
       this.openForm_ = location.hash.split('#').slice(1);
 
@@ -306,21 +316,18 @@
       // Method to refresh recend records from the add rewards modal
       this.addProductsBtn_.addEventListener('click',
         this.reloadproductRecent_.bind(this));
-      console.log('Add products button ready!');
 
       this.cancelBtn_ = this.element_.getElementsByClassName(
         this.CssClasses_.CANCEL)[0];
       // Make filled fields persistent
       this.cancelBtn_.addEventListener('click',
         this.resetKeepItems.bind(this));
-      console.log('Cancel button ready!');
 
       this.newProductBtn = this.element_.getElementsByClassName(
         this.CssClasses_.NEW)[0];
       // Method to disable any action when no member is given
       this.newProductBtn.addEventListener('click',
         this.verifyMember_.bind(this));
-      console.log('New button ready!');
 
       this.productForm_ =
         document.getElementsByClassName(this.CssClasses_.PRODUCT_FORM)[0];
@@ -331,7 +338,6 @@
         // Add selected rewards to basket
         this.productFormAddBtn_.addEventListener('click',
           this.updateProductBasket.bind(this));
-        console.log('Add button ready!');
 
         this.productFormSearchBtn_ =
           this.productForm_.getElementsByClassName(
@@ -339,7 +345,6 @@
         // Executes the reward search based on modal filters
         this.productFormSearchBtn_.addEventListener('click',
           this.searchRecords_.bind(this));
-        console.log('Search button ready!');
 
         this.cancelProductsAddBtn_ = document.getElementsByClassName(
           this.CssClasses_.PRODUCT_CANCEL)[0];
@@ -349,7 +354,6 @@
         this.cancelProductsAddBtn_.addEventListener('click',
           this.productRecent_.FieloRecentRecords.uncheckAll.bind(
             this.productRecent_.FieloRecentRecords));
-        console.log('Cancel add button ready!');
       }
     }
   };
