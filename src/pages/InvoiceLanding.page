@@ -1,0 +1,68 @@
+<apex:page standardController="Invoice__c" extensions="InvoiceLandingController" docType="html-5.0" sidebar="false" recordSetVar="recSet">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+  <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'lightning/styles/salesforce-lightning-design-system-vf.min.css')}"></link>
+  <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'fielo/styles/core.css')}"></link>
+  <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'styles/core.css')}"></link>
+  <style type="text/css">
+    .slds-tabs--default .slds-tabs--default__content .slds-table { border-top: none; }
+  </style>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+</head>
+<body>
+  <div class="fielosf fielosf-invoices-landing">
+    <!--HEADER -->
+    <c:BackendHeaderRecord firstHeading="Invoices"
+      secondHeading="Recent Invoices"
+      sObjectName="FieloPRP__Invoice__c"
+      icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#campaign"
+      helpUrl="http://documentation.fielo.com/docs/incentives"
+      listviewoptions="{!listViews}"
+      parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}"
+      buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'invoiceForm' }"
+      >
+        <c:BackEndProgramSelector />
+    </c:BackendHeaderRecord>
+
+    <!--buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'promotionForm', 'CssClass': 'fielosf-create-promotion' }"-->
+
+    <!--tools="
+      {'Label': 'Export', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLExport,null,[ retURL = $CurrentPage.url, type = 'incentives'])}', 'CssClass': '' },
+      {'Label': 'Import', 'CssClass': '', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLImport,null,[retURL = $CurrentPage.url, type = 'incentives'])}'}"-->
+
+    <c:FormInvoice namespace="FieloPRP" formId="invoiceForm"
+      heading="New {!$ObjectType.Invoice__c.label}"
+      sObjectName="FieloPRP__Invoice__c"
+      fieldset="{!newSettings.FieloPLT__Fieldset__c}"
+      filterSObjectName="Product2"
+      filter="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
+      mode="new"
+      className="fielosf-invoice-form"
+    />
+
+    <!-- Content -->
+    <div class="fielosf-body">
+      <div class="slds-grid slds-wrap slds-grid--pull-padded">
+          
+      <div class="slds-p-horizontal--small slds-size--12-of-12">
+        <div class="slds-tabs--default slds-p-around--x-small slds-clearfix">
+          <div id="promotions-panel" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
+            <c:RecentRecords namespace="FieloPRP" sObjectName="FieloPRP__Invoice__c"
+              fieldset="{!landingSettings.FieloPLT__Fieldset__c}"
+              async="false"
+              dataController="InvoiceLandingController.getInvoices"
+              dataBinding="fielosf-invoices-landing--binding"
+              dataFilters="{'FieloPRP__Member__r.FieloPLT__Program__c':'{!currentProgram.Id}'}"
+              showCheckboxes="true"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloRecentRecords)}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
+<!-- <script src="{!URLFOR($Resource.FieloPRP__programSelector)}"></script> -->
+</body>
+</html>
+</apex:page>
