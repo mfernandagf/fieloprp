@@ -38,8 +38,9 @@
           <div class="slds-modal__content slds-p-around--medium">
 
             
-            <c:Sections record="{!record}" formId="{!formId}" sObjectName="{!sObjectName}" fieldset="{!fieldset}" mode="{!mode}" />
+            <c:Sections record="{!record}" formId="{!formId}" sObjectName="{!sObjectName}" fieldset="{!fieldset}" mode="{!mode}" layout='stacked'/>
 
+            <!-- layout horizontal, stacked, inline, table -->
 
             <!-- TODO Form Items with Buttons -->
             <c:Items 

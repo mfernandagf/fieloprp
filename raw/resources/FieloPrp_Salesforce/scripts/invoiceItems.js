@@ -145,8 +145,9 @@
     this.element_.querySelector('.' + this.CssClasses_.PRODUCT_NAME + ' .' +
       this.CssClasses_.FORM_ELEMENT).FieloFormElement.clear();
 
-    this.element_.querySelector('.' + this.CssClasses_.PRODUCT_TOTAL_PRICE + ' .' +
-      this.CssClasses_.FORM_ELEMENT).FieloFormElement.set('value', null);
+    this.element_.querySelector('.' +
+      this.CssClasses_.PRODUCT_TOTAL_PRICE + ' .' +
+        this.CssClasses_.FORM_ELEMENT).FieloFormElement.set('value', null);
   };
 
   /**
