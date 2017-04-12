@@ -4,6 +4,7 @@ ant-salesforce.jar
 retrieveunpackaged
 retrieveunpackaged.zip2
 npm-debug.log
+raw/
 resource-bundles/
 raw/node_modules/
 raw/coverage/
