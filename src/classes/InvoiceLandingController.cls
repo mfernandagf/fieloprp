@@ -41,5 +41,48 @@ public with sharing class InvoiceLandingController extends PageSettingsSetContro
         return InvoiceService.getInvoices( fieldset, null, programId, recordsPerPage,  offset, orderBy);
     }
 
+    @RemoteAction
+    public static RemoteActionResult save( Invoice__c record, List<InvoiceItem__c> items ){
+        Savepoint sp;
+        RemoteActionResult result = new RemoteActionResult();
 
+        try{
+            sp = Database.setSavepoint();
+
+            Map<Id, Integer> quantityPerReward = new Map<Id, Integer>();
+            for ( InvoiceItem__c i :items ) {
+                Integer q = i.Quantity__c.intValue();
+                if ( q >= 1 ) {
+                    quantityPerReward.put( i.Product__c, q );
+                }
+            }
+            // Setea Type BackEnd
+            record.Origin__c = 'BackEnd';
+
+            // Verifica que la redemption tenga items
+            if ( quantityPerReward.isEmpty() ) {
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,Label.ErrorRedemptionItemsRequired));
+            } else {
+                List<Redemption__c> rr = RedemptionService.createRedemptions( quantityPerReward, record.member__c);
+                if ( rr.size() == 1  ) {
+                    result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The redemption was created successfully') );
+                    result.redirectURL = '/'+rr[0].Id;
+                } else {
+                    result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple redemptions were created') );
+                }
+            }
+
+        }catch(DMLException e){
+            if(sp != null){
+                Database.rollback(sp);
+            }
+            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        }catch(Exception e){
+            if(sp != null){
+                Database.rollback(sp);
+            }
+            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        }
+        return result;
+    }
 }

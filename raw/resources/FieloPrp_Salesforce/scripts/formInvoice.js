@@ -14,9 +14,9 @@
    * @private
    */
   FieloFormInvoice.prototype.Constant_ = {
-    SAVE_CONTROLLER: 'FieloPLT.RedemptionLandingController.save',
-    MEMBER: 'FieloPLT__Member__c',
-    REWARD_RECENT: 'recentRewardRecords',
+    SAVE_CONTROLLER: 'FieloPRP.RedemptionLandingController.save',
+    MEMBER: 'FieloPRP__Member__c',
+    PRODUCT_RECENT: 'recentProductRecords',
     DATA_RECORD_ID: 'data-record-id'
   };
 
@@ -28,26 +28,27 @@
    * @private
    */
   FieloFormInvoice.prototype.CssClasses_ = {
-    ITEMS_CONTAINER: 'fielosf-items',
+    ITEMS_CONTAINER: 'fielosf-invoice-items',
     SAVE: 'slds-form__save',
     CANCEL: 'slds-form__cancel',
     DELETE: 'slds-button--delete',
     NEW: 'slds-button--new',
     ELEMENT: 'slds-form-element',
-    REDEMPTION_ITEM: 'fielosf-redemption__item',
-    ADD_REWARDS: 'slds-button--addrewards',
-    REWARD_QTY: 'fielosf-reward_qty',
-    REWARD_NAME: 'fielosf-reward_name',
-    REWARD_POINTS: 'fielosf-reward_points',
-    REWARD_FORM: 'fielosf-redemption-form-addrewards',
-    REWARD_ADD: 'slds-form-reward__add',
-    REWARD_CANCEL: 'slds-form-reward__cancel',
-    REWARD_SEARCH: 'slds-form-reward__search',
+    INVOICE_ITEM: 'fielosf-invoice__item',
+    ADD_PRODUCTS: 'slds-button--addproducts',
+    PRODUCT_QTY: 'fielosf-product_qty',
+    PRODUCT_UNIT_PRICE: 'fielosf-product_unit-price',
+    PRODUCT_TOTAL_PRICE: 'fielosf-product_total-price',
+    PRODUCT_NAME: 'fielosf-product_name',
+    PRODUCT_FORM: 'fielosf-invoice-form-addproducts',
+    PRODUCT_ADD: 'slds-form-product__add',
+    PRODUCT_CANCEL: 'slds-form-product__cancel',
+    PRODUCT_SEARCH: 'slds-form-product__search',
     RECENT_RECORDS: 'fielosf-recent-records__model',
     RECENT_CHECKBOX: 'fielosf-recent-records-checkbox',
     LOOKUP_PILL: 'slds-pill_container',
     SHOW: 'slds-show',
-    TOTAL_POINTS: 'fielosf-total_points'
+    INVOICE_AMOUNT: 'fielosf-invoice_amount'
 
   };
 
@@ -63,7 +64,7 @@
     if (memberValue) {
       fielo.util.spinner.FieloSpinner.show();
       var formValues = this.getValues_();
-      var itemValues = this.itemsContainer_.FieloItems.get();
+      var itemValues = this.itemsContainer_.FieloInvoiceItems.get();
       // verifico si hay al menos un item en cero o un reward sin elegir
       var quantityInCero = false;
       var emptyReward = false;
@@ -114,7 +115,7 @@
     // redemptionValues.sObjectType =
     //  this.form_.element_.getAttribute(this.form_.Constant_.OBJECT_NAME);
 
-    [].forEach.call(this.redemptionElements_, function(element) {
+    [].forEach.call(this.invoiceElements_, function(element) {
       if (element.FieloFormElement.get('fieldName') !== '') {
         var property = element.FieloFormElement.get('fieldName');
         if (property) {
@@ -127,29 +128,30 @@
   };
 
   FieloFormInvoice.prototype.setValues_ = function() {
-    return this.itemsContainer_.FieloItems.set();
+    return this.itemsContainer_.FieloInvoiceItems.set();
   };
 
   FieloFormInvoice.prototype.clear_ = function() {
     if (!this.keepItems_) {
-      [].forEach.call(this.redemptionElements_, function(item) {
+      [].forEach.call(this.invoiceElements_, function(item) {
         item.FieloFormElement.clear();
       });
       this.element_.getElementsByClassName(this.CssClasses_.ITEMS_CONTAINER)[0]
-        .FieloItems.clear();
+        .FieloInvoiceItems.clear();
     }
   };
 
   FieloFormInvoice.prototype.setMemberFilter_ = function() {
-    this.rewardRecent_ = document.getElementById(
-      this.Constant_.REWARD_RECENT);
+    this.productRecent_ = document.getElementById(
+      this.Constant_.PRODUCT_RECENT);
     this.rewardPaginator_ =
-      this.rewardRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
+      this.productRecent_.FieloRecentRecords.getPaginator(
+        ).FieloPaginator;
     this.memberFilter = [];
 
     this.memberFilter[this.Constant_.MEMBER] =
       this.element_.querySelector(
-        '[data-field-name="FieloPLT__Member__c"]').FieloFormElement.get(
+        '[data-field-name="FieloPRP__Member__c"]').FieloFormElement.get(
         'value');
     this.rewardPaginator_.setFilters(
         this.memberFilter);
@@ -158,31 +160,31 @@
   /**
    * Reload Reward Recent Records
    */
-  FieloFormInvoice.prototype.reloadRewardRecent_ = function() {
+  FieloFormInvoice.prototype.reloadproductRecent_ = function() {
     this.keepItems_ = true;
-    this.rewardRecent_ = document.getElementById(
-      this.Constant_.REWARD_RECENT);
-    if (this.rewardRecent_ !== null && this.rewardRecent_ !== undefined) {
+    this.productRecent_ = document.getElementById(
+      this.Constant_.PRODUCT_RECENT);
+    if (this.productRecent_ !== null && this.productRecent_ !== undefined) {
       this.resetSearch_();
-      this.setMemberFilter_();
+      // this.setMemberFilter_();
       this.recentPaginator_ =
-        this.rewardRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
+        this.productRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
       this.recentPaginator_.setPage();
       this.recentPaginator_.getRecords();
     }
   };
 
   FieloFormInvoice.prototype.resetSearch_ = function() {
-    this.rewardRecent_ = document.getElementById(
-      this.Constant_.REWARD_RECENT);
-    if (this.rewardRecent_ !== null && this.rewardRecent_ !== undefined) {
-      this.searchFields_ = this.rewardForm_.getElementsByClassName(
+    this.productRecent_ = document.getElementById(
+      this.Constant_.PRODUCT_RECENT);
+    if (this.productRecent_ !== null && this.productRecent_ !== undefined) {
+      this.searchFields_ = this.productForm_.getElementsByClassName(
         this.CssClasses_.ELEMENT);
       this.newFilters_ = [];
       [].forEach.call(this.searchFields_, function(element) {
         this.filterField_ = element.FieloFormElement;
         this.rewardPaginator_ =
-          this.rewardRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
+          this.productRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
         delete this.rewardPaginator_.getFilters()[
             this.filterField_.get('fieldName')];
       },
@@ -196,17 +198,17 @@
    * Execute Search
    */
   FieloFormInvoice.prototype.searchRecords_ = function() {
-    this.rewardRecent_ = document.getElementById(
-      this.Constant_.REWARD_RECENT);
-    if (this.rewardRecent_ !== null && this.rewardRecent_ !== undefined) {
-      this.searchFields_ = this.rewardForm_.getElementsByClassName(
+    this.productRecent_ = document.getElementById(
+      this.Constant_.PRODUCT_RECENT);
+    if (this.productRecent_ !== null && this.productRecent_ !== undefined) {
+      this.searchFields_ = this.productForm_.getElementsByClassName(
         this.CssClasses_.ELEMENT);
       this.newFilters_ = [];
 
       [].forEach.call(this.searchFields_, function(element) {
         this.filterField_ = element.FieloFormElement;
         this.rewardPaginator_ =
-          this.rewardRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
+          this.productRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
         if (this.filterField_.get('value') !== '' &&
           this.filterField_.get('value') !== null &&
           this.filterField_.get('value') !== undefined) {
@@ -251,6 +253,8 @@
    * Inicializa el elemento
    */
   FieloFormInvoice.prototype.init = function() {
+    console.log('Behold! The Invoice Form!');
+
     if (this.element_) {
       this.openForm_ = location.hash.split('#').slice(1);
 
@@ -258,158 +262,172 @@
       this.itemsContainer_ =
         this.element_
           .getElementsByClassName(this.CssClasses_.ITEMS_CONTAINER)[0];
-      componentHandler.upgradeElement(this.itemsContainer_);
+      if (this.itemsContainer_ !== null && this.itemsContainer_ !== undefined) {
+        componentHandler.upgradeElement(this.itemsContainer_);
+      }
+
       this.element_.FieloForm.save_ = this.save_.bind(this);
 
       this.form_.clear_ = this.clear_.bind(this);
 
-      this.redemptionElements_ = $(
+      this.invoiceElements_ = $(
         this.element_
           .getElementsByClassName(this.CssClasses_.ELEMENT)
       ).not(
-        this.itemsContainer_.getElementsByClassName(this.CssClasses_.ELEMENT)
+        this.itemsContainer_ !== null &&
+          this.itemsContainer_ !== undefined ?
+          this.itemsContainer_.getElementsByClassName(
+            this.CssClasses_.ELEMENT) :
+          null
       );
 
       this.form_.save_ = this.save_.bind(this);
 
       this.memberField_ =
-        this.element_.querySelector('[data-field-name="FieloPLT__Member__c"]');
+        this.element_.querySelector('[data-field-name="FieloPRP__Member__c"]');
 
       if (this.openForm_.length > 0) {
         var Id = this.openForm_[1];
         this.memberField_.FieloFormElement.set('value', Id);
         $(this.element_).modal('show');
       }
-      this.orderTotal_ =
-        this.element_.querySelector('.' + this.CssClasses_.TOTAL_POINTS);
+      this.invoiceAmount_ =
+        this.element_.querySelector('.' + this.CssClasses_.INVOICE_AMOUNT);
 
       if (this.keepItems_ === null || this.keepItems_ === undefined) {
         this.keepItems_ = false;
       }
 
-      this.addRewardsBtn_ = this.element_.getElementsByClassName(
-        this.CssClasses_.ADD_REWARDS)[0];
+      this.addProductsBtn_ = this.element_.getElementsByClassName(
+        this.CssClasses_.ADD_PRODUCTS)[0];
       // Method to disable any action when no member is given
-      this.addRewardsBtn_.addEventListener('click',
+      this.addProductsBtn_.addEventListener('click',
         this.verifyMember_.bind(this));
       // Method to refresh recend records from the add rewards modal
-      this.addRewardsBtn_.addEventListener('click',
-        this.reloadRewardRecent_.bind(this));
+      this.addProductsBtn_.addEventListener('click',
+        this.reloadproductRecent_.bind(this));
+      console.log('Add products button ready!');
 
       this.cancelBtn_ = this.element_.getElementsByClassName(
         this.CssClasses_.CANCEL)[0];
       // Make filled fields persistent
       this.cancelBtn_.addEventListener('click',
         this.resetKeepItems.bind(this));
+      console.log('Cancel button ready!');
 
-      this.newRewardBtn = this.element_.getElementsByClassName(
+      this.newProductBtn = this.element_.getElementsByClassName(
         this.CssClasses_.NEW)[0];
       // Method to disable any action when no member is given
-      this.newRewardBtn.addEventListener('click',
+      this.newProductBtn.addEventListener('click',
         this.verifyMember_.bind(this));
+      console.log('New button ready!');
 
-      this.rewardForm_ =
-        document.getElementsByClassName(this.CssClasses_.REWARD_FORM)[0];
-      if (this.rewardForm_ !== null && this.rewardForm_ !== undefined) {
-        this.rewardFormAddBtn_ =
-          this.rewardForm_.getElementsByClassName(
-            this.CssClasses_.REWARD_ADD)[0];
+      this.productForm_ =
+        document.getElementsByClassName(this.CssClasses_.PRODUCT_FORM)[0];
+      if (this.productForm_ !== null && this.productForm_ !== undefined) {
+        this.productFormAddBtn_ =
+          this.productForm_.getElementsByClassName(
+            this.CssClasses_.PRODUCT_ADD)[0];
         // Add selected rewards to basket
-        this.rewardFormAddBtn_.addEventListener('click',
-          this.updateRetemptionBasket.bind(this));
+        this.productFormAddBtn_.addEventListener('click',
+          this.updateProductBasket.bind(this));
+        console.log('Add button ready!');
 
-        this.rewardFormSearchBtn_ =
-          this.rewardForm_.getElementsByClassName(
-            this.CssClasses_.REWARD_SEARCH)[0];
+        this.productFormSearchBtn_ =
+          this.productForm_.getElementsByClassName(
+            this.CssClasses_.PRODUCT_SEARCH)[0];
         // Executes the reward search based on modal filters
-        this.rewardFormSearchBtn_.addEventListener('click',
+        this.productFormSearchBtn_.addEventListener('click',
           this.searchRecords_.bind(this));
+        console.log('Search button ready!');
 
-        this.cancelRewardsAddBtn_ = document.getElementsByClassName(
-          this.CssClasses_.REWARD_CANCEL)[0];
-        this.rewardRecent_ = document.getElementById(
-          this.Constant_.REWARD_RECENT);
+        this.cancelProductsAddBtn_ = document.getElementsByClassName(
+          this.CssClasses_.PRODUCT_CANCEL)[0];
+        this.productRecent_ = document.getElementById(
+          this.Constant_.PRODUCT_RECENT);
         // Unmark selected rows in the rewards modal
-        this.cancelRewardsAddBtn_.addEventListener('click',
-          this.rewardRecent_.FieloRecentRecords.uncheckAll.bind(
-            this.rewardRecent_.FieloRecentRecords));
+        this.cancelProductsAddBtn_.addEventListener('click',
+          this.productRecent_.FieloRecentRecords.uncheckAll.bind(
+            this.productRecent_.FieloRecentRecords));
+        console.log('Cancel add button ready!');
       }
     }
   };
 
-  FieloFormInvoice.prototype.updateRetemptionBasket = function() {
-    this.recentRewardRecords_ =
-      this.rewardForm_.getElementsByClassName(this.CssClasses_.RECENT_RECORDS);
-    this.rewardsInfo_ = {};
-    [].forEach.call(this.recentRewardRecords_, function(element) {
+  FieloFormInvoice.prototype.updateProductBasket = function() {
+    this.recentProductRecords_ =
+      this.productForm_.getElementsByClassName(this.CssClasses_.RECENT_RECORDS);
+    this.productsInfo_ = [];
+
+    [].forEach.call(this.recentProductRecords_, function(element) {
       this.recordCheckbox =
         element.getElementsByClassName(
           this.CssClasses_.RECENT_CHECKBOX)[0];
       if (this.recordCheckbox.checked === true) {
-        this.rewardsInfo_[element.getAttribute(
-            this.Constant_.DATA_RECORD_ID)] =
-              element.querySelector(
-                '[data-field="FieloPLT__Points__c"]').innerHTML;
+        this.productsInfo_.push(element.getAttribute(
+            this.Constant_.DATA_RECORD_ID));
       }
     },
       this
     );
-    this.redemptionItems_ = this.element_.getElementsByClassName(
+
+    this.invoiceItems_ = this.element_.getElementsByClassName(
       this.CssClasses_.ITEMS_CONTAINER)[0];
-    this.getEmptyRedemptionItems();
-    for (var rewardId in this.rewardsInfo_) {
-      if (this.rewardsInfo_[rewardId] !== null &&
-        this.rewardsInfo_[rewardId] !== undefined) {
+
+    this.getEmptyInvoiceItems();
+
+    [].forEach.call(this.productsInfo_, function(productId) {
+      if (productId !== null &&
+        productId !== undefined) {
         if (this.availableSlots.length > 0) {
-          this.lastRedemptionItem = this.availableSlots.pop();
+          this.lastInvoiceItem = this.availableSlots.pop();
         } else {
-          this.redemptionContainerItems_ = this.element_.getElementsByClassName(
+          this.invoiceContainerItems_ = this.element_.getElementsByClassName(
           this.CssClasses_.ITEMS_CONTAINER)[0];
           // todo: discover a new way to create redemption items, or turn the
           // the method into a public method
-          this.redemptionContainerItems_.FieloItems.newRedemptionItem_();
-          this.redemptionItems_ =
+          this.invoiceContainerItems_.FieloInvoiceItems.newinvoiceItem_();
+          this.invoiceItems_ =
             this.element_.getElementsByClassName(
-              this.CssClasses_.REDEMPTION_ITEM);
-          this.lastRedemptionItem =
-            this.redemptionItems_[this.redemptionItems_.length - 1];
+              this.CssClasses_.INVOICE_ITEM);
+          this.lastInvoiceItem =
+            this.invoiceItems_[this.invoiceItems_.length - 1];
         }
 
-        this.elementFields = this.lastRedemptionItem.getElementsByClassName(
+        this.elementFields = this.lastInvoiceItem.getElementsByClassName(
           this.CssClasses_.ELEMENT);
 
-        for (var fieldPtr = 0; fieldPtr < this.elementFields.length;
-          fieldPtr++) {
-          if (this.elementFields[fieldPtr].FieloFormElement.get('fieldName') ===
-            'FieloPLT__Reward__c') {
-            this.elementFields[fieldPtr].FieloFormElement.set('value',
-              rewardId);
-            this.activeItem = this.lastRedemptionItem;
-            this.activeItem.setAttribute('data-value',
-              this.rewardsInfo_[rewardId]);
-            this.refreshPoints();
-          }
-        }
+        $(this.lastInvoiceItem).find(
+            $('[data-field-name="FieloPRP__Product__c"]')
+            )[0].FieloFormElement.set('value', productId);
+        $(this.lastInvoiceItem).find(
+            $('[data-field-name="FieloPRP__Quantity__c"]')
+            )[0].FieloFormElement.set('value', 1);
+        this.activeItem = this.lastInvoiceItem;
+        this.activeItem.setAttribute('data-value', productId);
+        this.refreshTotalPrice();
       }
-    }
-    this.rewardRecent_.FieloRecentRecords.uncheckAll();
+    },
+      this
+    );
+    this.productRecent_.FieloRecentRecords.uncheckAll();
   };
 
   /**
    * Set the available redemptions slots array
    *
    */
-  FieloFormInvoice.prototype.getEmptyRedemptionItems = function() {
-    var reward;
+  FieloFormInvoice.prototype.getEmptyInvoiceItems = function() {
+    var product;
     this.availableSlots = [];
     [].forEach.call(
-      this.element_.getElementsByClassName(this.CssClasses_.REDEMPTION_ITEM),
+      this.element_.getElementsByClassName(this.CssClasses_.INVOICE_ITEM),
       function(element) {
-        reward =
+        product =
           $(element).find(
-            $('[data-field-name="FieloPLT__Reward__c"]')
+            $('[data-field-name="FieloPRP__Product__c"]')
             )[0].FieloFormElement.get('value');
-        if (reward === null || reward === undefined) {
+        if (product === null || product === undefined) {
           this.availableSlots.push(element);
         }
       },
@@ -417,53 +435,33 @@
     );
   };
 
-  FieloFormInvoice.prototype.refreshPoints = function() {
-    var points = this.activeItem.getAttribute('data-value');
-    var qty = this.activeItem.querySelector(
-      '.' + this.CssClasses_.REWARD_QTY + ' .' + this.CssClasses_.ELEMENT
-    ).FieloFormElement.get('value');
-
-    if (
-      !points ||
-      !this.activeItem.querySelector(
-        '.' + this.CssClasses_.REWARD_NAME + ' .' + this.CssClasses_.ELEMENT
-        ).FieloFormElement.get('value')
-    ) {
-      points = 0;
-    }
-    var totalPoints = qty * points;
-    this.activeItem.querySelector('.' + this.CssClasses_.REWARD_POINTS)
-      .innerHTML = totalPoints;
-
-    var orderPoints = 0;
-    var orderedElements =
-      this.element_.querySelectorAll('.' + this.CssClasses_.REWARD_POINTS);
-    [].forEach.call(orderedElements, function(item) {
-      orderPoints += Number(item.innerHTML);
-    });
-    this.orderTotal_.innerHTML = orderPoints;
-
-    this.keepItems_ = true;
+  FieloFormInvoice.prototype.refreshTotalPrice = function() {
+    console.log('refreshTotalPrice');
   };
 
-  FieloFormInvoice.prototype.refreshPointsProxy_ = function(
+  FieloFormInvoice.prototype.refreshTotalPriceProxy_ = function(
     value
   ) {
     var _this = $(this.element_).closest(
-        '.fielosf-redemption-form')[0].FieloFormInvoice;
+        '.fielosf-invoice-form')[0].FieloFormInvoice;
+    /*
     if (_this !== null && _this !== undefined) {
       _this.activeItem = $(this.element_).closest(
-        '.fielosf-redemption__item')[0];
+        '.fielosf-invoice__item')[0];
       if (value && value.metaLabel !== undefined) {
         _this.activeItem.setAttribute('data-value', value.metaLabel);
       }
       _this.refreshPoints();
     }
+    */
+    console.log('refreshTotalPriceProxy_');
+    console.log('value: ' + value);
+    _this.refreshTotalPrice();
   };
 
   FieloFormInvoice.prototype.verifyMember_ = function(event) {
     var memberId = document.querySelector(
-      '[data-field-name="FieloPLT__Member__c"]'
+      '[data-field-name="FieloPRP__Member__c"]'
       ).FieloFormElement.get('value');
     if (memberId === null || memberId === undefined) {
       event.stopPropagation();
@@ -475,13 +473,13 @@
     }
   };
 
-  window.FieloFormRedemption_refreshPoints = // eslint-disable-line camelcase
-      FieloFormInvoice.prototype.refreshPointsProxy_;
+  window.FieloFormInvoice_refreshPoints = // eslint-disable-line camelcase
+      FieloFormInvoice.prototype.refreshTotalPriceProxy_;
 
   fielo.helper.register({
     constructor: FieloFormInvoice,
     classAsString: 'FieloFormInvoice',
-    cssClass: 'fielosf-redemption-form',
+    cssClass: 'fielosf-invoice-form',
     widget: true
   });
 })();

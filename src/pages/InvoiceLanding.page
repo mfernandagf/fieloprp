@@ -30,10 +30,14 @@
       {'Label': 'Export', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLExport,null,[ retURL = $CurrentPage.url, type = 'incentives'])}', 'CssClass': '' },
       {'Label': 'Import', 'CssClass': '', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLImport,null,[retURL = $CurrentPage.url, type = 'incentives'])}'}"-->
 
-    <c:Form namespace="FieloPRP" formId="invoiceForm"
+    <c:FormInvoice namespace="FieloPRP" formId="invoiceForm"
       heading="New {!$ObjectType.Invoice__c.label}"
-      fieldset="{!newSettings.FieloPLT__Fieldset__c}"
       sObjectName="FieloPRP__Invoice__c"
+      fieldset="{!newSettings.FieloPLT__Fieldset__c}"
+      filterSObjectName="Product2"
+      filter="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
+      mode="new"
+      className="fielosf-invoice-form"
     />
 
     <!-- Content -->
@@ -42,12 +46,7 @@
           
       <div class="slds-p-horizontal--small slds-size--12-of-12">
         <div class="slds-tabs--default slds-p-around--x-small slds-clearfix">
-          <!--<ul class="slds-tabs--default__nav" role="tablist">
-            <li class="slds-tabs--default__item slds-text-heading--label slds-active" title="{!$ObjectType.Promotion__c.Label}s" role="presentation"  id="promotions-tab"><a class="slds-tabs--default__link" href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="promotions-panel" id="promotions-link">{!$ObjectType.Promotion__c.labelPlural}</a></li>
-            <li class="slds-tabs--default__item slds-text-heading--label" title="{!$ObjectType.Challenge__c.Label}s" role="presentation" id="challenges-tab"><a class="slds-tabs--default__link" href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="challenges-panel" id="challenge-link">{!$ObjectType.Challenge__c.labelPlural}</a></li>
-          </ul>-->
           <div id="promotions-panel" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
-            
             <c:RecentRecords namespace="FieloPRP" sObjectName="FieloPRP__Invoice__c"
               fieldset="{!landingSettings.FieloPLT__Fieldset__c}"
               async="false"
@@ -62,8 +61,8 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloPRP__FieloRecentRecords)}" namespace="FieloPRP" /><!--{!URLFOR($Resource.FieloPRP__FieloSalesforce_Backend, 'fielo/scripts/core.min.js')}-->
-<script src="{!URLFOR($Resource.FieloPRP__programSelector)}"></script>
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloRecentRecords)}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
+<!-- <script src="{!URLFOR($Resource.FieloPRP__programSelector)}"></script> -->
 </body>
 </html>
 </apex:page>
