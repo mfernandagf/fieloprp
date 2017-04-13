@@ -545,21 +545,21 @@ public class TestRESTInvoice {
             )
         };
 
-        List<RESTInvoice.RESTInvoiceWrappler> restInvoiceWrapplerList = new List<RESTInvoice.RESTInvoiceWrappler>();
+        List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
         
-        RESTInvoice.RESTInvoiceWrappler riw;
+        RESTInvoice.RESTInvoiceWrapper riw;
 
-        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[0];
         riw.invoiceItems = new List<InvoiceItem__c>();
         riw.invoiceItems.addAll(items);
 
-        restInvoiceWrapplerList.add(riw);
+        RESTInvoiceWrapperList.add(riw);
 
-        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[1];
 
-        restInvoiceWrapplerList.add(riw);
+        RESTInvoiceWrapperList.add(riw);
 
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
@@ -568,7 +568,7 @@ public class TestRESTInvoice {
 
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(restInvoiceWrapplerList));
+        req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
 
         // When
         RestContext.request = req;
@@ -617,21 +617,21 @@ public class TestRESTInvoice {
             )
         };
 
-        List<RESTInvoice.RESTInvoiceWrappler> restInvoiceWrapplerList = new List<RESTInvoice.RESTInvoiceWrappler>();
+        List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
         
-        RESTInvoice.RESTInvoiceWrappler riw;
+        RESTInvoice.RESTInvoiceWrapper riw;
 
-        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[0];
         riw.invoiceItems = new List<InvoiceItem__c>();
         riw.invoiceItems.addAll(items);
 
-        restInvoiceWrapplerList.add(riw);
+        RESTInvoiceWrapperList.add(riw);
 
-        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[1];
 
-        restInvoiceWrapplerList.add(riw);
+        RESTInvoiceWrapperList.add(riw);
 
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
@@ -640,7 +640,7 @@ public class TestRESTInvoice {
 
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(restInvoiceWrapplerList));
+        req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
         // When
 
         RestContext.request = req;
@@ -684,21 +684,21 @@ public class TestRESTInvoice {
             )
         };
 
-        List<RESTInvoice.RESTInvoiceWrappler> restInvoiceWrapplerList = new List<RESTInvoice.RESTInvoiceWrappler>();
+        List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
         
-        RESTInvoice.RESTInvoiceWrappler riw;
+        RESTInvoice.RESTInvoiceWrapper riw;
 
-        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[0];
         riw.invoiceItems = new List<InvoiceItem__c>();
         riw.invoiceItems.addAll(items);
 
-        restInvoiceWrapplerList.add(riw);
+        RESTInvoiceWrapperList.add(riw);
 
-        riw = new RESTInvoice.RESTInvoiceWrappler();
+        riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[1];
 
-        restInvoiceWrapplerList.add(riw);
+        RESTInvoiceWrapperList.add(riw);
 
         //Cause Exception
         programs[0].FieloPRP__DetailedInvoice__c = false;
@@ -711,7 +711,7 @@ public class TestRESTInvoice {
 
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(restInvoiceWrapplerList));
+        req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
         // When
 
         RestContext.request = req;

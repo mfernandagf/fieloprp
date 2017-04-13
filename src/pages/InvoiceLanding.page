@@ -61,7 +61,7 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloRecentRecords)}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
 <!-- <script src="{!URLFOR($Resource.FieloPRP__programSelector)}"></script> -->
 </body>
 </html>
