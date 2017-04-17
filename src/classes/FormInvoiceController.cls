@@ -217,45 +217,62 @@ public with sharing class FormInvoiceController {
 
     /*****  Metodos Remote para Save y Retrieve *****/
     @RemoteAction
-    public static RemoteActionResult save( sObject record, List<String> nullFields ){
-    Savepoint sp;
-    RemoteActionResult result = new RemoteActionResult();
+    public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items){
+        Savepoint sp;
+        RemoteActionResult result = new RemoteActionResult();
 
-    try{
-        sp = Database.setSavepoint();
-        for ( String f :nullFields ) {
-          if ( f != 'sObjectType' ) {
-             record.put(f, null );
-          }
-        }
-        upsert record;
-        //TODO Crear Label DataSavedSuccessfully
-        result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Data was saved successfully') );
-        result.redirectURL = '/' + record.Id;
+        try{
+            sp = Database.setSavepoint();
+            SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType});
+            
+            Boolean newRecord = record.Id==null;
 
-    }catch(DmlException e){
-        // Agrega las Validation Rules asociadas al Campo
-        Database.rollback(sp);
-        if(ApexPages.hasMessages()){
-            result.redirectURL = '';
-            for(ApexPages.Message m : ApexPages.getMessages()){
-                result.addMessage(new RemoteActionResult.RemoteActionMessage(m, record.getSobjectType().getDescribe().getName() ));
+            if (!newRecord) {
+                uow.registerDirty(record);
+                uow.registerDeleted(
+                    new InvoiceItemsSelector().selectByMemberIdAndInvoiceId(new Set<Id>{record.Id}, null));
+            } else {
+                uow.registerNew(record);
             }
-        } else {
-          result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+            
+            if(items!=null){
+                for(InvoiceItem__c item: items){
+                    uow.registerNew(item, InvoiceItem__c.Invoice__c, record);
+                }
+            }
+
+            uow.commitWork();
+
+            List<Invoice__c> invoices = newRecord ?
+              (List<Invoice__c>)uow.m_newListByType.get('FieloPRP__Invoice__c') :
+              new List<Invoice__c>{(Invoice__c)uow.m_dirtyMapByType.get('FieloPRP__Invoice__c').get(record.Id)};
+
+            if ( invoices.size() == 1  ) {
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The invoice was saved successfully') );
+                result.redirectURL = '/'+invoices[0].Id;
+            } else {
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple invoices were created') );
+            }
+        }catch(DMLException e){
+            if(sp != null){
+                Database.rollback(sp);
+            }
+            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        }catch(Exception e){
+            if(sp != null){
+                Database.rollback(sp);
+            }
+            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
         }
-    }catch(Exception e){
-        if(sp != null){
-            Database.rollback(sp);
-        }
-        result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
-    }
-    return result;
+        return result;
     }
 
   @RemoteAction
-  public static sObject retrieve( String objectName, String recordId, String fields ){
+  public static sObject retrieve( String objectName, String recordId, String fields, String itemFields){
     String query = 'SELECT ' + fields;
+    if (itemFields != null) {
+      query += String.format(' ,(SELECT {0} FROM InvoiceItems__r)', new List<String>{itemFields});
+    }
     query += ' FROM ' + objectName;
     query += ' WHERE ID = :recordId' ;
     query += ' LIMIT 1';
@@ -314,28 +331,30 @@ public with sharing class FormInvoiceController {
 
     public static String assembleWhereCondition(String fieldName, String fieldValue){
         //Member Field Special Treatment
+        System.debug(fieldName + ' = ' + fieldValue);
         String singleWhereCondition='';
-        String fieldType = staticFilterFieldMap.get(fieldName).getDescribe().getType().name();
-        Set<String> nonQuotedTypes = new Set<String>{'DOUBLE',
-            'DATETIME',
-            'DATE',
-            'CURRENCY',
-            'INTEGER',
-            'BOOLEAN',
-            'PERCENT',
-            'TIME'};
+        if (staticFilterFieldMap.containsKey(fieldName)) {
+            String fieldType = staticFilterFieldMap.get(fieldName).getDescribe().getType().name();
+            Set<String> nonQuotedTypes = new Set<String>{'DOUBLE',
+                'DATETIME',
+                'DATE',
+                'CURRENCY',
+                'INTEGER',
+                'BOOLEAN',
+                'PERCENT',
+                'TIME'};
 
-        //Special treatment
-        if (nonQuotedTypes.contains(fieldType)) {
-            singleWhereCondition = ' AND ' + fieldName + ' = ' + fieldValue;
+            //Special treatment
+            if (nonQuotedTypes.contains(fieldType)) {
+                singleWhereCondition = ' AND ' + fieldName + ' = ' + fieldValue;
 
-        } else if (fieldType == 'STRING') {
-            singleWhereCondition = ' AND ' + fieldName + ' like \'%' + fieldValue+'%\'';
+            } else if (fieldType == 'STRING') {
+                singleWhereCondition = ' AND ' + fieldName + ' like \'%' + fieldValue+'%\'';
 
-        } else {
-            singleWhereCondition = ' AND ' + fieldName + ' = \'' + fieldValue+'\'';
+            } else {
+                singleWhereCondition = ' AND ' + fieldName + ' = \'' + fieldValue+'\'';
+            }
         }
-
         return singleWhereCondition;
     }
 
@@ -346,14 +365,17 @@ public with sharing class FormInvoiceController {
         Map<String,Object> filter = (Map<String, Object>) JSON.deserializeUntyped( filterJson);
         for ( String k :filter.keySet() ) {
           String value = String.valueOf(filter.get(k));
-          if ( value.startsWith('!') ) {
-            whereCondition += ' AND ' + k + ' <> \'' +  value.substring(1) + '\'';
-          } else {
-            whereCondition += assembleWhereCondition(k,value);
+          if (value != null) {
+            if ( value.startsWith('!') ) {
+              whereCondition += ' AND ' + k + ' <> \'' +  value.substring(1) + '\'';
+            } else {
+              whereCondition += assembleWhereCondition(k,value);
+            }
           }
         }
-
-        whereCondition = ' WHERE ' + whereCondition.substring(4);
+        if (whereCondition.length() > 4) {
+          whereCondition = ' WHERE ' + whereCondition.substring(4);
+        }
       }
       return whereCondition;
     }
@@ -379,5 +401,14 @@ public with sharing class FormInvoiceController {
         }
         System.debug('query: ' + query);
         return Database.query(query);
+    }
+
+    @RemoteAction
+    public static Boolean getHasDetailsFromMember(String memberId) {
+      String query = 'Select FieloPLT__Program__r.FieloPRP__DetailedInvoice__c';
+      query += ' FROM FieloPLT__Member__c';
+      query += ' WHERE Id =: memberId';
+      FieloPLT__Member__c member = (FieloPLT__Member__c) Database.query(query);
+      return member.FieloPLT__Program__r.FieloPRP__DetailedInvoice__c;
     }
 }

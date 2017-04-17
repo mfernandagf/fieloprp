@@ -13,7 +13,7 @@
       secondHeading="{!record['name']}"
       icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#contract"
       helpUrl="http://documentation.fielo.com/docs/redemption"
-      record="{!IF(isBlank(record.Id), '', Invoice__c)}"
+      record="{!record}"
       sObjectName="Invoice__c"
       fieldset="{!view.FieloPLT__Fieldset__c}"
       buttons="{!buttonString}"
@@ -28,12 +28,25 @@
       </span>
     </c:BackendHeaderRecord>
 
+    <!--
     <c:Form formId="invoiceForm"
       heading="Edit {!$ObjectType.Invoice__c.label}"
       fieldset="{!edit.FieloPLT__Fieldset__c}"
       sObjectName="FieloPRP__Invoice__c"
     />
-
+    -->
+    <c:FormInvoice namespace="FieloPRP" formId="invoiceForm"
+      heading="Edit {!$ObjectType.Invoice__c.label}"
+      sObjectName="FieloPRP__Invoice__c"
+      fieldset="{!edit.FieloPLT__Fieldset__c}"
+      filterSObjectName="Product2"
+      filter="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
+      mode="new"
+      record="{!record}"
+      className="fielosf-invoice-form"
+      retrieveController="FormInvoiceController.retrieve"
+    />
+  
     <apex:repeat value="{!related}" var="rel">
         <apex:panelGroup rendered="{!rel.FieloPLT__TargetObject__c = 'FieloPRP__InvoiceItem__c' && record.FieloPRP__HasDetails__c }">
           <c:RelatedList namespace="FieloPLT" heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
@@ -142,7 +155,12 @@
     </script>
 
   </div>
-  <c:BackendFooter helpers="'FieloPaginator', 'FieloRelatedRecords'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}"/>
+  <c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloRelatedRecords', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloRecentRecords)}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
+  <!--
+  <c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloRecentRecords)}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
+
+
+  -->
 </body>
 </html>
 </apex:page>

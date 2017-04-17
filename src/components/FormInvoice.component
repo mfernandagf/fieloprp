@@ -24,7 +24,7 @@
     <apex:attribute name="filter" type="String" default="" description="Form Fields"  assignTo="{!cFilter}"/>
     <apex:attribute name="filterSObjectName" type="String" default="" description="" assignTo="{!cfilterSObjectName}" />
 
-      <div id="{!formId}" role="dialog" tabindex="-1" aria-labelledby="{!formId}headerModal" class="slds-hide slds-modal slds-fade-in-open slds-form {!className}" data-on-show="FieloForm_retrieve" data-save-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!saveController}" data-retrieve-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!retrieveController}" data-object-name="{!sObjectName}" data-fields="{!fields}" data-secondary-parameters="{!secondaryParameters}" data-redirect="{!redirect}">
+      <div id="{!formId}" role="dialog" tabindex="-1" aria-labelledby="{!formId}headerModal" class="slds-hide slds-modal slds-fade-in-open slds-form {!className}" data-on-show="FieloFormInvoice_retrieve" data-save-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!saveController}" data-retrieve-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!retrieveController}" data-object-name="{!sObjectName}" data-fields="{!fields}" data-secondary-parameters="{!secondaryParameters}" data-redirect="{!redirect}">
         <div class="slds-modal__container">
           <div class="slds-modal__header slds-text-heading--medium">
             <button class="slds-button slds-modal__close slds-button--icon-inverse" data-aljs-dismiss="modal" title="Close">
@@ -36,8 +36,6 @@
             <h2 id="{!formId}headerModal" class="slds-text-heading--medium">{!heading}</h2>
           </div>
           <div class="slds-modal__content slds-p-around--medium">
-
-            
             <c:Sections record="{!record}" formId="{!formId}" sObjectName="{!sObjectName}" fieldset="{!fieldset}" mode="{!mode}" layout='stacked'/>
 
             <!-- layout horizontal, stacked, inline, table -->
@@ -78,6 +76,7 @@
             recentId="recentProductRecords" 
             sObjectName="{!filterSObjectName}" 
             title="Products"
+            async="false"
             dataFilters=""
             showCheckboxes="true"
             fieldset="{!filterRecentRecords}" 

@@ -56,7 +56,9 @@ public with sharing class ProgramService {
                 options.add(new SelectOption(program.Id, program.Name));
             //}
         }
+        system.debug('before: '+options);
         sortSelectOptions(options);
+        system.debug('after: '+options);
         return options;
     }
     

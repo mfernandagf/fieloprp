@@ -66,10 +66,10 @@ public with sharing class InvoiceLandingController extends PageSettingsSetContro
             List<Invoice__c> invoices = InvoiceService.createInvoice(invoiceWrapperList);
 
             if ( invoices.size() == 1  ) {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The redemption was created successfully') );
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The invoice was created successfully') );
                 result.redirectURL = '/'+invoices[0].Id;
             } else {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple redemptions were created') );
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple invoices were created') );
             }
         }catch(DMLException e){
             if(sp != null){

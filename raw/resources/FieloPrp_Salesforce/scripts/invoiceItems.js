@@ -63,13 +63,11 @@
   };
 
   FieloInvoiceItems.prototype.refreshTotalPrice_ = function() {
-    var invoiceItems =
-        this.element_.getElementsByClassName(this.CssClasses_.ITEM);
-    var redemptionFormLst = $(this.element_).closest(
+    var invoiceFormLst = $(this.element_).closest(
         '.fielosf-invoice-form');
-    if (redemptionFormLst.length > 0) {
-      var redemptionForm = redemptionFormLst[0].FieloFormRedemption;
-      redemptionForm.refreshPoints(invoiceItems[0]);
+    if (invoiceFormLst.length > 0) {
+      var invoiceForm = invoiceFormLst[0].FieloFormInvoice;
+      invoiceForm.refreshTotal();
     }
   };
 
@@ -125,7 +123,6 @@
       }, this);
       sObjectList.push(sObject);
     }, this);
-    // sObjectList.sObjectType = this.Constant_.OBJECT_TYPE;
     return sObjectList;
   };
 
@@ -134,20 +131,17 @@
   };
 
   FieloInvoiceItems.prototype.clear = function() {
+    this.newinvoiceItem_();
     var items = this.element_.getElementsByClassName(this.CssClasses_.DELETE);
     while (items.length > 1) {
       items[0].click();
     }
-    // Ver de mejorar esta parte, ahora alcanza para que ande el clean
-    this.element_.querySelector('.' + this.CssClasses_.PRODUCT_QTY + ' .' +
-      this.CssClasses_.FORM_ELEMENT).FieloFormElement.set('value', 1);
-
-    this.element_.querySelector('.' + this.CssClasses_.PRODUCT_NAME + ' .' +
-      this.CssClasses_.FORM_ELEMENT).FieloFormElement.clear();
-
-    this.element_.querySelector('.' +
-      this.CssClasses_.PRODUCT_TOTAL_PRICE + ' .' +
-        this.CssClasses_.FORM_ELEMENT).FieloFormElement.set('value', null);
+    $(this.element_).find($('[data-field-name="FieloPRP__UnitPrice__c"]')
+      )[0].FieloFormElement.set('value', '');
+    $(this.element_).find($('[data-field-name="FieloPRP__Quantity__c"]')
+          )[0].FieloFormElement.set('value', 1);
+    $(this.element_).find($('[data-field-name="FieloPRP__TotalPrice__c"]')
+      )[0].FieloFormElement.set('value', '');
   };
 
   /**

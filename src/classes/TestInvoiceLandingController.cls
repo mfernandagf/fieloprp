@@ -35,7 +35,7 @@ public class TestInvoiceLandingController {
         ApexPages.Standardsetcontroller standardController = new ApexPages.Standardsetcontroller(invoices);
         InvoiceLandingController controller = new InvoiceLandingController(standardController);
         
-        List<SelectOption> statusList = InvoiceLandingController.getStatusViews();
+        // List<SelectOption> statusList = InvoiceLandingController.getStatusViews();
 
         String jsonFilter = '{"member__r.fieloplt__program__c":"'+programs[0].Id+'", "viewName":"Pending"}';
 
