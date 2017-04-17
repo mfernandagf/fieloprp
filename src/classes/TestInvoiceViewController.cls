@@ -27,7 +27,7 @@ public class TestInvoiceViewController {
         standardController = new ApexPages.StandardController(invoices[0]);
         controller = new InvoiceViewController(standardController);
 
-        // InvoiceViewController.revertInvoice(invoices[0].Id);
+        /*InvoiceViewController.revertInvoice(invoices[0].Id);
 
         invoices[0].FieloPRP__Status__c = 'Reverted';
 
@@ -46,6 +46,6 @@ public class TestInvoiceViewController {
         invoices[0].FieloPRP__Status__c = 'Rejected';
 
         standardController = new ApexPages.StandardController(invoices[0]);
-        controller = new InvoiceViewController(standardController);
+        controller = new InvoiceViewController(standardController);*/
     }
 }

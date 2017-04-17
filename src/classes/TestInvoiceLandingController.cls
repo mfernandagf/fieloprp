@@ -35,13 +35,13 @@ public class TestInvoiceLandingController {
         ApexPages.Standardsetcontroller standardController = new ApexPages.Standardsetcontroller(invoices);
         InvoiceLandingController controller = new InvoiceLandingController(standardController);
         
-        // List<SelectOption> statusList = InvoiceLandingController.getStatusViews();
+        /*List<SelectOption> statusList = InvoiceLandingController.getStatusViews();
 
         String jsonFilter = '{"member__r.fieloplt__program__c":"'+programs[0].Id+'", "viewName":"Pending"}';
 
         List<SObject> records = InvoiceLandingController.getInvoices('FieloPRP__Invoice__c','',1,null,jsonFilter,10);
 
-        FieloPLT__Program__c currentProgram = controller.currentProgram;
+        FieloPLT__Program__c currentProgram = controller.currentProgram;*/
 	}
 
 	@isTest static void unitTest2(){

@@ -48,7 +48,7 @@
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <deprecated>false</deprecated>
-    <description>Programs establish the general operations settings of your loyalty program.</description>
+    <description>Programs establish the general operation settings of your loyalty program.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableEnhancedLookup>false</enableEnhancedLookup>
@@ -74,7 +74,7 @@
     <fields>
         <fullName>FieloPLT__ActualPointCost__c</fullName>
         <deprecated>false</deprecated>
-        <description>It translates Transaction Points into real cost.</description>
+        <description>It translates Transaction Points into real currency cost.</description>
         <externalId>false</externalId>
         <inlineHelpText>It translates Transaction Points into real cost.</inlineHelpText>
         <label>Actual Point Cost</label>
@@ -112,10 +112,10 @@
         <fullName>FieloPLT__OnlineTransactionProcessing__c</fullName>
         <defaultValue>true</defaultValue>
         <deprecated>false</deprecated>
-        <description>When ticked, Transactions are processed online when recorded. Otherwise, all transactions are processed offline once a day.</description>
+        <description>When ticked, Transactions and trackers are processed online when recorded. Otherwise, all transactions and trackers are processed offline.</description>
         <externalId>false</externalId>
         <inlineHelpText>When ticked, Transactions are processed online when recorded.</inlineHelpText>
-        <label>Online Transaction Processing</label>
+        <label>Online Processing</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -145,8 +145,9 @@
         <fullName>FieloPLT__RequestUser__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
+        <description>When ticked, Member status is &quot;Pending User&quot;. It is used when either an external or Fielo Site is used.</description>
         <externalId>false</externalId>
-        <label>Request User</label>
+        <label>Request User Authorization</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
