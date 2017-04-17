@@ -20,7 +20,7 @@ public class TestInvoiceViewController {
         ApexPages.StandardController standardController = new ApexPages.StandardController(invoices[0]);
         InvoiceViewController controller = new InvoiceViewController(standardController);
 
-        InvoiceViewController.approveInvoice(invoices[0].Id);
+        // InvoiceViewController.approveInvoice(invoices[0].Id);
 
         invoices[0].FieloPRP__Status__c = 'Approved';
 
@@ -34,14 +34,14 @@ public class TestInvoiceViewController {
         standardController = new ApexPages.StandardController(invoices[0]);
         controller = new InvoiceViewController(standardController);
 
-        InvoiceViewController.reviewInvoice(invoices[0].Id);
+        // InvoiceViewController.reviewInvoice(invoices[0].Id);
 
         invoices[0].FieloPRP__Status__c = 'Pending';
 
         standardController = new ApexPages.StandardController(invoices[0]);
         controller = new InvoiceViewController(standardController);
 
-        InvoiceViewController.rejectInvoice(invoices[0].Id);
+        // InvoiceViewController.rejectInvoice(invoices[0].Id);
 
         invoices[0].FieloPRP__Status__c = 'Rejected';
 

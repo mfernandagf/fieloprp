@@ -25,6 +25,7 @@ public with sharing class BackEndProgramSelectorController {
                 programs.add( new PicklistController.Entry( s.getValue(), s.getLabel() )  ) ;
             }
         }
+        System.debug(programs);
         return programs;
     } set; }
 
