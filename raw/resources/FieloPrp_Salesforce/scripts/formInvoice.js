@@ -726,6 +726,7 @@
       // 3 - Pisar con los parameters de source en edit y new
       this.setParameters_();
       this.endRetrieve();
+      this.hideAmount_();
     } catch (e) {
       var notify = fielo.util.notify.create();
       notify.FieloNotify.addMessages([this.Constant_.HAS_ERROR, e]);
@@ -828,13 +829,6 @@
     $(hasDetailsFormElement).addClass('slds-hidden');
     $(hasDetailsFormElement).addClass('slds-is-collapsed');
 
-    var amountFormElem =
-      this.element_.querySelector(
-        '[data-field-name="FieloPRP__Amount__c"]');
-
-    $(amountFormElem).addClass('slds-hidden');
-    $(amountFormElem).addClass('slds-is-collapsed');
-
     if (this.result !== null && this.result !== undefined) {
       var hasDetails = this.result.FieloPRP__HasDetails__c;
       var memberValue = this.result.FieloPRP__Member__c;
@@ -850,6 +844,15 @@
   FieloFormInvoice.prototype.endRetrieve = function() {
     this.hasDetailsCheck();
     this.refreshTotal();
+  };
+
+  FieloFormInvoice.prototype.hideAmount_ = function() {
+    var amountFormElem =
+      this.element_.querySelector(
+        '[data-field-name="FieloPRP__Amount__c"]');
+
+    $(amountFormElem).addClass('slds-hidden');
+    $(amountFormElem).addClass('slds-is-collapsed');
   };
 
   FieloFormInvoice.prototype.retrieveProxy_ = function(modal, source) {
