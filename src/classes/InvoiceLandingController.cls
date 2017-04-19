@@ -40,48 +40,4 @@ public with sharing class InvoiceLandingController extends PageSettingsSetContro
 
         return InvoiceService.getInvoices( fieldset, null, programId, recordsPerPage,  offset, orderBy);
     }
-
-    @RemoteAction
-    public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items){
-        Savepoint sp;
-        RemoteActionResult result = new RemoteActionResult();
-
-        try{
-            sp = Database.setSavepoint();
-            List<InvoiceService.InvoiceWrapper> invoiceWrapperList = new List<InvoiceService.InvoiceWrapper>();
-            InvoiceService.InvoiceWrapper invoiceWrapper = new InvoiceService.InvoiceWrapper();
-
-            invoiceWrapper.invoice = record;
-
-            if(items!=null){
-                if(items.size()>0){
-                    invoiceWrapper.invoiceItems = new List<InvoiceItem__c>();
-                    for(InvoiceItem__c item: items){
-                        invoiceWrapper.invoiceItems.add(item);
-                    }
-                }
-            }
-            invoiceWrapperList.add(invoiceWrapper);
-
-            List<Invoice__c> invoices = InvoiceService.createInvoice(invoiceWrapperList);
-
-            if ( invoices.size() == 1  ) {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The invoice was created successfully') );
-                result.redirectURL = '/'+invoices[0].Id;
-            } else {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple invoices were created') );
-            }
-        }catch(DMLException e){
-            if(sp != null){
-                Database.rollback(sp);
-            }
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
-        }catch(Exception e){
-            if(sp != null){
-                Database.rollback(sp);
-            }
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
-        }
-        return result;
-    }
 }
