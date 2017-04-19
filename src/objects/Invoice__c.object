@@ -144,6 +144,10 @@
         <label>Status</label>
         <picklist>
             <picklistValues>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Pending</fullName>
                 <default>false</default>
             </picklistValues>
@@ -156,7 +160,11 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Reverted</fullName>
+                <fullName>Canceled</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>New</fullName>
                 <default>false</default>
             </picklistValues>
             <restrictedPicklist>true</restrictedPicklist>
@@ -228,12 +236,20 @@ PRIORVALUE(Member__c )!=Member__c
         <active>true</active>
         <errorConditionFormula>AND(
   ISCHANGED(Status__c),
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Draft&apos;, TEXT(Status__c)=&apos;Pending&apos;)),
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Draft&apos;, TEXT(Status__c)=&apos;Approved&apos;)),
+  
+  
   NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Pending&apos;, TEXT(Status__c)=&apos;Approved&apos;)),
   NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Pending&apos;, TEXT(Status__c)=&apos;Rejected&apos;)),
-  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Approved&apos;, TEXT(Status__c)=&apos;Pending&apos;)),
-  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Approved&apos;, TEXT(Status__c)=&apos;Reverted&apos;)),
-  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Rejected&apos;, TEXT(Status__c)=&apos;Pending&apos;)),
-  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Reverted&apos;, TEXT(Status__c)=&apos;Pending&apos;))
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Pending&apos;, TEXT(Status__c)=&apos;Draft&apos;)),
+  
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Approved&apos;, TEXT(Status__c)=&apos;Canceled&apos;)),
+  
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Rejected&apos;, TEXT(Status__c)=&apos;Draft&apos;)),
+  
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Canceled&apos;, TEXT(Status__c)=&apos;Approved&apos;)),
+  NOT(AND( TEXT(PRIORVALUE(Status__c))=&apos;Canceled&apos;, TEXT(Status__c)=&apos;Draft&apos;))
 )</errorConditionFormula>
         <errorMessage>Status transition not allowed</errorMessage>
     </validationRules>

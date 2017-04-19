@@ -48,6 +48,11 @@
               fieldset="{'Name':'items', 'fields':[{'Name':'FieloPRP__Quantity__c', 'Type':'input', 'ClassName': 'fielosf-product_qty', 'onchange': 'refreshTotalPriceProxy_'},{'Name':'FieloPRP__Product__c', 'Type':'lookup', 'ClassName': 'fielosf-product_name', 'onchange': 'refreshTotalPriceProxy_'},{'Name':'FieloPRP__UnitPrice__c', 'Type': 'input', 'ClassName': 'fielosf-product_unit-price', 'onchange': 'refreshTotalPriceProxy_'},{'Name':'FieloPRP__TotalPrice__c', 'Type': 'input', 'ClassName': 'fielosf-product_total-price', 'onchange': 'refreshTotalPriceProxy_'}]}"
               />
 
+            <c:MultiFileUploader
+              formid="{!formId}multifileuploader" 
+              className="fielosf-multi-file-uploader"
+            />
+
           </div>
 
           <div class="slds-modal__footer">
@@ -55,6 +60,7 @@
             <a class="slds-button slds-button--brand slds-form__save" data-confirm="{!saveConfirm}" data-confirm-message="{!saveConfirmMessage}">{!$Label.Save}</a>
           </div>          
         </div>
+
         <div id="{!formId}-addProductsForm" role="dialog" tabindex="-1" aria-labelledby="{!formId}-addProductsForm-headerModal" class="slds-hide slds-modal slds-modal--large slds-fade-in-open slds-form {!className}-addproducts" data-on-show="FieloForm_retrieve" data-save-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!saveController}" data-retrieve-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!retrieveController}" data-object-name="{!sObjectName}" data-fields="{!fields}" data-secondary-parameters="{!secondaryParameters}" data-redirect="{!redirect}">
           <div class="slds-modal__container">
             <div class="slds-modal__header slds-text-heading--medium">
