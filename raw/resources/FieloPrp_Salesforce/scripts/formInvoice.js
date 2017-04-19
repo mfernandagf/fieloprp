@@ -449,6 +449,8 @@
           this.productRecent_.FieloRecentRecords.uncheckAll.bind(
             this.productRecent_.FieloRecentRecords));
       }
+      // Add Listener to Member Field's Input
+      this.addListenerToMemberInput();
       // Add Listeners to items fields on show.
       $(this.element_).on('shown.aljs.modal', function() {
         var _this = document.getElementsByClassName(
@@ -653,8 +655,9 @@
   };
 
   FieloFormInvoice.prototype.addListenerToMemberInput = function() {
+    console.log('Adding listener to member field!');
     var memberField = document.querySelector('[data-field-name="' +
-      this.Constant_.MEMBER + '"]')[0];
+      this.Constant_.MEMBER + '"]');
     var pillTitle = $(memberField).find('.slds-input')[0];
     pillTitle.addEventListener('change',
       this.disableMemberEdit.bind(this));
@@ -736,6 +739,7 @@
 
       this.fields_.forEach(function(field) {
         if (this.elements_[field]) {
+          console.log(field);
           this.elements_[field].FieloFormElement.set('value', result[field]);
         }
       }, this);
@@ -812,9 +816,6 @@
     // Setea parametros default en edit y new
     this.setParameters_();
 
-    // Add listener to Member Field Updates
-    // this.addListenerToMemberInput();
-
     // 2 - Hacer retrieve si estoy en edit
     if (
       this.parameters_.hasOwnProperty('Id') ||
@@ -854,9 +855,14 @@
         .FieloFormElement.get('value');
     var hasItems = false;
     var itemValues = this.itemsContainer_.FieloInvoiceItems.get();
+    console.log(itemValues);
     [].forEach.call(Object.keys(itemValues), function(itemPtr) {
-      if (itemValues[itemPtr].FieloPRP__Product__c !== null) {
-        hasItems = true;
+      console.log('FieloPRP__Quantity__c');
+      console.log(itemValues[itemPtr].FieloPRP__Quantity__c);
+      if (itemValues[itemPtr].FieloPRP__Quantity__c !== null) {
+        if (itemValues[itemPtr].FieloPRP__Quantity__c !== '0') {
+          hasItems = true;
+        }
       }
     },
       this
