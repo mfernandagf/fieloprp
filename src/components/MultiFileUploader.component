@@ -1,0 +1,58 @@
+<apex:component layout="none" controller="MultiFileUploader">
+	<!-- Data -->
+	<apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="heading" type="String" default="" description="Text of First heading line" />
+    <apex:attribute name="className" description="Inject a css class to the form container" type="String" />
+	<!-- Icons -->
+	<apex:attribute name="imageIcon" type="String" default="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#image" description="Icon from slds"/>
+	<apex:attribute name="downloadIcon" type="String" default="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#download" description="Icon from slds"/>
+	<apex:attribute name="uploadIcon" type="String" default="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#upload" description="Icon from slds"/>
+	<apex:attribute name="closeIcon" type="String" default="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#close" description="Icon from slds"/>
+    <apex:attribute name="fileIcon" type="String" default="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/doctype-sprite/svg/symbols.svg#image" description="Icon from slds"/>
+
+	<article id="{!formId}" role="dialog" tabindex="-1" aria-labelledby="{!formId}headerModal" class="slds-card slds-m-around--medium {!className}">
+	  <div class="slds-card__header slds-grid">
+	    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+	      <div class="slds-media__figure">
+	        <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+	          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-icon slds-icon--small">
+	            <use xlink:href="{!imageIcon}"></use>
+	          </svg>
+	        </span>
+	      </div>
+	      <div class="slds-media__body">
+	        <h2>
+	            <span class="slds-text-heading--small">Upload Files</span>
+	        </h2>
+	      </div>
+	    </header>
+	    <div class="slds-no-flex">
+		<div class="slds-form-element" id="file-selector-id">
+			<div class="slds-form-element__control">
+				<div class="slds-file-selector slds-file-selector--files">
+					<input type="file" class="slds-file-selector__input slds-assistive-text" id="file-upload-input-01"/>
+					<label class="slds-file-selector__body" for="file-upload-input-01">
+						<span class="slds-file-selector__button slds-button slds-button--neutral">New</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		</div>
+	  </div>
+	  <div class="slds-card__body">
+	  <ul class="slds-card__body--inner slds-grid slds-wrap slds-grid--pull-padded slds-hidden slds-is-collapsed slds-pill__model">
+	     <li class="slds-p-around--small slds-size--3-of-3 slds-medium-size--3-of-4">
+	        <span class="slds-pill slds-size--3-of-3 slds-medium-size--3-of-4">
+	        	<a href="javascript:void(0)" class="slds-pill__label" title="Pill 1">Pill 1</a>
+	            <button class="slds-button slds-button--icon slds-pill__remove" title="Remove">
+	                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--hint">
+	                  <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/action-sprite/svg/symbols.svg#remove"></use>
+	                </svg>
+	                <span class="slds-assistive-text">Remove</span>
+	            </button>
+	        </span>
+	      </li>
+	  </ul>
+	  </div>
+	</article>
+</apex:component>

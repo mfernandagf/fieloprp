@@ -568,14 +568,14 @@ public class TestRESTInvoice {
 
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
+        //req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
 
         // When
         RestContext.request = req;
         RestContext.response = res;
 
         Test.startTest();
-            RESTInvoice.createInvoice();
+            RESTInvoice.createInvoice(RESTInvoiceWrapperList);
         Test.stopTest();
 
         List<Invoice__c> svcInvoices = (List<Invoice__c>) System.JSON.deserialize(RestContext.response.responseBody.toString(), List<Invoice__c>.class);
@@ -640,14 +640,14 @@ public class TestRESTInvoice {
 
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
+        //req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
         // When
 
         RestContext.request = req;
         RestContext.response = res;
 
         Test.startTest();
-            RESTInvoice.createInvoice();
+            RESTInvoice.createInvoice(RESTInvoiceWrapperList);
         Test.stopTest();
 
         System.assertEquals(404, RestContext.response.statusCode );
@@ -711,14 +711,14 @@ public class TestRESTInvoice {
 
         req.httpMethod = 'POST';
 
-        req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
+        //req.requestBody = Blob.valueOf(JSON.serialize(RESTInvoiceWrapperList));
         // When
 
         RestContext.request = req;
         RestContext.response = res;
 
         Test.startTest();
-            RESTInvoice.createInvoice();
+            RESTInvoice.createInvoice(RESTInvoiceWrapperList);
         Test.stopTest();
 
         System.assertEquals(404, RestContext.response.statusCode );

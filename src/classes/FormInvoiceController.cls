@@ -215,7 +215,6 @@ public with sharing class FormInvoiceController {
     return filterRecentRecordsMap;
   }set;}
 
-    /*****  Metodos Remote para Save y Retrieve *****/
     @RemoteAction
     public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items){
         Savepoint sp;
@@ -223,35 +222,19 @@ public with sharing class FormInvoiceController {
 
         try{
             sp = Database.setSavepoint();
-            SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType});
-            
-            Boolean newRecord = record.Id==null;
 
-            if (!newRecord) {
-                uow.registerDirty(record);
-                uow.registerDeleted(
-                    new InvoiceItemsSelector().selectByMemberIdAndInvoiceId(new Set<Id>{record.Id}, null));
-            } else {
-                uow.registerNew(record);
-            }
-            
-            if(items!=null){
-                for(InvoiceItem__c item: items){
-                    uow.registerNew(item, InvoiceItem__c.Invoice__c, record);
-                }
-            }
+            List<InvoiceService.InvoiceWrapper> invoiceWrappers = new List<InvoiceService.InvoiceWrapper>();
+            invoiceWrappers.add(new InvoiceService.InvoiceWrapper(record, items, null));
 
-            uow.commitWork();
-
-            List<Invoice__c> invoices = newRecord ?
-              (List<Invoice__c>)uow.m_newListByType.get('FieloPRP__Invoice__c') :
-              new List<Invoice__c>{(Invoice__c)uow.m_dirtyMapByType.get('FieloPRP__Invoice__c').get(record.Id)};
+            List<Invoice__c> invoices = record.Id == null ?
+              InvoiceService.createInvoices(invoiceWrappers, 'Draft') :
+              InvoiceService.updateInvoices(invoiceWrappers);
 
             if ( invoices.size() == 1  ) {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The invoice was saved successfully') );
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.InvoiceSavedSuccess) );
                 result.redirectURL = '/'+invoices[0].Id;
             } else {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple invoices were created') );
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.MultipleInvoiceCreated) );
             }
         }catch(DMLException e){
             if(sp != null){
@@ -273,6 +256,7 @@ public with sharing class FormInvoiceController {
     if (itemFields != null) {
       query += String.format(' ,(SELECT {0} FROM InvoiceItems__r)', new List<String>{itemFields});
     }
+    query += ' ,(SELECT Id, Name FROM Attachments)';
     query += ' FROM ' + objectName;
     query += ' WHERE ID = :recordId' ;
     query += ' LIMIT 1';

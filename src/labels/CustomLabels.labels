@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+<?xml version=1.0 encoding=UTF-8?>
+<CustomLabels xmlns=http://soap.sforce.com/2006/04/metadata>
     <labels>
         <fullName>AllPriceFieldsZero</fullName>
         <categories>InvoiceItems.cls</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>AllPriceFieldsZero</shortDescription>
-        <value>Total Price, Quantity and Unit Price can not be zerot</value>
+        <value>Total Price, Quantity and Unit Price can not be zero.</value>
     </labels>
     <labels>
         <fullName>AmountUpdateDisabled</fullName>
@@ -14,7 +14,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>AmountUpdateDisabled</shortDescription>
-        <value>Programs with Detailed Invoice set to true have the hability to update the Amount of the Invoice disabled.t</value>
+        <value>Programs with Detailed Invoice set to true have the hability to update the Amount of the Invoice disabled.</value>
     </labels>
     <labels>
         <fullName>DraftNotEditable</fullName>
@@ -22,7 +22,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>DraftNotEditable</shortDescription>
-        <value>Only Invoices with status Pending are editable.t</value>
+        <value>Only Invoices with status Draft or New are editable.</value>
     </labels>
     <labels>
         <fullName>HasDetailsNotEditable</fullName>
@@ -30,7 +30,15 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>HasDetailsNotEditable</shortDescription>
-        <value>Has Details is a system field, you can not update it.t</value>
+        <value>Has Details is a system field, you can not update it.</value>
+    </labels>
+    <labels>
+        <fullName>InvoiceChangeStatusSuccess</fullName>
+        <categories>InvoiceViewController.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>InvoiceChangeStatusSuccess</shortDescription>
+        <value>The invoice was {0} with sucess.</value>
     </labels>
     <labels>
         <fullName>InvoiceDetailInsertDisabled</fullName>
@@ -38,7 +46,23 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>InvoiceDetailInsertDisabled</shortDescription>
-        <value>The hability to create an invoice item is disabled when the Program has the field Detailed Invoice set to false.t</value>
+        <value>The hability to create an invoice item is disabled when the Program has the field Detailed Invoice set to false.</value>
+    </labels>
+    <labels>
+        <fullName>InvoiceSavedSuccess</fullName>
+        <categories>FormInvoiceController.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>InvoiceSavedSuccess</shortDescription>
+        <value>The invoice was saved successfully.</value>
+    </labels>
+    <labels>
+        <fullName>MultipleInvoiceCreated</fullName>
+        <categories>FormInvoiceController.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>MultipleInvoiceCreated</shortDescription>
+        <value>Multiple invoices were created</value>
     </labels>
     <labels>
         <fullName>QuantityGreaterThanZero</fullName>
@@ -46,7 +70,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>QuantityGreaterThanZero</shortDescription>
-        <value>Quantity must be greater than zerot</value>
+        <value>Quantity must be greater than zero.</value>
     </labels>
     <labels>
         <fullName>QuantityZero</fullName>
@@ -54,7 +78,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>QuantityZero</shortDescription>
-        <value>Quantity can not be zero.t</value>
+        <value>Quantity can not be zero.</value>
     </labels>
     <labels>
         <fullName>TotalAndUnitPriceZero</fullName>
@@ -62,7 +86,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>TotalAndUnitPriceZero</shortDescription>
-        <value>Total Price and Unit Price can not be zerot</value>
+        <value>Total Price and Unit Price can not be zero.</value>
     </labels>
     <labels>
         <fullName>TotalPriceAndQuantityZero</fullName>
@@ -70,7 +94,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>TotalPriceAndQuantityZero</shortDescription>
-        <value>Total Price and Quantity can not be zerot</value>
+        <value>Total Price and Quantity can not be zero.</value>
     </labels>
     <labels>
         <fullName>UnitPriceGreaterThanZero</fullName>
@@ -78,7 +102,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>UnitPriceGreaterThanZero</shortDescription>
-        <value>Unit Price must be greater than zero.t</value>
+        <value>Unit Price must be greater than zero.</value>
     </labels>
     <labels>
         <fullName>UnitPriceZero</fullName>
@@ -86,6 +110,6 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>UnitPriceZero</shortDescription>
-        <value>Unit Price can not be zero.t</value>
+        <value>Unit Price can not be zero.</value>
     </labels>
 </CustomLabels>

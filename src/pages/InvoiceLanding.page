@@ -53,7 +53,6 @@
               dataController="InvoiceLandingController.getInvoices"
               dataBinding="fielosf-invoices-landing--binding"
               dataFilters="{'FieloPRP__Member__r.FieloPLT__Program__c':'{!currentProgram.Id}'}"
-              showCheckboxes="true"
             />
           </div>
         </div>

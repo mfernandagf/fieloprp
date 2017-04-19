@@ -56,7 +56,9 @@
     LOOKUP_PILL: 'slds-pill_container',
     SHOW: 'slds-show',
     INVOICE_AMOUNT: 'fielosf-invoice_amount',
-    TOTAL_POINTS: 'fielosf-total_points'
+    TOTAL_POINTS: 'fielosf-total_points',
+    FILE_UPLOADER: 'fielosf-multi-file-uploader',
+    NEW_FILE_BUTTON: 'slds-file-selector__button'
 
   };
 
@@ -137,7 +139,7 @@
             this.Constant_.SAVE_CONTROLLER,
             formValues,
             hasDetails ? itemValues : null,
-            this.form_.processRemoteActionResult_.bind(this.form_),
+            this.saveCallback_.bind(this),
             {
               escape: false
             }
@@ -151,6 +153,31 @@
       this.form_.processRemoteActionResult_(null, event);
     }
     this.keepItems_ = false;
+  };
+
+  FieloFormInvoice.prototype.saveCallback_ = function(result, event) {
+    var fileList = this.element_
+      .getElementsByClassName(this.CssClasses_.FILE_UPLOADER)[0]
+        .FieloMultiFileUploaderPRP.fileList;
+    var deleteFilesList = this.element_
+      .getElementsByClassName(this.CssClasses_.FILE_UPLOADER)[0]
+        .FieloMultiFileUploaderPRP.deleteList;
+    this.hasAttachments = fileList ?
+      Object.keys(fileList).length > 0 :
+      false;
+    this.hasDeletedAttachments = deleteFilesList ?
+      deleteFilesList.length > 0 :
+      false;
+
+    if (this.hasAttachments || this.hasDeletedAttachments) {
+      var invoiceId = result.redirectURL.substring(1,
+        result.redirectURL.length);
+      this.element_.getElementsByClassName(this.CssClasses_.FILE_UPLOADER)[0]
+        .FieloMultiFileUploaderPRP.uploadFile(invoiceId);
+    } else {
+      console.log(result);
+      this.form_.processRemoteActionResult_(result, event);
+    }
   };
 
   FieloFormInvoice.prototype.getValues_ = function() {
@@ -186,6 +213,8 @@
       this.initItem_(
         this.element_.getElementsByClassName(
           this.CssClasses_.ITEMS_CONTAINER)[0]);
+      this.element_.getElementsByClassName(this.CssClasses_.FILE_UPLOADER)[0]
+        .FieloMultiFileUploaderPRP.clearPills();
       this.disableMemberValidation = false;
     }
   };
@@ -438,6 +467,16 @@
           this
         );
       });
+      this.multiFileUploader_ = this.element_.getElementsByClassName(
+        this.CssClasses_.FILE_UPLOADER
+        )[0];
+      this.newFileBtn_ =
+        this.multiFileUploader_.getElementsByClassName(
+          this.CssClasses_.NEW_FILE_BUTTON
+          )[0];
+      this.newFileBtn_.addEventListener(
+        'click',
+        this.verifyMember_.bind(this));
     }
   };
 
@@ -722,6 +761,14 @@
           this
         );
       }
+      if (this.result.Attachments) {
+        [].forEach.call(this.result.Attachments, function(attachment) {
+          this.multiFileUploader_.FieloMultiFileUploaderPRP
+            .addEmptyFilePill(attachment);
+        },
+          this
+        );
+      }
 
       // 3 - Pisar con los parameters de source en edit y new
       this.setParameters_();
@@ -781,7 +828,16 @@
     var hasDetails = this.element_
       .querySelector('[data-field-name="FieloPRP__HasDetails__c"]')
         .FieloFormElement.get('value');
-    if (!hasDetails) {
+    var hasItems = false;
+    var itemValues = this.itemsContainer_.FieloInvoiceItems.get();
+    [].forEach.call(Object.keys(itemValues), function(itemPtr) {
+      if (itemValues[itemPtr].FieloPRP__Product__c !== null) {
+        hasItems = true;
+      }
+    },
+      this
+    );
+    if (!hasDetails && hasItems) {
       this.currentEvent_.stopPropagation();
       this.currentEvent_.preventDefault();
       this.keepItems_ = false;
