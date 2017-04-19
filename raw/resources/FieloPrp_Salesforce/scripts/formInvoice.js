@@ -58,7 +58,10 @@
     INVOICE_AMOUNT: 'fielosf-invoice_amount',
     TOTAL_POINTS: 'fielosf-total_points',
     FILE_UPLOADER: 'fielosf-multi-file-uploader',
-    NEW_FILE_BUTTON: 'slds-file-selector__button'
+    NEW_FILE_BUTTON: 'slds-file-selector__button',
+    BUTTON_ICON: 'slds-button__icon',
+    PILL_LABEL: 'slds-pill__label',
+    INPUT: 'slds-input'
 
   };
 
@@ -649,6 +652,25 @@
     this.refreshTotal();
   };
 
+  FieloFormInvoice.prototype.addListenerToMemberInput = function() {
+    var memberField = document.querySelector('[data-field-name="' +
+      this.Constant_.MEMBER + '"]')[0];
+    var pillTitle = $(memberField).find('.slds-input')[0];
+    pillTitle.addEventListener('change',
+      this.disableMemberEdit.bind(this));
+  };
+
+  FieloFormInvoice.prototype.disableMemberEdit = function(event) {
+    console.log(event);
+    var memberField = document.querySelector('[data-field-name="' +
+      this.Constant_.MEMBER + '"]');
+    var memberPill = $(memberField).find('.' +
+      this.CssClasses_.LOOKUP_PILL)[0];
+    var pillRemoveSvg = $(memberPill).find('.' +
+      this.CssClasses_.BUTTON_ICON)[0];
+    $(pillRemoveSvg).remove();
+  };
+
   FieloFormInvoice.prototype.verifyMember_ = function(event) {
     if (!this.disableMemberValidation) {
       var memberId = document.querySelector(
@@ -773,7 +795,6 @@
       // 3 - Pisar con los parameters de source en edit y new
       this.setParameters_();
       this.endRetrieve();
-      this.hideAmount_();
     } catch (e) {
       var notify = fielo.util.notify.create();
       notify.FieloNotify.addMessages([this.Constant_.HAS_ERROR, e]);
@@ -790,6 +811,9 @@
 
     // Setea parametros default en edit y new
     this.setParameters_();
+
+    // Add listener to Member Field Updates
+    // this.addListenerToMemberInput();
 
     // 2 - Hacer retrieve si estoy en edit
     if (
@@ -843,7 +867,7 @@
       this.keepItems_ = false;
       this.clear_();
       var actionResult = {
-        message: 'The program of this member do' +
+        message: 'The program of this member does' +
         ' not allow the creation of items.'};
       this.form_.processRemoteActionResult_(null, actionResult);
     }
@@ -891,6 +915,9 @@
       if (memberValue !== null && !hasDetails) {
         $(invoiceContainerItems).addClass('slds-hidden');
         $(invoiceContainerItems).addClass('slds-is-collapsed');
+      }
+      if (memberValue !== null && hasDetails) {
+        this.hideAmount_();
       }
     }
 
