@@ -9,7 +9,7 @@ global with sharing class RESTInvoice {
     @HttpGet
     /**
      * @details     This method retuns invoice information related to a given Id
-     * @param       invoiceId        	Optional parameter, if it is present the method will return a specific record
+     * @param       invoiceId           Optional parameter, if it is present the method will return a specific record
      * @param       fieldset            Fields to retrieve
      * @param       fromDate            Initial date to filter the returned records
      * @param       toDate              Last date to filter the returned records
@@ -54,8 +54,8 @@ global with sharing class RESTInvoice {
         public List<InvoiceItem__c> invoiceItems;
     }
 
-    @HttpPost
-    global static void createInvoice(){
+    @HttpPut
+    global static void updateInvoice(List<RESTInvoiceWrapper> invoices){
         RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
         RestAPIResponse response = new RestAPIResponse();
@@ -80,28 +80,63 @@ global with sharing class RESTInvoice {
                     RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
                 } else {
                     List<InvoiceService.InvoiceWrapper> invoiceWrapperList = new List<InvoiceService.InvoiceWrapper>();
-
-                    List<RESTInvoiceWrapper> invoices = (List<RESTInvoiceWrapper>) JSON.deserialize(RestContext.request.requestBody.toString(), List<RESTInvoiceWrapper>.class);
-
-                    InvoiceService.InvoiceWrapper InvoiceWrapper;
-
                     for(RESTInvoiceWrapper riw: invoices){
-                        InvoiceWrapper = new InvoiceService.InvoiceWrapper();
-                        InvoiceWrapper.invoice = riw.invoice;
-                        InvoiceWrapper.invoice.Member__c = memberId;
-
-                        if(riw.invoiceItems!=null){
-                            if(riw.invoiceItems.size()>0){
-                                InvoiceWrapper.invoiceItems = new List<InvoiceItem__c>();
-                                for(InvoiceItem__c item: riw.invoiceItems){
-                                    InvoiceWrapper.invoiceItems.add(item);
-                                }
-                            }
-                        }
-                        invoiceWrapperList.add(InvoiceWrapper);
+                        invoiceWrapperList.add(new InvoiceService.InvoiceWrapper(riw.invoice, riw.invoiceItems, null));
                     }
 
-                    List<Invoice__c> createdInvoices = InvoiceService.createInvoice(invoiceWrapperList);
+                    List<Invoice__c> updatedInvoices = InvoiceService.updateInvoices(invoiceWrapperList);
+
+                    resp.statusCode = 201;
+                    resp.responseBody = Blob.valueOf( JSON.serialize(updatedInvoices) );
+                }
+            }
+            catch(Exception e){
+                response.message = e.getMessage();
+                response.errorcode = 'EXCEPTION';
+                resp.statusCode = 404;
+                resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
+            }
+        }
+        catch(Exception e){
+            response.message = e.getMessage();
+            response.errorcode = 'FORBIDDEN';
+            resp.statusCode = 403;
+            resp.responseBody = Blob.valueOf( JSON.serialize( response ) );
+        }
+    }
+
+    @HttpPost
+    global static void createInvoice(List<RESTInvoiceWrapper> invoices){
+        RestRequest req = RestContext.request;
+        RestResponse resp = RestContext.response;
+        RestAPIResponse response = new RestAPIResponse();
+        try{
+            checkPermissions();
+            try{
+                //MemberId
+                String requestUri = RestContext.request.requestUri;
+                String memberId = requestUri.substring( requestUri.indexOf('/members/')  , requestUri.length() );
+                memberId = memberId.replace('/members/', '');
+                memberId = memberId.replace('/invoices', '');
+
+                resp.addHeader('Accept', 'application/json');
+                resp.addHeader('Content-Type', 'application/json');
+
+            
+                if( MemberService.isMemberBlocked(memberId) == true ){
+                    response.message = Label.ErrorFieloAccountBlocked;
+                    response.errorcode = 'FIELO_ACCOUNT_BLOCKED';
+                    resp.statusCode = 404;
+                    resp.responseBody = Blob.valueOf( JSON.serialize(response) );
+                    RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
+                } else {
+                    List<InvoiceService.InvoiceWrapper> invoiceWrapperList = new List<InvoiceService.InvoiceWrapper>();
+                    for(RESTInvoiceWrapper riw : invoices){
+                        riw.invoice.Member__c = memberId;
+                        invoiceWrapperList.add(new InvoiceService.InvoiceWrapper(riw.invoice, riw.invoiceItems, null));
+                    }
+
+                    List<Invoice__c> createdInvoices = InvoiceService.createInvoices(invoiceWrapperList);
 
                     resp.statusCode = 201;
                     resp.responseBody = Blob.valueOf( JSON.serialize(createdInvoices) );
@@ -122,7 +157,7 @@ global with sharing class RESTInvoice {
         }
     }
 
-    private static void checkPermissions(){
+    public static void checkPermissions(){
         if( !Invoice__c.sObjectType.getDescribe().isAccessible() )
             throw new SObjectDomain.DomainException(
                 'Permission to access ' + Invoice__c.sObjectType.getDescribe().getName() + ' denied.');

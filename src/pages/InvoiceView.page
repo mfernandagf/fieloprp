@@ -90,7 +90,7 @@
 
     <c:ImageGallery parentId="{!record.Id}" />
 
-    <c:ApprovalSteps>
+    <c:ApprovalSteps >
       <apex:relatedList list="ProcessSteps" />
     </c:ApprovalSteps>
 
@@ -155,7 +155,7 @@
     </script>
 
   </div>
-  <c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloRelatedRecords', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
+  <c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloRelatedRecords', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
   <!--
   <c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloRecentRecords)}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
 

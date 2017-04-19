@@ -704,7 +704,7 @@ public class TestCreateInvoiceItem {
 
         insert item;
 
-        invoices[0].Status__c = 'Rejected';
+        /*invoices[0].Status__c = 'Rejected';
 
         update invoices;
 
@@ -720,7 +720,7 @@ public class TestCreateInvoiceItem {
             System.assertEquals(10.0, ((InvoiceItem__c)[Select Id, Quantity__c From InvoiceItem__c]).Quantity__c.setScale(1));
         }
 
-        Test.stopTest();
+        Test.stopTest();*/
     }
 
     /*  TEST-1574
