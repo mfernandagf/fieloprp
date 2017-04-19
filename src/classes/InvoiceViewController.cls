@@ -126,7 +126,11 @@ public class InvoiceViewController extends PageSettingsController {
 
         try{
             Invoice__c invoice = InvoiceService.closeInvoices(new Set<Id>{recordId})[0];
-            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, 'Record ' + invoice.Status__c) );
+            if(invoice.Status__c == 'Pending'){
+                result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'sent for approval'})) );
+            }else{
+                result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'approved'})) );
+            }
             result.redirectURL = '/'+recordId;
         }
         catch(Exception e){
@@ -145,7 +149,7 @@ public class InvoiceViewController extends PageSettingsController {
 
         try{
             InvoiceService.updateInvoiceStatus(new Set<Id>{recordId}, 'Approved');
-            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, 'Record Approved.') );
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'approved'})) );
             result.redirectURL = '/'+recordId;
         }
         catch(Exception e){
@@ -164,7 +168,7 @@ public class InvoiceViewController extends PageSettingsController {
 
         try{
             InvoiceService.updateInvoiceStatus(new Set<Id>{recordId}, 'Rejected');
-            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, 'Record Rejected.') );
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'rejected'})) );
             result.redirectURL = '/'+recordId;
         }
         catch(Exception e){
@@ -183,7 +187,7 @@ public class InvoiceViewController extends PageSettingsController {
 
         try{
             InvoiceService.updateInvoiceStatus(new Set<Id>{recordId}, 'Draft');
-            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, 'Record Draft.') );
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'reopened'})) );
             result.redirectURL = '/'+recordId;
         }
         catch(Exception e){
@@ -202,7 +206,7 @@ public class InvoiceViewController extends PageSettingsController {
 
         try{
             InvoiceService.updateInvoiceStatus(new Set<Id>{recordId}, 'Canceled');
-            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, 'Record Canceled') );
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'cancelled'})) );
             result.redirectURL = '/'+recordId;
         }
         catch(Exception e){
@@ -222,7 +226,7 @@ public class InvoiceViewController extends PageSettingsController {
         try{
             InvoiceService.reprocessInvoice(new Set<Id>{recordId});
 
-            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, 'Record reprocessed') );
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'reprocessed'})) );
             result.redirectURL = '/'+recordId;
         }
         catch(Exception e){
@@ -243,7 +247,7 @@ public class InvoiceViewController extends PageSettingsController {
             InvoiceService.updateInvoiceStatus(new Set<Id>{recordId}, 'Pending');
             InvoiceService.submitForApproval(new Set<Id>{recordId});
 
-            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, 'Record updated') );
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'sent for approval'})) );
             result.redirectURL = '/'+recordId;
         }
         catch(Exception e){
