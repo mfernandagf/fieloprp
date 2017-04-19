@@ -231,10 +231,10 @@ public with sharing class FormInvoiceController {
               InvoiceService.updateInvoices(invoiceWrappers);
 
             if ( invoices.size() == 1  ) {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'The invoice was saved successfully') );
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.InvoiceSavedSuccess) );
                 result.redirectURL = '/'+invoices[0].Id;
             } else {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, 'Multiple invoices were created') );
+                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.MultipleInvoiceCreated) );
             }
         }catch(DMLException e){
             if(sp != null){
