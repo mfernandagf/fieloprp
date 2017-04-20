@@ -395,4 +395,9 @@ public with sharing class FormInvoiceController {
       FieloPLT__Member__c member = (FieloPLT__Member__c) Database.query(query);
       return member.FieloPLT__Program__r.FieloPRP__DetailedInvoice__c;
     }
+
+    @RemoteAction
+    public static FieloPLT__Program__c getActiveProgram() {
+        return ProgramService.getActiveProgram();
+    }
 }
