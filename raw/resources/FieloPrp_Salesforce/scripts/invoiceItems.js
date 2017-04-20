@@ -139,7 +139,7 @@
     $(this.element_).find($('[data-field-name="FieloPRP__UnitPrice__c"]')
       )[0].FieloFormElement.set('value', '');
     $(this.element_).find($('[data-field-name="FieloPRP__Quantity__c"]')
-          )[0].FieloFormElement.set('value', 1);
+          )[0].FieloFormElement.set('value', 0);
     $(this.element_).find($('[data-field-name="FieloPRP__TotalPrice__c"]')
       )[0].FieloFormElement.set('value', '');
   };

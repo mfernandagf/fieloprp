@@ -16,6 +16,7 @@
   FieloFormInvoice.prototype.Constant_ = {
     SAVE_CONTROLLER: 'FieloPRP.FormInvoiceController.save',
     RETRIEVE_CONTROLLER: 'data-retrieve-controller',
+    GET_PROGRAM_CONTROLLER: 'FieloPRP.FormInvoiceController.getActiveProgram',
     MEMBER: 'FieloPRP__Member__c',
     PRODUCT_RECENT: 'recentProductRecords',
     DATA_RECORD_ID: 'data-record-id',
@@ -178,7 +179,6 @@
       this.element_.getElementsByClassName(this.CssClasses_.FILE_UPLOADER)[0]
         .FieloMultiFileUploaderPRP.uploadFile(invoiceId);
     } else {
-      console.log(result);
       this.form_.processRemoteActionResult_(result, event);
     }
   };
@@ -469,6 +469,12 @@
         },
           this
         );
+        _this.FieloFormInvoice.getActiveProgram();
+      });
+      $(this.element_).on('select', function() {
+        var _this = document.getElementsByClassName(
+        'fielosf-invoice-form')[0];
+        _this.FieloFormInvoice.getActiveProgram();
       });
       this.multiFileUploader_ = this.element_.getElementsByClassName(
         this.CssClasses_.FILE_UPLOADER
@@ -652,25 +658,6 @@
     this.refreshTotal();
   };
 
-  FieloFormInvoice.prototype.addListenerToMemberInput = function() {
-    var memberField = document.querySelector('[data-field-name="' +
-      this.Constant_.MEMBER + '"]')[0];
-    var pillTitle = $(memberField).find('.slds-input')[0];
-    pillTitle.addEventListener('change',
-      this.disableMemberEdit.bind(this));
-  };
-
-  FieloFormInvoice.prototype.disableMemberEdit = function(event) {
-    console.log(event);
-    var memberField = document.querySelector('[data-field-name="' +
-      this.Constant_.MEMBER + '"]');
-    var memberPill = $(memberField).find('.' +
-      this.CssClasses_.LOOKUP_PILL)[0];
-    var pillRemoveSvg = $(memberPill).find('.' +
-      this.CssClasses_.BUTTON_ICON)[0];
-    $(pillRemoveSvg).remove();
-  };
-
   FieloFormInvoice.prototype.verifyMember_ = function(event) {
     if (!this.disableMemberValidation) {
       var memberId = document.querySelector(
@@ -795,6 +782,7 @@
       // 3 - Pisar con los parameters de source en edit y new
       this.setParameters_();
       this.endRetrieve();
+      this.disableMemberEdit_();
     } catch (e) {
       var notify = fielo.util.notify.create();
       notify.FieloNotify.addMessages([this.Constant_.HAS_ERROR, e]);
@@ -811,9 +799,6 @@
 
     // Setea parametros default en edit y new
     this.setParameters_();
-
-    // Add listener to Member Field Updates
-    // this.addListenerToMemberInput();
 
     // 2 - Hacer retrieve si estoy en edit
     if (
@@ -855,8 +840,10 @@
     var hasItems = false;
     var itemValues = this.itemsContainer_.FieloInvoiceItems.get();
     [].forEach.call(Object.keys(itemValues), function(itemPtr) {
-      if (itemValues[itemPtr].FieloPRP__Product__c !== null) {
-        hasItems = true;
+      if (itemValues[itemPtr].FieloPRP__Quantity__c !== null) {
+        if (itemValues[itemPtr].FieloPRP__Quantity__c !== '0') {
+          hasItems = true;
+        }
       }
     },
       this
@@ -936,6 +923,35 @@
 
     $(amountFormElem).addClass('slds-hidden');
     $(amountFormElem).addClass('slds-is-collapsed');
+  };
+
+  FieloFormInvoice.prototype.disableMemberEdit_ = function() {
+    $('[data-field-name="FieloPRP__Member__c"]')
+      .addClass('disabled');
+  };
+
+  FieloFormInvoice.prototype.getActiveProgram = function() {
+    Visualforce.remoting.Manager.invokeAction(
+      this.Constant_.GET_PROGRAM_CONTROLLER,
+      this.getActiveProgramCallback.bind(this),
+      {escape: true}
+    );
+  };
+
+  FieloFormInvoice.prototype.getActiveProgramCallback = function(program) {
+    if (!this.isEditing) {
+      if (program.FieloPRP__DetailedInvoice__c) {
+        $('.' + this.CssClasses_.ITEMS_CONTAINER)
+          .removeClass('slds-hidden');
+        $('.' + this.CssClasses_.ITEMS_CONTAINER)
+          .removeClass('slds-is-collapsed');
+      } else {
+        $('.' + this.CssClasses_.ITEMS_CONTAINER)
+          .addClass('slds-hidden');
+        $('.' + this.CssClasses_.ITEMS_CONTAINER)
+          .addClass('slds-is-collapsed');
+      }
+    }
   };
 
   FieloFormInvoice.prototype.retrieveProxy_ = function(modal, source) {
