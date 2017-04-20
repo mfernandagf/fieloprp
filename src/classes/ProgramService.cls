@@ -6,7 +6,7 @@ public with sharing class ProgramService {
 	//Piece of code copied from FieloPLT - Begins
     public static Map<Id,FieloPLT__Program__c> getPrograms(){
         if(programMap == null){
-            List<FieloPLT__Program__c> programs = [SELECT Id, Name FROM FieloPLT__Program__c];
+            List<FieloPLT__Program__c> programs = [SELECT Id, Name, FieloPRP__DetailedInvoice__c FROM FieloPLT__Program__c];
             // Si esta vacio => crea uno default
             if(programs.size() == 0){
                 FieloPLT__Program__c program = new FieloPLT__Program__c(Name = 'Default');
@@ -26,6 +26,7 @@ public with sharing class ProgramService {
         return null;
     }
 
+    @RemoteAction
     public static FieloPLT__Program__c getActiveProgram(){
         // Busca el id del Program Activo
         FieloPLT__Settings__c settings = FieloPLT__Settings__c.getInstance(UserInfo.getUserId());
