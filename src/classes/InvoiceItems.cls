@@ -289,17 +289,19 @@ public class InvoiceItems extends SObjectDomain {
     }
 
     public override void onBeforeDelete(){
-        Set<Id> invoiceIds = new Set<Id>();
-        for(InvoiceItem__c item : (List<InvoiceItem__c>)records){
-            if(item.Invoice__c != null){
-                invoiceIds.add(item.Invoice__c);                
+        if(validateAdminFields){
+            Set<Id> invoiceIds = new Set<Id>();
+            for(InvoiceItem__c item : (List<InvoiceItem__c>)records){
+                if(item.Invoice__c != null){
+                    invoiceIds.add(item.Invoice__c);                
+                }
             }
-        }
 
-        Map<Id,Invoice__c> invoicesMap = new Map<Id,Invoice__c>(new InvoicesSelector(new Set<String>{'FieloPRP__Status__c'}).selectById(invoiceIds));
-        for(InvoiceItem__c item : (List<InvoiceItem__c>)records){
-            if(item.Invoice__c != null && invoicesMap.get(item.Invoice__c).Status__c != 'Draft' && invoicesMap.get(item.Invoice__c).Status__c != 'New'){
-                item.addError(Label.DraftNotEditable);
+            Map<Id,Invoice__c> invoicesMap = new Map<Id,Invoice__c>(new InvoicesSelector(new Set<String>{'FieloPRP__Status__c'}).selectById(invoiceIds));
+            for(InvoiceItem__c item : (List<InvoiceItem__c>)records){
+                if(item.Invoice__c != null && invoicesMap.get(item.Invoice__c).Status__c != 'Draft' && invoicesMap.get(item.Invoice__c).Status__c != 'New'){
+                    item.addError(Label.DraftNotEditable);
+                }
             }
         }
     }
