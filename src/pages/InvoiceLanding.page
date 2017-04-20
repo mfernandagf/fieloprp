@@ -19,21 +19,20 @@
       helpUrl="http://documentation.fielo.com/docs/incentives"
       listviewoptions="{!listViews}"
       parameters="{ 'FieloPRP__Program__c' : '{!currentProgram.Id}'}"
-      buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'invoiceForm' }"
+      buttons="{!MID(landingSettings.FieloPLT__Buttons__c,2,LEN(landingSettings.FieloPLT__Buttons__c)-1)}"
+      tools="{!MID(landingSettings.FieloPLT__Tools__c,2,LEN(landingSettings.FieloPLT__Tools__c)-1)}"
       >
         <c:BackEndProgramSelector />
     </c:BackendHeaderRecord>
-
     <!--buttons="{'Label': 'New', 'Type': 'Modal', 'Action': 'promotionForm', 'CssClass': 'fielosf-create-promotion' }"-->
 
     <!--tools="
       {'Label': 'Export', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLExport,null,[ retURL = $CurrentPage.url, type = 'incentives'])}', 'CssClass': '' },
       {'Label': 'Import', 'CssClass': '', 'Type': 'Link', 'Action': '{!URLFOR($Page.XMLImport,null,[retURL = $CurrentPage.url, type = 'incentives'])}'}"-->
-
     <c:FormInvoice namespace="FieloPRP" formId="invoiceForm"
       heading="New {!$ObjectType.Invoice__c.label}"
       sObjectName="FieloPRP__Invoice__c"
-      fieldset="{!newSettings.FieloPLT__Fieldset__c}"
+      fieldset="{!newSettings.FieloPLT__Sections__c}"
       filterSObjectName="Product2"
       filter="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
       mode="new"
@@ -60,7 +59,7 @@
     </div>
   </div>
 </div>
-<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloPRP__FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
+<c:BackendFooter helpers="'FieloForm','FieloPaginator','FieloRecentRecords','FieloFilter', 'FieloFormInvoice'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloPrp_Salesforce, 'scripts/core.js')}" namespace="FieloPRP" />
 <!-- <script src="{!URLFOR($Resource.FieloPRP__programSelector)}"></script> -->
 </body>
 </html>

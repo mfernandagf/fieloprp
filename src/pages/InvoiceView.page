@@ -15,7 +15,7 @@
       helpUrl="http://documentation.fielo.com/docs/redemption"
       record="{!record}"
       sObjectName="Invoice__c"
-      fieldset="{!view.FieloPLT__Fieldset__c}"
+      fieldset="{!viewSettings.FieloPLT__Fieldset__c}"
       buttons="{!buttonString}"
     >
       <!-- Temporary: Remove when edit button is ok -->
@@ -38,7 +38,7 @@
     <c:FormInvoice namespace="FieloPRP" formId="invoiceForm"
       heading="Edit {!$ObjectType.Invoice__c.label}"
       sObjectName="FieloPRP__Invoice__c"
-      fieldset="{!edit.FieloPLT__Fieldset__c}"
+      fieldset="{!editSettings.FieloPLT__Sections__c}"
       filterSObjectName="Product2"
       filter="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
       mode="new"
@@ -47,7 +47,7 @@
       retrieveController="FormInvoiceController.retrieve"
     />
   
-    <apex:repeat value="{!related}" var="rel">
+    <apex:repeat value="{!relatedSettings}" var="rel">
         <apex:panelGroup rendered="{!rel.FieloPLT__TargetObject__c = 'FieloPRP__InvoiceItem__c' && record.FieloPRP__HasDetails__c }">
           <c:RelatedList namespace="FieloPLT" heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
             icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#product"
