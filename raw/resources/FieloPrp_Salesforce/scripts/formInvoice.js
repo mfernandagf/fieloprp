@@ -406,7 +406,7 @@
       this.newProductBtn.addEventListener('click',
         this.verifyMember_.bind(this));
       this.newProductBtn.addEventListener('click',
-        this.initItem_.bind(this));
+        this.initNewItem.bind(this));
 
       this.productForm_ =
         document.getElementsByClassName(this.CssClasses_.PRODUCT_FORM)[0];
