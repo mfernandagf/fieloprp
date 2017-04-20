@@ -114,7 +114,7 @@ public class InvoiceViewController extends PageSettingsController {
             buttonString = buttonString.substring(1,buttonString.length()-1);    
         }
 
-        initPageSettings( 'FieloPRP__Invoice__c', (SObject) record, buttonString, '' );
+        initPageSettings( 'FieloPRP__Invoice__c', (SObject) record, buttonString, '', '' );
     }
 
     /**
