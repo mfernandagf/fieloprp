@@ -22,7 +22,8 @@ public class InvoiceViewController extends PageSettingsController {
                 'FieloPRP__Status__c',
                 'FieloPRP__Amount__c',
                 'FieloPRP__Date__c',
-                'FieloPRP__Description__c'
+                'FieloPRP__Description__c',
+                'FieloPRP__Member__r.FieloPLT__Program__r.FieloPRP__RequestInvoiceAuthorization__c'
                 });
         }
 
@@ -54,12 +55,15 @@ public class InvoiceViewController extends PageSettingsController {
                     'Action' => 'FieloPRP.InvoiceViewController.closeInvoice',
                     'Confirm' => true
                 });
-                buttonList.add(new Map<String,Object>{
-                    'Label' => 'Submit for approval',
-                    'Type' => 'Remote',
-                    'Action' => 'FieloPRP.InvoiceViewController.submitForApproval',
-                    'Confirm' => true
-                });
+                
+                if(!record.FieloPRP__Member__r.FieloPLT__Program__r.FieloPRP__RequestInvoiceAuthorization__c){
+                    buttonList.add(new Map<String,Object>{
+                        'Label' => 'Submit for approval',
+                        'Type' => 'Remote',
+                        'Action' => 'FieloPRP.InvoiceViewController.submitForApproval',
+                        'Confirm' => true
+                    });
+                }
             }else if(record.Status__c == 'Pending'){
                 buttonList.add(new Map<String,Object>{
                     'Label' => 'Approve',
