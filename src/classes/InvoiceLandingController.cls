@@ -15,7 +15,7 @@ public with sharing class InvoiceLandingController extends PageSettingsSetContro
     public InvoiceLandingController(ApexPages.StandardSetController stController) {
         this.controller = stController;
 
-        initPageSettings('FieloPRP__Invoice__c',null,null);
+        initPageSettings('FieloPRP__Invoice__c','','','');
 
         System.debug('newSettings: ' + this.newSettings);
         System.debug('landingSettings: ' + this.landingSettings);

@@ -329,6 +329,7 @@ public with sharing class FormInvoiceController {
                 'TIME'};
 
             //Special treatment
+            System.debug(fieldName + ' = ' + fieldType);
             if (nonQuotedTypes.contains(fieldType)) {
                 singleWhereCondition = ' AND ' + fieldName + ' = ' + fieldValue;
 

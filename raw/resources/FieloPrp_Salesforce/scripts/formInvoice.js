@@ -93,22 +93,8 @@
       if (formValues.Id === '') {
         delete formValues.Id;
       }
-      for (var field in formValues) {
-        if (field !== null) {
-          if (field === 'FieloPRP__Date__c' &&
-            formValues[field] !== null &&
-            formValues[field] !== undefined) {
-            formValues[field] =
-              formValues[field].toDate().getTime();
-          }
-          if (field === 'FieloPRP__Date__c' && (
-            formValues[field] === null ||
-            formValues[field] === undefined)) {
-            delete formValues[field];
-          }
-        }
-      }
-      var itemValues = this.itemsContainer_.FieloInvoiceItems.get();
+      var itemValues =
+        this.itemsContainer_.FieloInvoiceItems.get();
       // verifico si hay al menos un item en cero o un reward sin elegir
       var quantityInCero = false;
       var emptyProduct = false;
@@ -222,20 +208,17 @@
     }
   };
 
-  FieloFormInvoice.prototype.setMemberFilter_ = function() {
+  FieloFormInvoice.prototype.setProductsFilter_ = function() {
     this.productRecent_ = document.getElementById(
       this.Constant_.PRODUCT_RECENT);
-    this.rewardPaginator_ =
+    this.productPaginator_ =
       this.productRecent_.FieloRecentRecords.getPaginator(
         ).FieloPaginator;
-    this.memberFilter = [];
+    this.productFilter = [];
 
-    this.memberFilter[this.Constant_.MEMBER] =
-      this.element_.querySelector(
-        '[data-field-name="FieloPRP__Member__c"]').FieloFormElement.get(
-        'value');
-    this.rewardPaginator_.setFilters(
-        this.memberFilter);
+    this.productFilter.IsActive = true;
+    this.productPaginator_.setFilters(
+        this.productFilter);
   };
 
   /**
@@ -247,7 +230,7 @@
       this.Constant_.PRODUCT_RECENT);
     if (this.productRecent_ !== null && this.productRecent_ !== undefined) {
       this.resetSearch_();
-      // this.setMemberFilter_();
+      this.setProductsFilter_();
       this.recentPaginator_ =
         this.productRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
       this.recentPaginator_.setPage();
@@ -264,14 +247,14 @@
       this.newFilters_ = [];
       [].forEach.call(this.searchFields_, function(element) {
         this.filterField_ = element.FieloFormElement;
-        this.rewardPaginator_ =
+        this.productPaginator_ =
           this.productRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
-        delete this.rewardPaginator_.getFilters()[
+        delete this.productPaginator_.getFilters()[
             this.filterField_.get('fieldName')];
       },
       this
       );
-      this.rewardPaginator_.setFilters(this.newFilters_);
+      this.productPaginator_.setFilters(this.newFilters_);
     }
   };
 
@@ -288,7 +271,7 @@
 
       [].forEach.call(this.searchFields_, function(element) {
         this.filterField_ = element.FieloFormElement;
-        this.rewardPaginator_ =
+        this.productPaginator_ =
           this.productRecent_.FieloRecentRecords.getPaginator().FieloPaginator;
         if (this.filterField_.get('value') !== '' &&
           this.filterField_.get('value') !== null &&
@@ -303,15 +286,15 @@
               this.filterField_.get('value');
           }
         } else {
-          delete this.rewardPaginator_.getFilters()[
+          delete this.productPaginator_.getFilters()[
             this.filterField_.get('fieldName')];
         }
       },
       this
       );
-      this.rewardPaginator_.setFilters(this.newFilters_);
-      this.rewardPaginator_.setPage();
-      this.rewardPaginator_.getRecords();
+      this.productPaginator_.setFilters(this.newFilters_);
+      this.productPaginator_.setPage();
+      this.productPaginator_.getRecords();
     }
   };
 
@@ -422,6 +405,8 @@
       // Method to disable any action when no member is given
       this.newProductBtn.addEventListener('click',
         this.verifyMember_.bind(this));
+      this.newProductBtn.addEventListener('click',
+        this.initItem_.bind(this));
 
       this.productForm_ =
         document.getElementsByClassName(this.CssClasses_.PRODUCT_FORM)[0];
@@ -487,6 +472,15 @@
         'click',
         this.verifyMember_.bind(this));
     }
+  };
+
+  FieloFormInvoice.prototype.initNewItem = function() {
+    this.invoiceItems =
+      this.element_.getElementsByClassName(
+        this.CssClasses_.INVOICE_ITEM);
+    this.lastInvoiceItem =
+      this.invoiceItems[this.invoiceItems.length - 1];
+    this.initItem_(this.lastInvoiceItem);
   };
 
   FieloFormInvoice.prototype.updateProductBasket = function() {
@@ -945,11 +939,19 @@
           .removeClass('slds-hidden');
         $('.' + this.CssClasses_.ITEMS_CONTAINER)
           .removeClass('slds-is-collapsed');
+        $('[data-field-name="FieloPRP__Amount__c"]')
+          .addClass('slds-hidden');
+        $('[data-field-name="FieloPRP__Amount__c"]')
+          .addClass('slds-is-collapsed');
       } else {
         $('.' + this.CssClasses_.ITEMS_CONTAINER)
           .addClass('slds-hidden');
         $('.' + this.CssClasses_.ITEMS_CONTAINER)
           .addClass('slds-is-collapsed');
+        $('[data-field-name="FieloPRP__Amount__c"]')
+          .removeClass('slds-hidden');
+        $('[data-field-name="FieloPRP__Amount__c"]')
+          .removeClass('slds-is-collapsed');
       }
     }
   };
