@@ -93,6 +93,11 @@
       if (formValues.Id === '') {
         delete formValues.Id;
       }
+      if (formValues.FieloPRP__Date__c === '' ||
+        formValues.FieloPRP__Date__c === null ||
+        formValues.FieloPRP__Date__c === undefined) {
+        delete formValues.FieloPRP__Date__c;
+      }
       var itemValues =
         this.itemsContainer_.FieloInvoiceItems.get();
       // verifico si hay al menos un item en cero o un reward sin elegir
