@@ -40,7 +40,8 @@
       sObjectName="FieloPRP__Invoice__c"
       fieldset="{!editSettings.FieloPLT__Sections__c}"
       filterSObjectName="Product2"
-      filter="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
+      filter="{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}"
+      filterRecent="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
       mode="new"
       record="{!record}"
       className="fielosf-invoice-form"
@@ -49,7 +50,7 @@
   
     <apex:repeat value="{!relatedSettings}" var="rel">
         <apex:panelGroup rendered="{!rel.FieloPLT__TargetObject__c = 'FieloPRP__InvoiceItem__c' && record.FieloPRP__HasDetails__c }">
-          <c:RelatedList namespace="FieloPLT" heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
+          <c:RelatedList namespace="FieloPRP" heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
             icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#product"
             sObjectName="{!rel.FieloPLT__TargetObject__c}"
             dataFilters="{'{!rel.FieloPLT__TargetField__c}':'{!Invoice__c.Id}'}"

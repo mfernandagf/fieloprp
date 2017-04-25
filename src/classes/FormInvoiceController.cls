@@ -74,6 +74,7 @@ public with sharing class FormInvoiceController {
 /*****  Secciones Y Fields  *****/
   public String cFieldset{get;set;}
   public String cFilter{get;set;}
+  public String cFilterRecent{get;set;}
 
   public class Section {
     public String Name{get;set;}
@@ -105,6 +106,22 @@ public with sharing class FormInvoiceController {
     } set;
   }
 
+  public List<Section> filterRecentSections { get {
+      if ( filterRecentSections == null ) {
+        if ( !String.isBlank(cFilterRecent)  ) {
+          // Si empieza con [ es un valor seteado en una visual force => lo tiene que modificar para que sea json
+          if ( !cFilterRecent.startsWith('[') ) {
+            cFilterRecent = '[' + cFilterRecent.replace('\'', '"') + ']';
+          }
+          filterRecentSections = (List<Section>) JSON.deserialize( cFilterRecent, List<FormInvoiceController.Section>.class );
+        } else {
+          filterRecentSections = new List<Section>();
+        }
+      }
+      return filterRecentSections;
+    } set;
+  }
+
   public List<Section> filterSections { get {
       if ( filterSections == null ) {
         if ( !String.isBlank(cFilter)  ) {
@@ -112,7 +129,6 @@ public with sharing class FormInvoiceController {
           if ( !cFilter.startsWith('[') ) {
             cFilter = '[' + cFilter.replace('\'', '"') + ']';
           }
-          system.debug(LoggingLevel.ERROR,'## cFilter: ' + cFilter);
           filterSections = (List<Section>) JSON.deserialize( cFilter, List<FormInvoiceController.Section>.class );
         } else {
           filterSections = new List<Section>();
@@ -195,7 +211,7 @@ public with sharing class FormInvoiceController {
   public List<Map<String,String>> filterRecentRecordsMap{get{
     filterRecentRecordsMap = new List<Map<String,String>>();
 
-    for ( Section s :filterSections ) {
+    for ( Section s :filterRecentSections ) {
       for ( List<FormField> r :s.rows ) {
         for ( FormField f :r ) {
           if ( !String.isBlank(f.Name) ) {
