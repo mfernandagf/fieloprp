@@ -72,42 +72,137 @@ The Invoice has its status changed
    10. End of flow
 
 ##### 5. The approver approves the pending Invoice from a program with no approval process required (step 1 of basic flow)
-   1. The administrator presses the “Cancel” button
-   2. The system changes the Invoice status to “Canceled”
-   3. The system removes the points previously given to the related member
-   4. The system refreshes the Invoice Detail page
-   5. The system hides the “Cancel” button
-   6. The system displays the “Reopen” button and maintains the “Reprocess” button
-   7. End of flow
+   1. The approver selects, in the Invoices landing page, an invoice which status is “Pending” from a program where the option “Request Invoice Authorization” is set to false
+   2. The system displays the Invoice details page
+   3. The system displays the actions to “Approve” or “Reject” the invoice in the Approval Process area
+   4. The approver selects the action to “Approve/Reject” the invoice
+   5. The system displays the approval process page
+   6. The approver approves the invoice
+   7. The system changes the Invoice status to “Approved”
+   8. The system refreshes the Invoice details page
+   9. The system displays the “Cancel” and “Reprocess” buttons
+   10. End of flow
 
-##### 6. The administrator reprocesses an approved Invoice (step 5 of the alternative flow 1 or step 7 of the alternative flow 2)
-   1. The administrator presses the “Reprocess” button
-   2. The system maintains the Invoice status in “Approved”
-   3. The system reprocesses the invoice
-   4. The system refreshes the Invoice Detail page
-   5. The system maintains the “Cancel” and “Reprocess” buttons
-   6. End of flow
+##### 6. The approver rejects the pending Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The approver selects, in the Invoices landing page, an invoice which status is “Pending” from a program where the option “Request Invoice Authorization” is set to false
+   2. The system displays the Invoice details page
+   3. The system displays the actions to “Approve” or “Reject” the invoice in the Approval Process area
+   4. The approver selects the action to “Approve/Reject” the invoice
+   5. The system goes to the configured approval process
+   6. The approver rejects the invoice
+   7. The system changes the Invoice status to “Rejected”
+   8. The system refreshes the Invoice details page
+   9. The system displays the “Reopen” button
+   10. End of flow
    
-##### 7. The administrator reopens a rejected Invoice (step 6 of the alternative flow 3)
-   1. The administrator presses the “Reopen” button
-   2. The system changes the Invoice status to “Draft” 
-   3. The system refreshes the Invoice Detail page
-   4. The system hides the “Reopen” button
-   5. The system displays the “Approve” and “Submit for Approval” buttons
-   6. End of flow
+##### 7. The administrator cancels an approved Invoice from a program where the option “Request Invoice Authorization” is set to true (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Approved” from a program where the option “Request Invoice Authorization” is set to true
+   2. The system displays the Invoice details page
+   3. The system displays the “Cancel” and “Reprocess” buttons
+   4. The administrator presses the “Cancel” button
+   5. The system changes the Invoice status to “Canceled”
+   6. The system removes the points previously given to the related member
+   7. The system refreshes the Invoice details page
+   8. The system hides the “Cancel” button
+   9. The system displays the “Reopen” button and maintains the “Reprocess” button
+   10. End of flow
 
-##### 8. The administrator reopens a canceled Invoice (step 6 of the alternative flow 5)
-   1. The administrator presses the “Reopen” button
-   2. The system changes the Invoice status to “Draft”
-   3. The system refreshes the Invoice Detail page
-   4. The system hides the “Reopen” button
-   5. The system displays the “Approve” and “Submit for Approval” buttons
-   6. End of flow
+##### 8. The administrator cancels an approved Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Approved” from a program where the option “Request Invoice Authorization” is set to false
+   2. The system displays the Invoice details page
+   3. The system displays the “Cancel” and “Reprocess” buttons
+   4. The administrator presses the “Cancel” button
+   5. The system changes the Invoice status to “Canceled”
+   6. The system removes the points previously given to the related member
+   7. The system refreshes the Invoice details page
+   8. The system hides the “Cancel” button
+   9. The system displays the “Reopen” button and maintains the “Reprocess” button
+   10. End of flow
    
-##### 9. The administrator reprocesses a canceled Invoice (step 6 of the alternative flow 5)
-   1. The administrator presses the “Reprocess” button
-   2. The system changes the Invoice status to “Approved”
-   3. The system refreshes the Invoice Detail page
-   4. The system hides the “Reprocess” button
-   5. The system displays the “Cancel” and “Reprocess” buttons
-   6. End of flow
+##### 9. The administrator reprocesses an approved Invoice from a program where the option “Request Invoice Authorization” is set to true (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Approved” from a program where the option “Request Invoice Authorization” is set to true
+   2. The system displays the Invoice details page
+   3. The system displays the “Cancel” and “Reprocess” buttons
+   4. The administrator presses the “Reprocess” button
+   5. The system maintains the Invoice status in “Approved”
+   6. The system reprocesses the invoice
+   7. The system refreshes the Invoice details page
+   8. The system maintains the “Cancel” and “Reprocess” buttons
+   9. End of flow
+   
+##### 10. The administrator reprocesses an approved Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Approved” from a program where the option “Request Invoice Authorization” is set to false
+   2. The system displays the Invoice details page
+   3. The system displays the “Cancel” and “Reprocess” buttons
+   4. The administrator presses the “Reprocess” button
+   5. The system maintains the Invoice status in “Approved”
+   6. The system reprocesses the invoice
+   7. The system refreshes the Invoice details page
+   8. The system maintains the “Cancel” and “Reprocess” buttons
+   9. End of flow
+   
+##### 11. The administrator reopens a rejected Invoice from a program where the option “Request Invoice Authorization” is set to true (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Rejected” from a program where the option “Request Invoice Authorization” is set to true
+   2. The system displays the Invoice details page
+   3. The system displays the “Reopen” button
+   4. The administrator presses the “Reopen” button
+   5. The system changes the Invoice status to “Draft”
+   6. The system refreshes the Invoice details page
+   7. The system hides the “Reopen” button
+   8. The system displays the "Edit" and “Close” buttons
+   9. End of flow
+   
+##### 12. The administrator reopens a rejected Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Rejected” from a program where the option “Request Invoice Authorization” is set to false
+   2. The system displays the Invoice details page
+   3. The system displays the “Reopen” button
+   4. The administrator presses the “Reopen” button
+   5. The system changes the Invoice status to “Draft”
+   6. The system refreshes the Invoice details page
+   7. The system hides the “Reopen” button
+   8. The system displays the "Edit", “Close” and “Submit for Approval” buttons
+   9. End of flow
+   
+##### 13. The administrator reopens a canceled Invoice from a program where the option “Request Invoice Authorization” is set to true (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Canceled” from a program where the option “Request Invoice Authorization” is set to true
+   2. The system displays the Invoice details page
+   3. The system displays the “Reopen” and “Reprocess” buttons
+   4. The administrator presses the “Reopen” button
+   5. The system changes the Invoice status to “Draft”
+   6. The system refreshes the Invoice details page
+   7. The system hides the “Reopen” button
+   8. The system displays the "Edit" and “Close” buttons
+   9. End of flow
+                            
+##### 14. The administrator reopens a canceled Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Canceled” from a program where the option “Request Invoice Authorization” is set to false
+   2. The system displays the Invoice details page
+   3. The system displays the “Reopen” and “Reprocess” buttons
+   4. The administrator presses the “Reopen” button
+   5. The system changes the Invoice status to “Draft”
+   6. The system refreshes the Invoice details page
+   7. The system hides the “Reopen” button
+   8. The system displays the “Edit”, “Close” and “Submit for Approval” buttons
+   9. End of flow
+   
+##### 15. The administrator reprocesses a canceled Invoice from a program where the option “Request Invoice Authorization” is set to true (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Canceled” from a program where the option “Request Invoice Authorization” is set to true
+   2. The system displays the Invoice details page
+   3. The system displays the “Reopen” and “Reprocess” buttons
+   4. The administrator presses the “Reprocess” button
+   5. The system changes the Invoice status to “Approved”
+   6. The system reprocesses the invoice
+   7. The system refreshes the Invoice details page
+   8. The system displays the “Cancel” and “Reprocess” buttons
+   9. End of flow
+
+##### 16. The administrator reprocesses a canceled Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Canceled” from a program where the option “Request Invoice Authorization” is set to false
+   2. The system displays the Invoice details page
+   3. The system displays the “Reopen” and “Reprocess” buttons
+   4. The administrator presses the “Reprocess” button
+   5. The system changes the Invoice status to “Approved”
+   6. The system reprocesses the invoice
+   7. The system refreshes the Invoice details page
+   8. The system displays the “Cancel” and “Reprocess” buttons
+   9. End of flow
