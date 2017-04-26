@@ -14,7 +14,7 @@ public class TestInvoiceViewController {
         insert members;
 
         invoices = MockUpFactory.createInvoices(members[0].Id,1);
-        invoices[0].FieloPRP__Status__c = 'Pending';
+        invoices[0].FieloPRP__Status__c = 'Pending for Approval';
         insert invoices;
 
         ApexPages.StandardController standardController = new ApexPages.StandardController(invoices[0]);

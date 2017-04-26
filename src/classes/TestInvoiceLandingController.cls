@@ -57,7 +57,7 @@ public class TestInvoiceLandingController {
         insert invoices;
 
         Test.setCurrentPageReference(new PageReference('Page.InvoiceLanding')); 
-		System.currentPageReference().getParameters().put('view', 'Pending');
+		System.currentPageReference().getParameters().put('view', 'Pending for Approval');
         ApexPages.Standardsetcontroller standardController = new ApexPages.Standardsetcontroller(invoices);
         InvoiceLandingController controller = new InvoiceLandingController(standardController);
 	}
