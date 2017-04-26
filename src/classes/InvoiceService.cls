@@ -62,7 +62,7 @@ global with sharing class InvoiceService {
     }
 
     global static List<Invoice__c> submitInvoices(Set<Id> invoiceIds){
-        return updateInvoiceStatus(invoiceIds, 'Draft');
+        return updateInvoiceStatus(invoiceIds, 'Open');
     }
 
     public static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices, String status){

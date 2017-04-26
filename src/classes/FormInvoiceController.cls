@@ -243,7 +243,7 @@ public with sharing class FormInvoiceController {
             invoiceWrappers.add(new InvoiceService.InvoiceWrapper(record, items, null));
 
             List<Invoice__c> invoices = record.Id == null ?
-              InvoiceService.createInvoices(invoiceWrappers, 'Draft') :
+              InvoiceService.createInvoices(invoiceWrappers, 'Open') :
               InvoiceService.updateInvoices(invoiceWrappers);
 
             if ( invoices.size() == 1  ) {

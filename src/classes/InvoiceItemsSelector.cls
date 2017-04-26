@@ -27,12 +27,12 @@ public class InvoiceItemsSelector extends SObjectSelector{
     }
 
     public List<InvoiceItem__c> selectByIdWithInvoiceStatusNotEditable(Set<Id> invoiceItemIds){
-        String draftStatus = 'Draft';
+        String openStatus = 'Open';
         return (List<InvoiceItem__c>) Database.query(String.format(
                 'select {0} ' +
                   'from {1} ' +
                   'where Id In: invoiceItemIds ' +
-                  'and FieloPRP__Invoice__r.FieloPRP__Status__c = :draftStatus ' +
+                  'and FieloPRP__Invoice__r.FieloPRP__Status__c = :openStatus ' +
                   'order by {2}',
                 new List<String> {
                     getFieldListString(),

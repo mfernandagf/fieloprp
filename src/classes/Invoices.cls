@@ -67,7 +67,7 @@ public with sharing class Invoices extends SObjectDomain {
                 if( invoice.HasDetails__c != ((Invoice__c)existingRecords.get(invoice.Id)).HasDetails__c )
                     invoice.addError( Label.HasDetailsNotEditable );
 
-                if( ((Invoice__c)existingRecords.get(invoice.Id)).Status__c != 'Draft' ){
+                if( ((Invoice__c)existingRecords.get(invoice.Id)).Status__c != 'Open' ){
                     if( amountHasChanged || dateHasChanged || invoiceNumberHasChanged )
                         invoice.addError( Label.DraftNotEditable );
                 }
@@ -112,7 +112,7 @@ public with sharing class Invoices extends SObjectDomain {
 
         for(Invoice__c record : (List<Invoice__c>)records){
             if(record.Status__c == null){
-                record.Status__c = 'Draft';
+                record.Status__c = 'Open';
             }
 
             record.HasDetails__c = !detailessInvoiceMembers.containsKey( record.Member__c );

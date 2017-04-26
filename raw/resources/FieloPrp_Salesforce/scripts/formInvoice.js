@@ -163,7 +163,7 @@
     this.hasDeletedAttachments = deleteFilesList ?
       deleteFilesList.length > 0 :
       false;
-
+    console.log(result);
     if (this.hasAttachments || this.hasDeletedAttachments) {
       var invoiceId = result.redirectURL.substring(1,
         result.redirectURL.length);
@@ -670,7 +670,13 @@
         var result = {message: 'Must select a member', redirectURL: '#'};
         this.form_.processRemoteActionResult_(null, result);
       } else {
-        this.validateHasDetails = true;
+        if ($(event.srcElement).hasClass(this.CssClasses_.ADD_PRODUCTS) ||
+          $(event.srcElement).hasClass(this.CssClasses_.NEW) ||
+          $(event.srcElement).hasClass(this.CssClasses_.ELEMENT)) {
+          this.validateHasDetails = true;
+        } else {
+          this.validateHasDetails = false;
+        }
         this.currentEvent_ = event;
         this.getHasDetails(memberId);
       }
@@ -836,22 +842,12 @@
     var hasDetails = this.element_
       .querySelector('[data-field-name="FieloPRP__HasDetails__c"]')
         .FieloFormElement.get('value');
-    var hasItems = false;
-    var itemValues = this.itemsContainer_.FieloInvoiceItems.get();
-    [].forEach.call(Object.keys(itemValues), function(itemPtr) {
-      if (itemValues[itemPtr].FieloPRP__Quantity__c !== null) {
-        if (itemValues[itemPtr].FieloPRP__Quantity__c !== '0') {
-          hasItems = true;
-        }
-      }
-    },
-      this
-    );
-    if (!hasDetails && hasItems) {
+    if (!hasDetails) {
       this.currentEvent_.stopPropagation();
       this.currentEvent_.preventDefault();
       this.keepItems_ = false;
       this.clear_();
+      this.closeProducsModalIfOpened_();
       var actionResult = {
         message: 'The program of this member does' +
         ' not allow the creation of items.'};
@@ -913,6 +909,15 @@
   FieloFormInvoice.prototype.endRetrieve = function() {
     this.hasDetailsCheck();
     this.refreshTotal();
+  };
+
+  FieloFormInvoice.prototype.closeProducsModalIfOpened_ = function() {
+    if ($('.' + this.CssClasses_.PRODUCT_FORM).hasClass('slds-show')) {
+      $('.fielosf-invoice-form-addproducts').modal('hide');
+    }
+    if ($('.fielosf-invoice-form').hasClass('slds-hide')) {
+      $('.fielosf-invoice-form').modal('show');
+    }
   };
 
   FieloFormInvoice.prototype.hideAmount_ = function() {
