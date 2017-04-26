@@ -17,10 +17,8 @@
       sObjectName="Invoice__c"
       fieldset="{!viewSettings.FieloPLT__Fieldset__c}"
       buttons="{!buttonString}"
+      tools="{!viewSettings.FieloPLT__Tools__c}"
     >
-      <!-- Temporary: Remove when edit button is ok -->
-      <a class="slds-button slds-button--neutral slds-float--right" href="{! IF(isBlank(record.Id), '', '/'+record.Id+'?nooverride=1') }">Switch to Classic</a>
-      <!-- Temporary -->
       <span class="slds-icon_container {!hiddenClass}" title="Record locked by approval process">
         <svg class="slds-button__icon slds-button__icon--large" aria-hidden="true">
                   <use xlink:href="/resource/1489600766000/FieloPRP__FieloSalesforce_Backend/lightning/icons/utility-sprite/svg/symbols.svg#lock"></use>
