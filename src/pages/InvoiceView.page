@@ -91,11 +91,14 @@
 
     <c:ImageGallery parentId="{!record.Id}" />
 
-    <apex:panelGroup rendered="{!record.FieloPRP__Member__r.FieloPLT__Program__r.FieloPRP__RequestInvoiceAuthorization__c}">
-      <c:ApprovalSteps >
-        <apex:relatedList list="ProcessSteps" />
-      </c:ApprovalSteps>
-    </apex:panelGroup>
+    <apex:repeat value="{!relatedStandard}" var="relStd">
+      <apex:panelGroup rendered="{!relStd='ProcessSteps'}">
+        <c:ApprovalSteps >
+          <apex:relatedList list="ProcessSteps" />
+        </c:ApprovalSteps>
+      </apex:panelGroup>
+    </apex:repeat>
+    
 
     <div id="modalInvoiceImage" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal">
       <div class="slds-modal__container">
