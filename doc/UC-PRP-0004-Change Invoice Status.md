@@ -6,7 +6,7 @@ This use case describes the possible statuses for the Invoice
 ### Preconditions
 The administrator must be logged in   
 The approver must be logged in  
-There must be at least one Invoice in “Draft” status  
+There must be at least one Invoice in “Open” status  
 There must be an approval process configured which updates the status of the invoice
 
 ### Postconditions
@@ -16,12 +16,12 @@ The Invoice has its status changed
 
 ### Basic Flow
 
-   1. The administrator selects, in the Invoices landing page, an invoice which status is “Draft” from a program where the option “Request Invoice Authorization” is set to true
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Open” from a program where the option “Request Invoice Authorization” is set to true
    2. The system displays the Invoice details page
    3. The system displays the "Edit" and “Close” buttons
    4. The administrator presses the “Close” button
    5. The system refreshes the Invoice details page
-   6. The system changes the Invoice status to “Pending”
+   6. The system changes the Invoice status to “Pending for Approval”
    7. The system submits the invoice to the configured approval process
    8. The system hides the “Edit” and “Close” buttons
    9. The system displays the actions to “Approve” or “Reject” the invoice in the Approval Process area
@@ -30,7 +30,7 @@ The Invoice has its status changed
 
 ### Alternative Flows
 
-##### 1. The approver approves a pending invoice from a program where the option “Request Invoice Authorization” is set to true (step 9 of basic flow)
+##### 1. The approver approves a pending for approval invoice from a program where the option “Request Invoice Authorization” is set to true (step 9 of basic flow)
    1. The approver selects the action to “Approve/Reject” the invoice in the Approval Process area
    2. The system displays the approval process page
    3. The approver approves the invoice
@@ -39,7 +39,7 @@ The Invoice has its status changed
    6. The system displays the “Cancel” and “Reprocess” buttons
    7. End of flow
 
-##### 2. The approver rejects a pending Invoice from a program where the option “Request Invoice Authorization” is set to true (step 9 of basic flow)
+##### 2. The approver rejects a pending for approval Invoice from a program where the option “Request Invoice Authorization” is set to true (step 9 of basic flow)
    1. The approver selects the action to “Approve/Reject” the invoice in the Approval Process area
    2. The system displays the approval process page
    3. The approver rejects the invoice
@@ -48,8 +48,8 @@ The Invoice has its status changed
    6. The system displays the “Reopen” button
    7. End of flow
 
-##### 3. The administrator closes a draft invoice from a program with no approval process required (step 1 of basic flow)
-   1. The administrator selects, in the Invoices landing page, an invoice which status is “Draft” from a program where the option “Request Invoice Authorization” is set to false
+##### 3. The administrator closes an open invoice from a program with no approval process required (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Open” from a program where the option “Request Invoice Authorization” is set to false
    2. The system displays the Invoice details page
    3. The system displays the "Edit", “Close” and “Submit for Approval” buttons
    4. The administrator presses the “Close” button
@@ -59,20 +59,20 @@ The Invoice has its status changed
    8. The system displays the “Cancel” and “Reprocess” buttons
    9. End of flow
 
-##### 4. The administrator submits for approval a draft Invoice from a program with no approval process required (step 1 of basic flow)
-   1. The administrator selects, in the Invoices landing page, an invoice which status is “Draft” from a program where the option “Request Invoice Authorization” is set to false
+##### 4. The administrator submits for approval an open Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The administrator selects, in the Invoices landing page, an invoice which status is “Open” from a program where the option “Request Invoice Authorization” is set to false
    2. The system displays the Invoice details page
    3. The system displays the "Edit", “Close” and “Submit for Approval” buttons
    4. The administrator presses the “Submit for Approval” button
    5. The system refreshes the Invoice details page
-   6. The system changes the Invoice status to “Pending”
+   6. The system changes the Invoice status to “Pending for Approval”
    7. The system submits the invoice to the configured approval process
    8. The system hides the “Edit, “Close” and “Submit for Approval” buttons
    9. The system displays the actions to “Approve” or “Reject” the invoice in the Approval Process area
    10. End of flow
 
-##### 5. The approver approves the pending Invoice from a program with no approval process required (step 1 of basic flow)
-   1. The approver selects, in the Invoices landing page, an invoice which status is “Pending” from a program where the option “Request Invoice Authorization” is set to false
+##### 5. The approver approves the pending for approval Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The approver selects, in the Invoices landing page, an invoice which status is “Pending for Approval” from a program where the option “Request Invoice Authorization” is set to false
    2. The system displays the Invoice details page
    3. The system displays the actions to “Approve” or “Reject” the invoice in the Approval Process area
    4. The approver selects the action to “Approve/Reject” the invoice
@@ -83,8 +83,8 @@ The Invoice has its status changed
    9. The system displays the “Cancel” and “Reprocess” buttons
    10. End of flow
 
-##### 6. The approver rejects the pending Invoice from a program with no approval process required (step 1 of basic flow)
-   1. The approver selects, in the Invoices landing page, an invoice which status is “Pending” from a program where the option “Request Invoice Authorization” is set to false
+##### 6. The approver rejects the pending for approval Invoice from a program with no approval process required (step 1 of basic flow)
+   1. The approver selects, in the Invoices landing page, an invoice which status is “Pending for Approval” from a program where the option “Request Invoice Authorization” is set to false
    2. The system displays the Invoice details page
    3. The system displays the actions to “Approve” or “Reject” the invoice in the Approval Process area
    4. The approver selects the action to “Approve/Reject” the invoice
@@ -146,7 +146,7 @@ The Invoice has its status changed
    2. The system displays the Invoice details page
    3. The system displays the “Reopen” button
    4. The administrator presses the “Reopen” button
-   5. The system changes the Invoice status to “Draft”
+   5. The system changes the Invoice status to “Open”
    6. The system refreshes the Invoice details page
    7. The system hides the “Reopen” button
    8. The system displays the "Edit" and “Close” buttons
@@ -157,7 +157,7 @@ The Invoice has its status changed
    2. The system displays the Invoice details page
    3. The system displays the “Reopen” button
    4. The administrator presses the “Reopen” button
-   5. The system changes the Invoice status to “Draft”
+   5. The system changes the Invoice status to “Open”
    6. The system refreshes the Invoice details page
    7. The system hides the “Reopen” button
    8. The system displays the "Edit", “Close” and “Submit for Approval” buttons
@@ -168,7 +168,7 @@ The Invoice has its status changed
    2. The system displays the Invoice details page
    3. The system displays the “Reopen” and “Reprocess” buttons
    4. The administrator presses the “Reopen” button
-   5. The system changes the Invoice status to “Draft”
+   5. The system changes the Invoice status to “Open”
    6. The system refreshes the Invoice details page
    7. The system hides the “Reopen” button
    8. The system displays the "Edit" and “Close” buttons
@@ -179,7 +179,7 @@ The Invoice has its status changed
    2. The system displays the Invoice details page
    3. The system displays the “Reopen” and “Reprocess” buttons
    4. The administrator presses the “Reopen” button
-   5. The system changes the Invoice status to “Draft”
+   5. The system changes the Invoice status to “Open”
    6. The system refreshes the Invoice details page
    7. The system hides the “Reopen” button
    8. The system displays the “Edit”, “Close” and “Submit for Approval” buttons
