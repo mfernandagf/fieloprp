@@ -84,7 +84,6 @@ public with sharing class Invoices extends SObjectDomain {
 
                 if( !invoice.HasDetails__c &&
                     newAmount == 0.0 &&
-                    ((Invoice__c)existingRecords.get(invoice.Id)).Status__c == 'Open' &&
                     invoice.Status__c != 'Open' &&
                     invoice.Status__c != 'New') {
                     invoice.addError( Label.ZeroAmount );
