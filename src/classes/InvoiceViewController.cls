@@ -79,7 +79,7 @@ public class InvoiceViewController extends PageSettingsController {
                 });
             }else if(record.Status__c == 'Approved'){
                 buttonList.add(new Map<String,Object>{
-                    'Label' => 'Cancel',
+                    'Label' => 'Revert',
                     'Type' => 'Remote',
                     'Action' => 'FieloPRP.InvoiceViewController.cancelInvoice',
                     'Confirm' => true
