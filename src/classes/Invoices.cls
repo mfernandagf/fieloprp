@@ -37,7 +37,11 @@ public with sharing class Invoices extends SObjectDomain {
                     if(invoice.Member__c!=null)
                         if( !disabledUpdateMembers.containsKey( invoice.Member__c ) )
                             invoice.addError( Label.AmountUpdateDisabled );
-
+                if( invoice.Date__c == null ) {
+                    invoice.addError( Label.DateFieldNull );
+                } else if ( invoice.Date__c > System.today() ){
+                    invoice.addError( Label.FutureDateField );
+                }
             }
         }
     }

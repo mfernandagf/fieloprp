@@ -17,12 +17,28 @@
         <value>Programs with Detailed Invoice set to true have the hability to update the Amount of the Invoice disabled.</value>
     </labels>
     <labels>
+        <fullName>DateFieldNull</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DateFieldNull</shortDescription>
+        <value>Date field can not be null.</value>
+    </labels>
+    <labels>
         <fullName>DraftNotEditable</fullName>
         <categories>Invoices.cls</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>DraftNotEditable</shortDescription>
         <value>Only Invoices with status Draft or New are editable.</value>
+    </labels>
+    <labels>
+        <fullName>FutureDateField</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FutureDateField</shortDescription>
+        <value>Field date cannot be in the future.</value>
     </labels>
     <labels>
         <fullName>HasDetailsNotEditable</fullName>
@@ -38,7 +54,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>InvoiceChangeStatusSuccess</shortDescription>
-        <value>The invoice was {0} with sucess.</value>
+        <value>The invoice was {0} with success.</value>
     </labels>
     <labels>
         <fullName>InvoiceDetailInsertDisabled</fullName>
