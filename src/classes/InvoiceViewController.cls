@@ -139,12 +139,7 @@ public class InvoiceViewController extends PageSettingsController {
             result.redirectURL = '/'+recordId;
         }
         catch(DMLException e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(
-                ApexPages.Severity.ERROR,
-                e.getDmlMessage(0)
-                )
-            );
-            system.debug(e.getDmlMessage(0));
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,e.getDmlMessage(0)));
         }
 
         return result;
@@ -162,8 +157,8 @@ public class InvoiceViewController extends PageSettingsController {
             result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'approved'})) );
             result.redirectURL = '/'+recordId;
         }
-        catch(Exception e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        catch(DMLException e){
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,e.getDmlMessage(0)));
         }
 
         return result;
@@ -181,8 +176,8 @@ public class InvoiceViewController extends PageSettingsController {
             result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'rejected'})) );
             result.redirectURL = '/'+recordId;
         }
-        catch(Exception e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        catch(DMLException e){
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,e.getDmlMessage(0)));
         }
         
         return result;
@@ -200,8 +195,8 @@ public class InvoiceViewController extends PageSettingsController {
             result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'reopened'})) );
             result.redirectURL = '/'+recordId;
         }
-        catch(Exception e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        catch(DMLException e){
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,e.getDmlMessage(0)));
         }
         
         return result;
@@ -219,8 +214,8 @@ public class InvoiceViewController extends PageSettingsController {
             result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'cancelled'})) );
             result.redirectURL = '/'+recordId;
         }
-        catch(Exception e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        catch(DMLException e){
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,e.getDmlMessage(0)));
         }
         
         return result;
@@ -239,8 +234,8 @@ public class InvoiceViewController extends PageSettingsController {
             result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'reprocessed'})) );
             result.redirectURL = '/'+recordId;
         }
-        catch(Exception e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        catch(DMLException e){
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,e.getDmlMessage(0)));
         }
         
         return result;
@@ -260,8 +255,8 @@ public class InvoiceViewController extends PageSettingsController {
             result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'sent for approval'})) );
             result.redirectURL = '/'+recordId;
         }
-        catch(Exception e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        catch(DMLException e){
+            result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR,e.getDmlMessage(0)));
         }
         
         return result;
