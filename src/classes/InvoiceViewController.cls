@@ -23,6 +23,7 @@ public class InvoiceViewController extends PageSettingsController {
                 'FieloPRP__Amount__c',
                 'FieloPRP__Date__c',
                 'FieloPRP__Description__c',
+                'FieloPRP__Distributor__c',
                 'FieloPRP__Member__r.FieloPLT__Program__r.FieloPRP__RequestInvoiceAuthorization__c'
                 });
         }
