@@ -232,12 +232,18 @@ public with sharing class FormInvoiceController {
   }set;}
 
     @RemoteAction
-    public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items){
+    public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items, List<String> nullFields){
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
 
         try{
             sp = Database.setSavepoint();
+
+            for(String f: nullFields){
+              if ( f != 'sObjectType' ) {
+               record.put(f, null );
+              }
+            }
 
             List<InvoiceService.InvoiceWrapper> invoiceWrappers = new List<InvoiceService.InvoiceWrapper>();
             invoiceWrappers.add(new InvoiceService.InvoiceWrapper(record, items, null));

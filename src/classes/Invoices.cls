@@ -75,6 +75,19 @@ public with sharing class Invoices extends SObjectDomain {
                     if( amountHasChanged || dateHasChanged || invoiceNumberHasChanged )
                         invoice.addError( Label.DraftNotEditable );
                 }
+
+                if( invoice.Date__c == null ) {
+                    invoice.addError( Label.DateFieldNull );
+                } else if ( invoice.Date__c > System.today() ){
+                    invoice.addError( Label.FutureDateField );
+                }
+
+                if( !invoice.HasDetails__c &&
+                    newAmount == 0.0 &&
+                    invoice.Status__c != 'Open' &&
+                    invoice.Status__c != 'New') {
+                    invoice.addError( Label.ZeroAmount );
+                }
             }
         }
     }

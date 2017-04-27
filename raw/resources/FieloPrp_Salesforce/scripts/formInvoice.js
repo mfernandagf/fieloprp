@@ -84,6 +84,7 @@
         .FieloFormElement.get('value');
     var hasDetails = '';
     var event = '';
+    var nullFields = [];
     if (memberValue) {
       hasDetails = this.element_
         .querySelector('[data-field-name="FieloPRP__HasDetails__c"]')
@@ -97,6 +98,7 @@
         formValues.FieloPRP__Date__c === null ||
         formValues.FieloPRP__Date__c === undefined) {
         delete formValues.FieloPRP__Date__c;
+        nullFields.push('FieloPRP__Date__c');
       }
       var itemValues =
         this.itemsContainer_.FieloInvoiceItems.get();
@@ -134,6 +136,7 @@
             this.Constant_.SAVE_CONTROLLER,
             formValues,
             hasDetails ? itemValues : null,
+            nullFields,
             this.saveCallback_.bind(this),
             {
               escape: false
@@ -163,7 +166,6 @@
     this.hasDeletedAttachments = deleteFilesList ?
       deleteFilesList.length > 0 :
       false;
-    console.log(result);
     if (this.hasAttachments || this.hasDeletedAttachments) {
       var invoiceId = result.redirectURL.substring(1,
         result.redirectURL.length);
@@ -328,6 +330,9 @@
     },
       this
     );
+    $('[data-field-name="FieloPRP__Product__c"]')
+      .find('#invoiceForm--input')
+      .keypress(this.protectProductField_.bind(this));
   };
 
   /**
@@ -443,22 +448,6 @@
       $(this.element_).on('shown.aljs.modal', function() {
         var _this = document.getElementsByClassName(
           'fielosf-invoice-form')[0];
-        var invoiceItemsRecords = _this.getElementsByClassName(
-          'fielosf-invoice-items');
-        [].forEach.call(invoiceItemsRecords, function(invoiceItem) {
-          var invoiceItemsFields =
-            invoiceItem.getElementsByClassName(
-              'slds-form-element');
-          [].forEach.call(invoiceItemsFields, function(field) {
-            field.addEventListener('change',
-              _this.FieloFormInvoice.verifyMember_.bind(
-                _this.FieloFormInvoice));
-          },
-            this
-          );
-        },
-          this
-        );
         _this.FieloFormInvoice.getActiveProgram();
       });
       $(this.element_).on('select', function() {
@@ -477,6 +466,15 @@
         'click',
         this.verifyMember_.bind(this));
     }
+  };
+
+  FieloFormInvoice.prototype.protectProductField_ = function(event) {
+    if ($('[data-field-name="FieloPRP__Member__c"]')[0]
+        .FieloFormElement.get('value') === '') {
+      $('[data-field-name="FieloPRP__Product__c"]')
+      .find('#invoiceForm--input').blur();
+    }
+    this.verifyMember_(event);
   };
 
   FieloFormInvoice.prototype.initNewItem = function() {
@@ -602,30 +600,46 @@
       $(value.srcElement).closest('.' +
         this.CssClasses_.ELEMENT)[0].FieloFormElement.get('fieldName');
 
-    var unitPriceField =
+    var unitPriceFieldElement =
       $(row).find($('[data-field-name="FieloPRP__UnitPrice__c"]')
-            )[0].FieloFormElement;
-    var quantityField =
+            )[0];
+    var quantityFieldElement =
       $(row).find($('[data-field-name="FieloPRP__Quantity__c"]')
-            )[0].FieloFormElement;
-    var totalPriceField =
+            )[0];
+    var totalPriceFieldElement =
       $(row).find($('[data-field-name="FieloPRP__TotalPrice__c"]')
-            )[0].FieloFormElement;
+            )[0];
 
-    if (unitPriceField.get('value') === null ||
-      unitPriceField.get('value') === undefined ||
-      unitPriceField.get('value') === '') {
-      unitPriceField.set('value', 0);
+    var unitPriceField = unitPriceFieldElement ?
+      unitPriceFieldElement.FieloFormElement :
+      null;
+    var quantityField = quantityFieldElement ?
+      quantityFieldElement.FieloFormElement :
+      null;
+    var totalPriceField = totalPriceFieldElement ?
+      totalPriceFieldElement.FieloFormElement :
+      null;
+
+    if (unitPriceField) {
+      if (unitPriceField.get('value') === null ||
+        unitPriceField.get('value') === undefined ||
+        unitPriceField.get('value') === '') {
+        unitPriceField.set('value', 0);
+      }
     }
-    if (quantityField.get('value') === null ||
-      quantityField.get('value') === undefined ||
-      quantityField.get('value') === '') {
-      quantityField.set('value', 0);
+    if (quantityField) {
+      if (quantityField.get('value') === null ||
+        quantityField.get('value') === undefined ||
+        quantityField.get('value') === '') {
+        quantityField.set('value', 0);
+      }
     }
-    if (totalPriceField.get('value') === null ||
-      totalPriceField.get('value') === undefined ||
-      totalPriceField.get('value') === '') {
-      totalPriceField.set('value', 0);
+    if (totalPriceField) {
+      if (totalPriceField.get('value') === null ||
+        totalPriceField.get('value') === undefined ||
+        totalPriceField.get('value') === '') {
+        totalPriceField.set('value', 0);
+      }
     }
     /* var zeroUnitPrice =
       unitPriceField.get('value') === '0';
@@ -634,25 +648,27 @@
     var zeroTotalPrice =
       totalPriceField.get('value') === '0';
     */
-    if (updatedField === 'FieloPRP__Quantity__c') {
-      totalPriceField.set('value',
-        parseFloat(quantityField.get('value')) *
-          parseFloat(unitPriceField.get('value'))
-        );
-    }
-    if (updatedField === 'FieloPRP__UnitPrice__c') {
-      totalPriceField.set('value',
-        parseFloat(quantityField.get('value')) *
-          parseFloat(unitPriceField.get('value'))
-        );
-    }
-    if (updatedField === 'FieloPRP__TotalPrice__c') {
-      unitPriceField.set('value',
-        parseFloat(quantityField.get('value')) > 0.0 ?
-        parseFloat(totalPriceField.get('value')) /
-          parseFloat(quantityField.get('value')) :
-          0
-        );
+    if (totalPriceField && quantityField && unitPriceField) {
+      if (updatedField === 'FieloPRP__Quantity__c') {
+        totalPriceField.set('value',
+          parseFloat(quantityField.get('value')) *
+            parseFloat(unitPriceField.get('value'))
+          );
+      }
+      if (updatedField === 'FieloPRP__UnitPrice__c') {
+        totalPriceField.set('value',
+          parseFloat(quantityField.get('value')) *
+            parseFloat(unitPriceField.get('value'))
+          );
+      }
+      if (updatedField === 'FieloPRP__TotalPrice__c') {
+        unitPriceField.set('value',
+          parseFloat(quantityField.get('value')) > 0.0 ?
+          parseFloat(totalPriceField.get('value')) /
+            parseFloat(quantityField.get('value')) :
+            0
+          );
+      }
     }
     this.refreshTotal();
   };
@@ -667,12 +683,15 @@
         event.preventDefault();
         this.keepItems_ = false;
         this.clear_();
-        var result = {message: 'Must select a member', redirectURL: '#'};
-        this.form_.processRemoteActionResult_(null, result);
+        this.throwMessage('Must select a member', 'error');
+        $('[data-field-name="FieloPRP__Member__c"]')
+          .find('#invoiceForm--input')[0].focus();
       } else {
+        this.memberNotNull = true;
         if ($(event.srcElement).hasClass(this.CssClasses_.ADD_PRODUCTS) ||
           $(event.srcElement).hasClass(this.CssClasses_.NEW) ||
-          $(event.srcElement).hasClass(this.CssClasses_.ELEMENT)) {
+          $(event.srcElement).hasClass(this.CssClasses_.ELEMENT) ||
+          $(event.srcElement).hasClass(this.CssClasses_.INPUT)) {
           this.validateHasDetails = true;
         } else {
           this.validateHasDetails = false;
@@ -964,6 +983,13 @@
           .removeClass('slds-is-collapsed');
       }
     }
+  };
+
+  FieloFormInvoice.prototype.throwMessage = function(message, type) {
+    var notify = fielo.util.notify.create();
+    notify.FieloNotify.addMessages([message]);
+    notify.FieloNotify.setTheme(type);
+    notify.FieloNotify.show();
   };
 
   FieloFormInvoice.prototype.retrieveProxy_ = function(modal, source) {

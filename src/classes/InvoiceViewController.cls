@@ -138,8 +138,13 @@ public class InvoiceViewController extends PageSettingsController {
             }
             result.redirectURL = '/'+recordId;
         }
-        catch(Exception e){
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
+        catch(DMLException e){
+            result.addMessage(new RemoteActionResult.RemoteActionMessage(
+                ApexPages.Severity.ERROR,
+                e.getDmlMessage(0)
+                )
+            );
+            system.debug(e.getDmlMessage(0));
         }
 
         return result;
