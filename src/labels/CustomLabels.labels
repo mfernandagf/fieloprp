@@ -128,4 +128,12 @@
         <shortDescription>UnitPriceZero</shortDescription>
         <value>Unit Price can not be zero.</value>
     </labels>
+    <labels>
+        <fullName>ZeroAmount</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ZeroAmount</shortDescription>
+        <value>Amount cannot be zero.</value>
+    </labels>
 </CustomLabels>
