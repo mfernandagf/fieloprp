@@ -6,7 +6,9 @@ public class InvoicesSelector extends SObjectSelector{
                 Invoice__c.Name,
                 Invoice__c.Amount__c,
                 Invoice__c.Status__c,
-                Invoice__c.HasDetails__c
+                Invoice__c.HasDetails__c,
+                Invoice__c.InvoiceNumber__c,
+                Invoice__c.Distributor__c
             };
     }
 
@@ -60,6 +62,30 @@ public class InvoicesSelector extends SObjectSelector{
         }
         if (status != null) {
             whereConditions.add(' Status__c IN : status ');
+        }
+        if(!whereConditions.isEmpty()){
+            query += 'WHERE ' + String.join(whereConditions, 'AND');
+        }
+        
+        query += 'order by {2} {3} {4}';        
+        return (List<Invoice__c>) Database.query(String.format(query,
+                new List<String> {
+                    getFieldListString(),
+                    getSObjectName(),
+                    getOrderBy(),
+                    getLimitCondition(),
+                    getOffsetCondition() } ));
+    }
+
+    public List<Invoice__c> selectByInvoiceNumber(Set<String> invoiceNumbers, Set<String> distributors) {
+        String query = 'SELECT {0} ' + ' FROM {1} ';
+
+        List<String> whereConditions = new List<String>();
+        if (invoiceNumbers != null) {
+            whereConditions.add(' InvoiceNumber__c IN :invoiceNumbers ');
+        }
+        if (distributors != null) {
+            whereConditions.add(' Distributor__c IN :distributors ');
         }
         if(!whereConditions.isEmpty()){
             query += 'WHERE ' + String.join(whereConditions, 'AND');

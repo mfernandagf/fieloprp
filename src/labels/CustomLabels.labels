@@ -33,6 +33,14 @@
         <value>Only Invoices with status Draft or New are editable.</value>
     </labels>
     <labels>
+        <fullName>DuplicatedInvoiceRecord</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DuplicatedInvoiceRecord</shortDescription>
+        <value>Duplicated Invoice Number for this Distributor</value>
+    </labels>
+    <labels>
         <fullName>FutureDateField</fullName>
         <categories>Invoices.cls</categories>
         <language>en_US</language>
@@ -54,7 +62,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>InvoiceChangeStatusSuccess</shortDescription>
-        <value>The invoice was {0} with success.</value>
+        <value>The invoice was {0} with sucess.</value>
     </labels>
     <labels>
         <fullName>InvoiceDetailInsertDisabled</fullName>

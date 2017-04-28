@@ -43,6 +43,7 @@ public with sharing class Invoices extends SObjectDomain {
                     invoice.addError( Label.FutureDateField );
                 }
             }
+            InvoiceService.getDuplicatedRecords(records);
         }
     }
 
@@ -89,6 +90,7 @@ public with sharing class Invoices extends SObjectDomain {
                     invoice.addError( Label.ZeroAmount );
                 }
             }
+            InvoiceService.getDuplicatedRecords(records);
         }
     }
 

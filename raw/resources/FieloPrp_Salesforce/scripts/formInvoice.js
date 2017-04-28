@@ -166,7 +166,10 @@
     this.hasDeletedAttachments = deleteFilesList ?
       deleteFilesList.length > 0 :
       false;
-    if (this.hasAttachments || this.hasDeletedAttachments) {
+    console.log(result);
+    if (result.redirectURL === null || result.redirectURL === undefined) {
+      this.form_.processRemoteActionResult_(result, event);
+    } else if (this.hasAttachments || this.hasDeletedAttachments) {
       var invoiceId = result.redirectURL.substring(1,
         result.redirectURL.length);
       this.element_.getElementsByClassName(this.CssClasses_.FILE_UPLOADER)[0]
