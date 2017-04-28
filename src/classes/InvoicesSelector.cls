@@ -45,7 +45,7 @@ public class InvoicesSelector extends SObjectSelector{
                 'select {0} ' +
                   'from {1} ' +
                   'where Id In: invoiceIds ' +
-                  'and FieloPRP__Member__r.FieloPLT__Program__r.DetailedInvoice__c = false ' + 
+                  'and FieloPRP__Member__r.FieloPLT__Program__r.RequestInvoiceProducts__c = false ' + 
                   'order by {2}',
                 new List<String> {
                     getFieldListString(),

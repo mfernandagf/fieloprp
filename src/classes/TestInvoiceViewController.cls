@@ -7,7 +7,7 @@ public class TestInvoiceViewController {
     @isTest static void unitTest(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);

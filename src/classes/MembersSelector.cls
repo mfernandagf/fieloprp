@@ -29,7 +29,7 @@ public class MembersSelector extends SObjectSelector{
             'select {0} ' +
             'from {1} ' +
             'where Id In: memberIds ' +
-            'and FieloPLT__Program__r.DetailedInvoice__c = false ' + 
+            'and FieloPLT__Program__r.RequestInvoiceProducts__c = false ' + 
             'order by {2}',
             new List<String> {
             getFieldListString(),

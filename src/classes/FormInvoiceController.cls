@@ -412,11 +412,11 @@ public with sharing class FormInvoiceController {
 
     @RemoteAction
     public static Boolean getHasDetailsFromMember(String memberId) {
-      String query = 'Select FieloPLT__Program__r.FieloPRP__DetailedInvoice__c';
+      String query = 'Select FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c';
       query += ' FROM FieloPLT__Member__c';
       query += ' WHERE Id =: memberId';
       FieloPLT__Member__c member = (FieloPLT__Member__c) Database.query(query);
-      return member.FieloPLT__Program__r.FieloPRP__DetailedInvoice__c;
+      return member.FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c;
     }
 
     @RemoteAction
