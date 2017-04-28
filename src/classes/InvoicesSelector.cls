@@ -77,7 +77,7 @@ public class InvoicesSelector extends SObjectSelector{
                     getOffsetCondition() } ));
     }
 
-    public List<Invoice__c> selectByInvoiceNumber(Set<String> invoiceNumbers, Set<String> distributors) {
+    public List<Invoice__c> selectByInvoiceNumberDistributorAndStatus(Set<String> invoiceNumbers, Set<String> distributors, String status) {
         String query = 'SELECT {0} ' + ' FROM {1} ';
 
         List<String> whereConditions = new List<String>();
@@ -87,6 +87,7 @@ public class InvoicesSelector extends SObjectSelector{
         if (distributors != null) {
             whereConditions.add(' Distributor__c IN :distributors ');
         }
+        whereConditions.add(' Status__c = :status ');
         if(!whereConditions.isEmpty()){
             query += 'WHERE ' + String.join(whereConditions, 'AND');
         }

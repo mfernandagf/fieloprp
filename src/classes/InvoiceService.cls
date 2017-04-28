@@ -175,7 +175,10 @@ global with sharing class InvoiceService {
             invoiceNumbers.add(invoice.InvoiceNumber__c);
             distributors.add(invoice.Distributor__c);
         }
-        List<Invoice__c> existingInvoices = new InvoicesSelector().selectByInvoiceNumber(invoiceNumbers, distributors);
+        List<Invoice__c> existingInvoices = new InvoicesSelector().selectByInvoiceNumberDistributorAndStatus(
+            invoiceNumbers, 
+            distributors,
+            'Approved');
         Map<String,Id> invoiceKeys = new Map<String,Id>();
         String key;
         for(Invoice__c existingInvoice: existingInvoices) {
