@@ -966,7 +966,7 @@
 
   FieloFormInvoice.prototype.getActiveProgramCallback = function(program) {
     if (!this.isEditing) {
-      if (program.FieloPRP__DetailedInvoice__c) {
+      if (program.FieloPRP__RequestInvoiceProducts__c) {
         $('.' + this.CssClasses_.ITEMS_CONTAINER)
           .removeClass('slds-hidden');
         $('.' + this.CssClasses_.ITEMS_CONTAINER)
