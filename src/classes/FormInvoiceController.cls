@@ -386,13 +386,22 @@ public with sharing class FormInvoiceController {
       }
       return whereCondition;
     }
+
+    public static String getProgramProductInjection() {
+      String whereCondition = ProgramService.getActiveProgram().FieloPRP__ProductInjectQuery__c;
+      return whereCondition != '' &&
+          whereCondition != null ?
+          ' AND ' + whereCondition :
+          ''; 
+    }
     
     @RemoteAction
     public static List<SObject> getProductRecords( String objectName, String fields, Integer offset, String orderBy, String dataFilters, Integer recordsPerPage ) {
 
         String query = 'SELECT Id, ' + fields;
         query += ' FROM ' + objectName;
-        query += getWhereCondition( objectName, dataFilters ); 
+        query += getWhereCondition( objectName, dataFilters );
+        query += getProgramProductInjection();
         // ORDER BY       
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';

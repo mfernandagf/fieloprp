@@ -6,7 +6,7 @@ public with sharing class ProgramService {
 	//Piece of code copied from FieloPLT - Begins
     public static Map<Id,FieloPLT__Program__c> getPrograms(){
         if(programMap == null){
-            List<FieloPLT__Program__c> programs = [SELECT Id, Name, FieloPRP__RequestInvoiceProducts__c FROM FieloPLT__Program__c];
+            List<FieloPLT__Program__c> programs = [SELECT Id, Name, FieloPRP__RequestInvoiceProducts__c, FieloPRP__ProductInjectQuery__c FROM FieloPLT__Program__c];
             // Si esta vacio => crea uno default
             if(programs.size() == 0){
                 FieloPLT__Program__c program = new FieloPLT__Program__c(Name = 'Default');
