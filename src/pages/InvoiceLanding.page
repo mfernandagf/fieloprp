@@ -35,10 +35,10 @@
       fieldset="{!newSettings.FieloPLT__Sections__c}"
       filterSObjectName="Product2"
       filter="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
+      filterRecent="{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}"
       mode="new"
       className="fielosf-invoice-form"
     />
-
     <!-- Content -->
     <div class="fielosf-body">
       <div class="slds-grid slds-wrap slds-grid--pull-padded">

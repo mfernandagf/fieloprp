@@ -22,6 +22,7 @@
     <apex:attribute name="sections" type="String" default="" description="Form Fields" />
     <apex:attribute name="fieldset" type="String" default="" description="Form Fields" />
     <apex:attribute name="filter" type="String" default="" description="Form Fields"  assignTo="{!cFilter}"/>
+    <apex:attribute name="filterRecent" type="String" default="" description="Filter RecentRecords Fields"  assignTo="{!cFilterRecent}"/>
     <apex:attribute name="filterSObjectName" type="String" default="" description="" assignTo="{!cfilterSObjectName}" />
 
       <div id="{!formId}" role="dialog" tabindex="-1" aria-labelledby="{!formId}headerModal" class="slds-hide slds-modal slds-fade-in-open slds-form {!className}" data-on-show="FieloFormInvoice_retrieve" data-save-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!saveController}" data-retrieve-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!retrieveController}" data-object-name="{!sObjectName}" data-fields="{!fields}" data-secondary-parameters="{!secondaryParameters}" data-redirect="{!redirect}">

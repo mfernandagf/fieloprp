@@ -48,7 +48,7 @@ global with sharing class InvoiceService {
             SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Invoice__c.SObjectType});
             for(Invoice__c invoice : invoices){
                 if(invoice.Member__r.FieloPLT__Program__r.RequestInvoiceAuthorization__c){
-                    invoice.Status__c = 'Pending';
+                    invoice.Status__c = 'Pending for Approval';
                     uow.registerForApproval(invoice.Id, 'Invoice subbmited for Approval');
                 }else{
                     invoice.Status__c = 'Approved';
@@ -62,7 +62,7 @@ global with sharing class InvoiceService {
     }
 
     global static List<Invoice__c> submitInvoices(Set<Id> invoiceIds){
-        return updateInvoiceStatus(invoiceIds, 'Draft');
+        return updateInvoiceStatus(invoiceIds, 'Open');
     }
 
     public static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices, String status){
@@ -153,7 +153,7 @@ global with sharing class InvoiceService {
         try{
             SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Invoice__c.SObjectType});
             for(Id recordId : recordIds){
-                uow.registerDirty(new Invoice__c(Id = recordId, Status__c = 'Pending'));
+                uow.registerDirty(new Invoice__c(Id = recordId, Status__c = 'Pending for Approval'));
                 uow.registerForApproval(recordId, 'Invoice submitted for Approval');
             }
             uow.commitWork();
@@ -166,6 +166,51 @@ global with sharing class InvoiceService {
             List<Approval.UnlockResult> result = System.Approval.unlock(new List<Id>(recordIds));
         }
         catch(Exception e){System.debug('Approval msg: '+e);}
+    }
+
+    public static void getDuplicatedRecords(List<Invoice__c> invoices) {
+        Set<String> invoiceNumbers = new Set<String>();
+        Set<String> distributors = new Set<String>();
+        for(Invoice__c invoice: invoices) {
+            invoiceNumbers.add(invoice.InvoiceNumber__c);
+            distributors.add(invoice.Distributor__c);
+        }
+        List<Invoice__c> existingInvoices = new InvoicesSelector().selectByInvoiceNumberDistributorAndStatus(
+            invoiceNumbers, 
+            distributors,
+            'Approved');
+        Map<String,Id> invoiceKeys = new Map<String,Id>();
+        String key;
+        for(Invoice__c existingInvoice: existingInvoices) {
+            key = existingInvoice.Distributor__c != null ?
+                existingInvoice.Distributor__c :
+                '000000000000000000';
+            key = existingInvoice.InvoiceNumber__c != null ?
+                existingInvoice.InvoiceNumber__c :
+                '-';
+            invoiceKeys.put(
+                key,
+                existingInvoice.Id
+            );
+        }
+        for(Invoice__c invoice: invoices) {
+            if (invoiceKeys != null) {
+                key = invoice.Distributor__c != null ?
+                    invoice.Distributor__c :
+                    '000000000000000000';
+                key = invoice.InvoiceNumber__c != '' &&
+                    invoice.InvoiceNumber__c != null ?
+                    invoice.InvoiceNumber__c :
+                    '-';
+                if (invoiceKeys.containsKey(key)) {
+                    if( invoice.Id == null ) {
+                        invoice.addError( Label.DuplicatedInvoiceRecord );
+                    } else if (invoiceKeys.get(key) != invoice.Id) {
+                        invoice.addError( Label.DuplicatedInvoiceRecord );
+                    }
+                }    
+            }
+        }
     }
 
     public static void testTemporal(){

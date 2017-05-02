@@ -299,7 +299,7 @@ public class InvoiceItems extends SObjectDomain {
 
             Map<Id,Invoice__c> invoicesMap = new Map<Id,Invoice__c>(new InvoicesSelector(new Set<String>{'FieloPRP__Status__c'}).selectById(invoiceIds));
             for(InvoiceItem__c item : (List<InvoiceItem__c>)records){
-                if(item.Invoice__c != null && invoicesMap.get(item.Invoice__c).Status__c != 'Draft' && invoicesMap.get(item.Invoice__c).Status__c != 'New'){
+                if(item.Invoice__c != null && invoicesMap.get(item.Invoice__c).Status__c != 'Open' && invoicesMap.get(item.Invoice__c).Status__c != 'New'){
                     item.addError(Label.DraftNotEditable);
                 }
             }

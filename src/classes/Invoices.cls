@@ -37,8 +37,13 @@ public with sharing class Invoices extends SObjectDomain {
                     if(invoice.Member__c!=null)
                         if( !disabledUpdateMembers.containsKey( invoice.Member__c ) )
                             invoice.addError( Label.AmountUpdateDisabled );
-
+                if( invoice.Date__c == null ) {
+                    invoice.addError( Label.DateFieldNull );
+                } else if ( invoice.Date__c > System.today() ){
+                    invoice.addError( Label.FutureDateField );
+                }
             }
+            InvoiceService.getDuplicatedRecords(records);
         }
     }
 
@@ -67,11 +72,25 @@ public with sharing class Invoices extends SObjectDomain {
                 if( invoice.HasDetails__c != ((Invoice__c)existingRecords.get(invoice.Id)).HasDetails__c )
                     invoice.addError( Label.HasDetailsNotEditable );
 
-                if( ((Invoice__c)existingRecords.get(invoice.Id)).Status__c != 'Draft' ){
+                if( ((Invoice__c)existingRecords.get(invoice.Id)).Status__c != 'Open' ){
                     if( amountHasChanged || dateHasChanged || invoiceNumberHasChanged )
                         invoice.addError( Label.DraftNotEditable );
                 }
+
+                if( invoice.Date__c == null ) {
+                    invoice.addError( Label.DateFieldNull );
+                } else if ( invoice.Date__c > System.today() ){
+                    invoice.addError( Label.FutureDateField );
+                }
+
+                if( !invoice.HasDetails__c &&
+                    newAmount == 0.0 &&
+                    invoice.Status__c != 'Open' &&
+                    invoice.Status__c != 'New') {
+                    invoice.addError( Label.ZeroAmount );
+                }
             }
+            InvoiceService.getDuplicatedRecords(records);
         }
     }
 
@@ -112,7 +131,7 @@ public with sharing class Invoices extends SObjectDomain {
 
         for(Invoice__c record : (List<Invoice__c>)records){
             if(record.Status__c == null){
-                record.Status__c = 'Draft';
+                record.Status__c = 'Open';
             }
 
             record.HasDetails__c = !detailessInvoiceMembers.containsKey( record.Member__c );
