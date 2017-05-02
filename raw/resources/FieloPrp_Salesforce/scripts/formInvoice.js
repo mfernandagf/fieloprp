@@ -749,7 +749,42 @@
       }
 
       this.fields_.forEach(function(field) {
-        if (this.elements_[field]) {
+        // si es una lista
+        if (hash.indexOf(field) > -1) {
+          var values;
+          switch (typeof result[field.slice(0, -1) + 'r']) {
+            case 'object':
+              // es un objeto que en su propiedad field contiene un string con id separados por ;
+              // siguiendo el formato de salesforce
+              // hay que parsear la informacion para pasarlo a la interfaz normal
+              values = result[field.slice(0, -1) + 'r'];
+              // busco la clave que contiene el campo __c
+              var __c;
+              for (var key in values) {
+                if (values.hasOwnProperty(key) && key.indexOf('__c') > -1) {
+                  __c = key;
+                  break;
+                }
+              }
+              if (__c) {
+                values = values[__c].split(';');
+              } else {
+                values = result[field];
+              }
+              break;
+            case 'array':
+            default:
+              // una interfaz normal
+              values = result[field.slice(0, -1) + 'r'];
+              break;
+          }
+          this.elements_[field].FieloFormElement.set('value', values);
+        } else if (this.elements_[field]) {
+          if (
+            this.elements_[field].FieloFormElement.get('type') === 'input-date'
+          ) {
+            result[field] = fielo.util.parseDateFromSF(result[field]);
+          }
           this.elements_[field].FieloFormElement.set('value', result[field]);
         }
       }, this);
