@@ -101,7 +101,7 @@ The Invoice has its status changed
    3. The system displays the “Revert” and “Reprocess” buttons
    4. The administrator presses the “Revert” button
    5. The system changes the Invoice status to “Canceled”
-   6. The system removes the points previously given to the related member
+   6. The system reverts the given transactions
    7. The system refreshes the Invoice details page
    8. The system hides the “Revert” button
    9. The system displays the “Reopen” button and maintains the “Reprocess” button
@@ -113,7 +113,7 @@ The Invoice has its status changed
    3. The system displays the “Revert” and “Reprocess” buttons
    4. The administrator presses the “Revert” button
    5. The system changes the Invoice status to “Canceled”
-   6. The system removes the points previously given to the related member
+   6. The system reverts the given transactions
    7. The system refreshes the Invoice details page
    8. The system hides the “Revert” button
    9. The system displays the “Reopen” button and maintains the “Reprocess” button
