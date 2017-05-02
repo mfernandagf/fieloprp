@@ -382,6 +382,9 @@ public with sharing class FormInvoiceController {
         }
         if (whereCondition.length() > 4) {
           whereCondition = ' WHERE ' + whereCondition.substring(4);
+          whereCondition += getProgramProductInjection();
+        } else {
+          whereCondition += getProgramProductInjection().substring(4);
         }
       }
       return whereCondition;
@@ -401,7 +404,7 @@ public with sharing class FormInvoiceController {
         String query = 'SELECT Id, ' + fields;
         query += ' FROM ' + objectName;
         query += getWhereCondition( objectName, dataFilters );
-        query += getProgramProductInjection();
+
         // ORDER BY       
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';
