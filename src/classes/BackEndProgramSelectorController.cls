@@ -10,7 +10,7 @@ public with sharing class BackEndProgramSelectorController {
         }
         set;}
 
-    public FieloPLT__Program__c  getActiveProgram (){
+    public FieloPLT__Program__c getActiveProgram (){
         return ProgramService.getActiveProgram();
     }
     public BackEndProgramSelectorController (){
