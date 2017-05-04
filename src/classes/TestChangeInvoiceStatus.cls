@@ -323,7 +323,7 @@ public class TestChangeInvoiceStatus {
                 
         system.assertEquals('Reverted',[SELECT Id, Status__c FROM Invoice__c LIMIT 1].Status__c);
 
-        Test.stopTest();*/
+        Test.stop Test();*/
     }
 
     /*  TEST-1605
