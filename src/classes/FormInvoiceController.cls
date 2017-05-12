@@ -245,19 +245,9 @@ public with sharing class FormInvoiceController {
               }
             }
 
-            List<InvoiceService.InvoiceWrapper> invoiceWrappers = new List<InvoiceService.InvoiceWrapper>();
-            invoiceWrappers.add(new InvoiceService.InvoiceWrapper(record, items, null));
-
-            List<Invoice__c> invoices = record.Id == null ?
-              InvoiceService.createInvoices(invoiceWrappers, 'Open') :
-              InvoiceService.updateInvoices(invoiceWrappers);
-
-            if ( invoices.size() == 1  ) {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.InvoiceSavedSuccess) );
-                result.redirectURL = '/'+invoices[0].Id;
-            } else {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.MultipleInvoiceCreated) );
-            }
+            Invoice__c invoice = InvoiceService.submitInvoice(record, items, null);
+            result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.InvoiceSavedSuccess) );
+            result.redirectURL = '/'+invoice.Id;
         }catch(DMLException e){
             if(sp != null){
                 Database.rollback(sp);
