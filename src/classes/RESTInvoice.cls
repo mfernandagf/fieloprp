@@ -39,23 +39,16 @@ global with sharing class RESTInvoice {
                 //Get List
                 getList();
             }
-        }
-        catch(Exception e){
+        }catch(Exception e){
             response.message = e.getMessage();
             response.errorcode = 'FORBIDDEN';
             resp.statusCode = 403;
             resp.responseBody = Blob.valueOf( JSON.serialize(response) );
-        }
-        
+        }        
     }
 
-    global class RESTInvoiceWrapper{
-        public Invoice__c invoice;
-        public List<InvoiceItem__c> invoiceItems;
-    }
-
-    @HttpPut
-    global static void updateInvoice(List<RESTInvoiceWrapper> invoices){
+    @HttpPatch
+    global static void closeInvoice(){
         RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
         RestAPIResponse response = new RestAPIResponse();
@@ -67,10 +60,13 @@ global with sharing class RESTInvoice {
                 String memberId = requestUri.substring( requestUri.indexOf('/members/')  , requestUri.length() );
                 memberId = memberId.replace('/members/', '');
                 memberId = memberId.replace('/invoices', '');
+                String invoiceId = requestUri.substring( requestUri.indexOf('/invoices/')  , requestUri.length() );
+                invoiceId = invoiceId.replace('/members/', '');
+                invoiceId = invoiceId.replace('/invoices', '');
+                invoiceId = invoiceId.replace('/closeInvoice', '');
 
                 resp.addHeader('Accept', 'application/json');
                 resp.addHeader('Content-Type', 'application/json');
-
             
                 if( MemberService.isMemberBlocked(memberId) == true ){
                     response.message = Label.ErrorFieloAccountBlocked;
@@ -79,15 +75,10 @@ global with sharing class RESTInvoice {
                     resp.responseBody = Blob.valueOf( JSON.serialize(response) );
                     RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
                 } else {
-                    List<InvoiceService.InvoiceWrapper> invoiceWrapperList = new List<InvoiceService.InvoiceWrapper>();
-                    for(RESTInvoiceWrapper riw: invoices){
-                        invoiceWrapperList.add(new InvoiceService.InvoiceWrapper(riw.invoice, riw.invoiceItems, null));
-                    }
-
-                    List<Invoice__c> updatedInvoices = InvoiceService.updateInvoices(invoiceWrapperList);
+                    Invoice__c closedInvoice = InvoiceService.closeInvoice(invoiceId);
 
                     resp.statusCode = 201;
-                    resp.responseBody = Blob.valueOf( JSON.serialize(updatedInvoices) );
+                    resp.responseBody = Blob.valueOf( JSON.serialize(closedInvoice) );
                 }
             }
             catch(Exception e){
@@ -106,7 +97,7 @@ global with sharing class RESTInvoice {
     }
 
     @HttpPost
-    global static void createInvoice(List<RESTInvoiceWrapper> invoices){
+    global static void submitInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
         RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
         RestAPIResponse response = new RestAPIResponse();
@@ -130,16 +121,10 @@ global with sharing class RESTInvoice {
                     resp.responseBody = Blob.valueOf( JSON.serialize(response) );
                     RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
                 } else {
-                    List<InvoiceService.InvoiceWrapper> invoiceWrapperList = new List<InvoiceService.InvoiceWrapper>();
-                    for(RESTInvoiceWrapper riw : invoices){
-                        riw.invoice.Member__c = memberId;
-                        invoiceWrapperList.add(new InvoiceService.InvoiceWrapper(riw.invoice, riw.invoiceItems, null));
-                    }
-
-                    List<Invoice__c> createdInvoices = InvoiceService.createInvoices(invoiceWrapperList);
+                    Invoice__c createdInvoice = InvoiceService.submitInvoice(invoice, items, attachments);
 
                     resp.statusCode = 201;
-                    resp.responseBody = Blob.valueOf( JSON.serialize(createdInvoices) );
+                    resp.responseBody = Blob.valueOf( JSON.serialize(createdInvoice) );
                 }
             }
             catch(Exception e){

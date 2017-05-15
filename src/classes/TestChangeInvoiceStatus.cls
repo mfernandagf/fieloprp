@@ -23,7 +23,7 @@ public class TestChangeInvoiceStatus {
         insert pointType;
 
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         programPointType = new FieloPLT__ProgramPointType__c(
@@ -44,7 +44,7 @@ public class TestChangeInvoiceStatus {
         update members;
 
         invoices = MockUpFactory.createInvoices(members[0].Id,1);
-        invoices[0].Status__c = 'Draft';
+        invoices[0].Status__c = 'Open';
         insert invoices;
 
         InvoiceItem__c item = new InvoiceItem__c(

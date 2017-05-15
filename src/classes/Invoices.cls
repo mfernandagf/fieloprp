@@ -37,8 +37,13 @@ public with sharing class Invoices extends SObjectDomain {
                     if(invoice.Member__c!=null)
                         if( !disabledUpdateMembers.containsKey( invoice.Member__c ) )
                             invoice.addError( Label.AmountUpdateDisabled );
-
+                if( invoice.Date__c == null ) {
+                    invoice.addError( Label.DateFieldNull );
+                } else if ( invoice.Date__c > System.today() ){
+                    invoice.addError( Label.FutureDateField );
+                }
             }
+            getDuplicatedRecords(records);
         }
     }
 
@@ -67,11 +72,25 @@ public with sharing class Invoices extends SObjectDomain {
                 if( invoice.HasDetails__c != ((Invoice__c)existingRecords.get(invoice.Id)).HasDetails__c )
                     invoice.addError( Label.HasDetailsNotEditable );
 
-                if( ((Invoice__c)existingRecords.get(invoice.Id)).Status__c != 'Draft' ){
+                if( ((Invoice__c)existingRecords.get(invoice.Id)).Status__c != 'Open' ){
                     if( amountHasChanged || dateHasChanged || invoiceNumberHasChanged )
                         invoice.addError( Label.DraftNotEditable );
                 }
+
+                if( invoice.Date__c == null ) {
+                    invoice.addError( Label.DateFieldNull );
+                } else if ( invoice.Date__c > System.today() ){
+                    invoice.addError( Label.FutureDateField );
+                }
+
+                if( !invoice.HasDetails__c &&
+                    newAmount == 0.0 &&
+                    invoice.Status__c != 'Open' &&
+                    invoice.Status__c != 'New') {
+                    invoice.addError( Label.ZeroAmount );
+                }
             }
+            getDuplicatedRecords(records);
         }
     }
 
@@ -98,7 +117,7 @@ public with sharing class Invoices extends SObjectDomain {
             FieloPLT.SObjectService.processRecords(recordsToProcess, mapExistingRecordsToProcess);
         }
         if(!recordsToRevert.isEmpty()){
-            InvoiceService.revertInvoices(recordsToRevert);
+            revertInvoices(recordsToRevert);
         }
     }
 
@@ -112,7 +131,7 @@ public with sharing class Invoices extends SObjectDomain {
 
         for(Invoice__c record : (List<Invoice__c>)records){
             if(record.Status__c == null){
-                record.Status__c = 'Draft';
+                record.Status__c = 'Open';
             }
 
             record.HasDetails__c = !detailessInvoiceMembers.containsKey( record.Member__c );
@@ -136,6 +155,57 @@ public with sharing class Invoices extends SObjectDomain {
         catch(Exception e){
             for(Invoice__c invoice: invoices){
                 invoice.addError(e.getMessage());
+            }
+        }
+    }
+
+    public static void revertInvoices(Set<Id> invoiceIds){
+        List<Id> idsToRevert = new List<Id>(new Map<Id,FieloPLT__Transaction__c>(new TransactionsSelector().selectByInvoiceIdAndNotReverted(invoiceIds)).keySet());
+        if(!idsToRevert.isEmpty())
+            FieloPLT.TransactionService.revertTransactions( idsToRevert );
+    }
+
+    public static void getDuplicatedRecords(List<Invoice__c> invoices) {
+        Set<String> invoiceNumbers = new Set<String>();
+        Set<String> distributors = new Set<String>();
+        for(Invoice__c invoice: invoices) {
+            invoiceNumbers.add(invoice.InvoiceNumber__c);
+            distributors.add(invoice.Distributor__c);
+        }
+        List<Invoice__c> existingInvoices = new InvoicesSelector().selectByInvoiceNumberDistributorAndStatus(
+            invoiceNumbers, 
+            distributors,
+            'Approved');
+        Map<String,Id> invoiceKeys = new Map<String,Id>();
+        String key;
+        for(Invoice__c existingInvoice: existingInvoices) {
+            key = existingInvoice.Distributor__c != null ?
+                existingInvoice.Distributor__c :
+                '000000000000000000';
+            key = existingInvoice.InvoiceNumber__c != null ?
+                existingInvoice.InvoiceNumber__c :
+                '-';
+            invoiceKeys.put(
+                key,
+                existingInvoice.Id
+            );
+        }
+        for(Invoice__c invoice: invoices) {
+            if (invoiceKeys != null) {
+                key = invoice.Distributor__c != null ?
+                    invoice.Distributor__c :
+                    '000000000000000000';
+                key = invoice.InvoiceNumber__c != '' &&
+                    invoice.InvoiceNumber__c != null ?
+                    invoice.InvoiceNumber__c :
+                    '-';
+                if (invoiceKeys.containsKey(key)) {
+                    if( invoice.Id == null ) {
+                        invoice.addError( Label.DuplicatedInvoiceRecord );
+                    } else if (invoiceKeys.get(key) != invoice.Id) {
+                        invoice.addError( Label.DuplicatedInvoiceRecord );
+                    }
+                }    
             }
         }
     }

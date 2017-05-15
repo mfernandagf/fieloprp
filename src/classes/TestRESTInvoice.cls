@@ -21,7 +21,7 @@ public class TestRESTInvoice {
     static void itShouldGetInvoices(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -78,7 +78,7 @@ public class TestRESTInvoice {
     static void itShouldGetInvoicesBlockedMember(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -130,7 +130,7 @@ public class TestRESTInvoice {
     static void itShouldGetOneInvoice(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -178,7 +178,7 @@ public class TestRESTInvoice {
     static void itShouldGetOneInvoiceBlockedMember(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -230,7 +230,7 @@ public class TestRESTInvoice {
     static void itShouldGetOneNonExistingInvoice(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -281,7 +281,7 @@ public class TestRESTInvoice {
     static void itShouldGetNoInvoicesAtAll(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -342,7 +342,7 @@ public class TestRESTInvoice {
     static void itShouldGetInvoiceItems(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -399,7 +399,7 @@ public class TestRESTInvoice {
     static void itShouldGetInvoiceItemsBlockedMember(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -462,7 +462,7 @@ public class TestRESTInvoice {
     static void itShouldGetNoInvoiceItemsAtAll(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -522,7 +522,7 @@ public class TestRESTInvoice {
     static void itShouldCreateAnInvoice(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -590,7 +590,7 @@ public class TestRESTInvoice {
     static void itShouldNotCreateAnInvoiceBlockedMember(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -661,7 +661,7 @@ public class TestRESTInvoice {
     static void itShouldNotCreateAnInvoiceException(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -701,7 +701,7 @@ public class TestRESTInvoice {
         RESTInvoiceWrapperList.add(riw);
 
         //Cause Exception
-        programs[0].FieloPRP__DetailedInvoice__c = false;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = false;
         update programs;
 
         RestRequest req = new RestRequest();

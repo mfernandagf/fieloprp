@@ -6,7 +6,7 @@ public class TestInvoiceLandingController {
 
     private static void createPrograms() {
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
     }
 
@@ -23,7 +23,7 @@ public class TestInvoiceLandingController {
 	@isTest static void unitTest(){
 		//Given
 		programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -47,7 +47,7 @@ public class TestInvoiceLandingController {
 	@isTest static void unitTest2(){
 		//Given
 		programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -57,7 +57,7 @@ public class TestInvoiceLandingController {
         insert invoices;
 
         Test.setCurrentPageReference(new PageReference('Page.InvoiceLanding')); 
-		System.currentPageReference().getParameters().put('view', 'Pending');
+		System.currentPageReference().getParameters().put('view', 'Pending for Approval');
         ApexPages.Standardsetcontroller standardController = new ApexPages.Standardsetcontroller(invoices);
         InvoiceLandingController controller = new InvoiceLandingController(standardController);
 	}

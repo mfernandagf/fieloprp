@@ -3,7 +3,7 @@ public with sharing class BackEndProgramSelectorController {
     /// Propiedad Publica del Current Program
     public FieloPLT__Program__c program{
         get{
-            if(program == null){
+             if(program == null){
             program = ProgramService.getActiveProgram();
             }
             return program;

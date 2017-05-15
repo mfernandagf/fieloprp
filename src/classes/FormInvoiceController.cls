@@ -74,6 +74,7 @@ public with sharing class FormInvoiceController {
 /*****  Secciones Y Fields  *****/
   public String cFieldset{get;set;}
   public String cFilter{get;set;}
+  public String cFilterRecent{get;set;}
 
   public class Section {
     public String Name{get;set;}
@@ -105,6 +106,22 @@ public with sharing class FormInvoiceController {
     } set;
   }
 
+  public List<Section> filterRecentSections { get {
+      if ( filterRecentSections == null ) {
+        if ( !String.isBlank(cFilterRecent)  ) {
+          // Si empieza con [ es un valor seteado en una visual force => lo tiene que modificar para que sea json
+          if ( !cFilterRecent.startsWith('[') ) {
+            cFilterRecent = '[' + cFilterRecent.replace('\'', '"') + ']';
+          }
+          filterRecentSections = (List<Section>) JSON.deserialize( cFilterRecent, List<FormInvoiceController.Section>.class );
+        } else {
+          filterRecentSections = new List<Section>();
+        }
+      }
+      return filterRecentSections;
+    } set;
+  }
+
   public List<Section> filterSections { get {
       if ( filterSections == null ) {
         if ( !String.isBlank(cFilter)  ) {
@@ -112,7 +129,6 @@ public with sharing class FormInvoiceController {
           if ( !cFilter.startsWith('[') ) {
             cFilter = '[' + cFilter.replace('\'', '"') + ']';
           }
-          system.debug(LoggingLevel.ERROR,'## cFilter: ' + cFilter);
           filterSections = (List<Section>) JSON.deserialize( cFilter, List<FormInvoiceController.Section>.class );
         } else {
           filterSections = new List<Section>();
@@ -195,7 +211,7 @@ public with sharing class FormInvoiceController {
   public List<Map<String,String>> filterRecentRecordsMap{get{
     filterRecentRecordsMap = new List<Map<String,String>>();
 
-    for ( Section s :filterSections ) {
+    for ( Section s :filterRecentSections ) {
       for ( List<FormField> r :s.rows ) {
         for ( FormField f :r ) {
           if ( !String.isBlank(f.Name) ) {
@@ -216,26 +232,22 @@ public with sharing class FormInvoiceController {
   }set;}
 
     @RemoteAction
-    public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items){
+    public static RemoteActionResult save(FieloPRP__Invoice__c record, List<FieloPRP__InvoiceItem__c> items, List<String> nullFields){
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
 
         try{
             sp = Database.setSavepoint();
 
-            List<InvoiceService.InvoiceWrapper> invoiceWrappers = new List<InvoiceService.InvoiceWrapper>();
-            invoiceWrappers.add(new InvoiceService.InvoiceWrapper(record, items, null));
-
-            List<Invoice__c> invoices = record.Id == null ?
-              InvoiceService.createInvoices(invoiceWrappers, 'Draft') :
-              InvoiceService.updateInvoices(invoiceWrappers);
-
-            if ( invoices.size() == 1  ) {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.InvoiceSavedSuccess) );
-                result.redirectURL = '/'+invoices[0].Id;
-            } else {
-                result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.MultipleInvoiceCreated) );
+            for(String f: nullFields){
+              if ( f != 'sObjectType' ) {
+               record.put(f, null );
+              }
             }
+
+            Invoice__c invoice = InvoiceService.submitInvoice(record, items, null);
+            result.addMessage( new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.InvoiceSavedSuccess) );
+            result.redirectURL = '/'+invoice.Id;
         }catch(DMLException e){
             if(sp != null){
                 Database.rollback(sp);
@@ -360,9 +372,20 @@ public with sharing class FormInvoiceController {
         }
         if (whereCondition.length() > 4) {
           whereCondition = ' WHERE ' + whereCondition.substring(4);
+          whereCondition += getProgramProductInjection();
+        } else {
+          whereCondition += getProgramProductInjection().substring(4);
         }
       }
       return whereCondition;
+    }
+
+    public static String getProgramProductInjection() {
+      String whereCondition = ProgramService.getActiveProgram().FieloPRP__ProductInjectQuery__c;
+      return whereCondition != '' &&
+          whereCondition != null ?
+          ' AND ' + whereCondition :
+          ''; 
     }
     
     @RemoteAction
@@ -370,7 +393,8 @@ public with sharing class FormInvoiceController {
 
         String query = 'SELECT Id, ' + fields;
         query += ' FROM ' + objectName;
-        query += getWhereCondition( objectName, dataFilters ); 
+        query += getWhereCondition( objectName, dataFilters );
+
         // ORDER BY       
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';
@@ -390,11 +414,11 @@ public with sharing class FormInvoiceController {
 
     @RemoteAction
     public static Boolean getHasDetailsFromMember(String memberId) {
-      String query = 'Select FieloPLT__Program__r.FieloPRP__DetailedInvoice__c';
+      String query = 'Select FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c';
       query += ' FROM FieloPLT__Member__c';
       query += ' WHERE Id =: memberId';
       FieloPLT__Member__c member = (FieloPLT__Member__c) Database.query(query);
-      return member.FieloPLT__Program__r.FieloPRP__DetailedInvoice__c;
+      return member.FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c;
     }
 
     @RemoteAction

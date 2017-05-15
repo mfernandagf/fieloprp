@@ -8,12 +8,6 @@ global with sharing class InvoiceService {
         return selector.selectByProgramAndStatus(status, programId);
     }
 
-    public static void revertInvoices(Set<Id> invoiceIds){
-    	List<Id> idsToRevert = new List<Id>(new Map<Id,FieloPLT__Transaction__c>(new TransactionsSelector().selectByInvoiceIdAndNotReverted(invoiceIds)).keySet());
-    	if(!idsToRevert.isEmpty())
-    		FieloPLT.TransactionService.revertTransactions( idsToRevert );
-    }
-
     public static List<Invoice__c> updateInvoiceStatus(Set<Id> invoiceIds, String status){
         if(!invoiceIds.isEmpty()){
             SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Invoice__c.SObjectType});
@@ -26,7 +20,72 @@ global with sharing class InvoiceService {
         return null;
     }
 
-    global class InvoiceWrapper{
+    global static Invoice__c submitInvoice(Invoice__c invoice, List<InvoiceItem__c> invoiceItems, List<Attachment> attachments){
+        SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType, Attachment.SObjectType});
+        
+        if(invoice.Status__c != 'Open' && invoice.Status__c != 'New'){
+            invoice.Status__c = 'Open';
+        }
+
+        if(invoice.Id == null){
+            uow.registerNew(invoice);
+            for(InvoiceItem__c item : invoiceItems){
+                uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
+            }
+
+            if(attachments != null){
+                for(Attachment attachment : attachments){
+                    //uow.registerNew(attachment, Attachment.ParentId, invoiceWrapper.invoice);
+                }
+            }
+        }else{
+            uow.registerDirty(invoice);
+            Set<Id> existingItems = new Set<Id>();
+            for(InvoiceItem__c item : invoiceItems){
+                if(item.Id == null){
+                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
+                }else{
+                    uow.registerDirty(item);
+                    existingItems.add(item.Id);
+                }
+            }
+            
+            uow.registerDeleted(new InvoiceItemsSelector().selectByInvoiceId(new Set<Id>{invoice.Id}, existingItems));
+        }
+
+
+
+        /*Set<Id> invoiceIds = new Set<Id>();            
+        for(InvoiceWrapper invoiceWrapper : invoices){
+            uow.registerDirty(invoiceWrapper.invoice);
+            invoiceIds.add(invoiceWrapper.invoice.Id);
+
+            if(invoiceWrapper.invoiceItems != null){
+                for(InvoiceItem__c item : invoiceWrapper.invoiceItems){
+                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoiceWrapper.invoice);
+                }
+            }
+
+            if(invoiceWrapper.attachments != null){
+                for(Attachment attachment : invoiceWrapper.attachments){
+                    //uow.registerNew(attachment, Attachment.ParentId, invoiceWrapper.invoice);
+                }
+            }
+        }
+
+        uow.registerDeleted(new InvoiceItemsSelector().selectByMemberIdAndInvoiceId(invoiceIds, null));
+*/
+        Savepoint sp = Database.setSavepoint();
+        try {
+           uow.commitWork();
+           return invoice;
+        }catch(DMLException e){
+            Database.rollback(sp);       
+            throw e;
+        }
+    }
+
+    /*global class InvoiceWrapper{
         public Invoice__c invoice;
         public List<InvoiceItem__c> invoiceItems;
         public List<Attachment> attachments;
@@ -36,19 +95,23 @@ global with sharing class InvoiceService {
             this.invoiceItems = invoiceItems;
             this.attachments = attachments;
         }
-    }
+    }*/
 
-    global static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices){
+    /*global static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices){
         return createInvoices(invoices, 'New');
+    }*/
+
+    global static Invoice__c closeInvoice(Id invoiceId){
+        return closeInvoices(new Set<Id>{invoiceId})[0];
     }
 
-    global static List<Invoice__c> closeInvoices(Set<Id> invoiceIds){
+    public static List<Invoice__c> closeInvoices(Set<Id> invoiceIds){
         if(!invoiceIds.isEmpty()){
             List<Invoice__c> invoices = new InvoicesSelector(new Set<String>{'Member__r.FieloPLT__Program__r.RequestInvoiceAuthorization__c'}).selectById(invoiceIds);
             SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Invoice__c.SObjectType});
             for(Invoice__c invoice : invoices){
                 if(invoice.Member__r.FieloPLT__Program__r.RequestInvoiceAuthorization__c){
-                    invoice.Status__c = 'Pending';
+                    invoice.Status__c = 'Pending for Approval';
                     uow.registerForApproval(invoice.Id, 'Invoice subbmited for Approval');
                 }else{
                     invoice.Status__c = 'Approved';
@@ -61,11 +124,11 @@ global with sharing class InvoiceService {
         return null;
     }
 
-    global static List<Invoice__c> submitInvoices(Set<Id> invoiceIds){
-        return updateInvoiceStatus(invoiceIds, 'Draft');
-    }
+    /*global static List<Invoice__c> submitInvoices(Set<Id> invoiceIds){
+        return updateInvoiceStatus(invoiceIds, 'Open');
+    }*/
 
-    public static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices, String status){
+    /*public static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices, String status){
         SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType, Attachment.SObjectType});
         
         for(InvoiceWrapper invoiceWrapper : invoices){
@@ -93,9 +156,9 @@ global with sharing class InvoiceService {
             Database.rollback(sp);       
             throw e;
         }
-    }
+    }*/
 
-    global static List<Invoice__c> updateInvoices(List<InvoiceWrapper> invoices){
+    /*global static List<Invoice__c> updateInvoices(List<InvoiceWrapper> invoices){
         SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType, Attachment.SObjectType});
         
         Set<Id> invoiceIds = new Set<Id>();            
@@ -126,7 +189,7 @@ global with sharing class InvoiceService {
             Database.rollback(sp);       
             throw e;
         }
-    }
+    }*/
 
     public static void reprocessInvoice(Set<Id> invoiceIds){
         List<Invoice__c> invoices = new InvoicesSelector( Schema.getGlobalDescribe().get('FieloPRP__Invoice__c').getDescribe().fields.getMap().keySet() ).selectById(invoiceIds);
@@ -153,7 +216,7 @@ global with sharing class InvoiceService {
         try{
             SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Invoice__c.SObjectType});
             for(Id recordId : recordIds){
-                uow.registerDirty(new Invoice__c(Id = recordId, Status__c = 'Pending'));
+                uow.registerDirty(new Invoice__c(Id = recordId, Status__c = 'Pending for Approval'));
                 uow.registerForApproval(recordId, 'Invoice submitted for Approval');
             }
             uow.commitWork();

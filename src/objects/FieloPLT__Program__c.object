@@ -64,14 +64,6 @@
         <label>Program Query</label>
     </fieldSets>
     <fields>
-        <fullName>DetailedInvoice__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Detailed Invoice</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>FieloPLT__ActualPointCost__c</fullName>
         <deprecated>false</deprecated>
         <description>It translates Transaction Points into real currency cost.</description>
@@ -202,10 +194,27 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>ProductInjectQuery__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Inject Query</label>
+        <length>1000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>RequestInvoiceAuthorization__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Request Invoice Authorization</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>RequestInvoiceProducts__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Request Invoice Products</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>

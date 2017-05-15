@@ -17,12 +17,36 @@
         <value>Programs with Detailed Invoice set to true have the hability to update the Amount of the Invoice disabled.</value>
     </labels>
     <labels>
+        <fullName>DateFieldNull</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DateFieldNull</shortDescription>
+        <value>Date field can not be null.</value>
+    </labels>
+    <labels>
         <fullName>DraftNotEditable</fullName>
         <categories>Invoices.cls</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>DraftNotEditable</shortDescription>
         <value>Only Invoices with status Draft or New are editable.</value>
+    </labels>
+    <labels>
+        <fullName>DuplicatedInvoiceRecord</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DuplicatedInvoiceRecord</shortDescription>
+        <value>Duplicated Invoice Number for this Distributor</value>
+    </labels>
+    <labels>
+        <fullName>FutureDateField</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FutureDateField</shortDescription>
+        <value>Field date cannot be in the future.</value>
     </labels>
     <labels>
         <fullName>HasDetailsNotEditable</fullName>
@@ -111,5 +135,13 @@
         <protected>true</protected>
         <shortDescription>UnitPriceZero</shortDescription>
         <value>Unit Price can not be zero.</value>
+    </labels>
+    <labels>
+        <fullName>ZeroAmount</fullName>
+        <categories>Invoices.cls</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ZeroAmount</shortDescription>
+        <value>Amount cannot be zero.</value>
     </labels>
 </CustomLabels>

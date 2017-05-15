@@ -54,7 +54,6 @@
    */
   FieloMultiFileUploaderPRP.prototype.init = function() {
     if (this.element_) {
-      console.log('Behold! The MultiFileUploader!');
       this.initPillsDocument();
       this.filePills_ =
         this.element_.getElementsByClassName(this.CssClasses_.PILL_MODEL);

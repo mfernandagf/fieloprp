@@ -7,7 +7,7 @@ private class TestCreateInvoice {
 
     private static void createPrograms() {
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
     }
 
@@ -28,7 +28,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FB(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -75,7 +75,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA1_1(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = false;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = false;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -111,7 +111,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA1_2(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = false;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = false;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -155,7 +155,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA2(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -192,7 +192,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA3(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -220,7 +220,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA4(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -247,7 +247,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA5(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -274,7 +274,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA6_1(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = false;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = false;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -306,7 +306,7 @@ private class TestCreateInvoice {
 	@isTest static void PRP_0002_FA6_2(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = false;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = false;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
@@ -333,7 +333,7 @@ private class TestCreateInvoice {
 	@isTest static void validateHasDetailsAccess(){
 		//Given
         programs = MockUpFactory.createPrograms('Default', 1);
-        programs[0].FieloPRP__DetailedInvoice__c = true;
+        programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
         members = MockUpFactory.createMembers(programs[0].Id,2);

@@ -99,7 +99,7 @@
         <fullName>FieloPLT__Event__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
-        <description>Event that generated the Transaction.</description>
+        <description>It shows the Event which generated the Transaction.</description>
         <externalId>false</externalId>
         <inlineHelpText>Event that generated the Transaction.</inlineHelpText>
         <label>Event</label>
@@ -114,7 +114,7 @@
         <fullName>FieloPLT__IsOffline__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
-        <description>Transaction is processed offline.</description>
+        <description>When ticked, Transaction is processed offline.</description>
         <externalId>false</externalId>
         <inlineHelpText>When ticked, Transaction is processed offline.</inlineHelpText>
         <label>Offline</label>
@@ -125,7 +125,7 @@
         <fullName>FieloPLT__IsProcessed__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
-        <description>It shows if Transaction was processed.</description>
+        <description>When ticked, Transactions were processed by the Rule Engine.</description>
         <externalId>false</externalId>
         <inlineHelpText>When ticked, the Transaction was processed.</inlineHelpText>
         <label>Processed</label>
@@ -136,7 +136,7 @@
         <fullName>FieloPLT__IsReverted__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
-        <description>It shows if Transaction was reverted.</description>
+        <description>When ticked, Transactions were reverted by the Rule Engine.</description>
         <externalId>false</externalId>
         <inlineHelpText>When ticked, Transaction was reverted.</inlineHelpText>
         <label>Reverted</label>
@@ -147,7 +147,7 @@
         <fullName>FieloPLT__Member__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <deprecated>false</deprecated>
-        <description>Member that generated the Transaction.</description>
+        <description>It shows the Member who generated the Transaction.</description>
         <externalId>false</externalId>
         <inlineHelpText>Enter the Member who generated the Transaction.</inlineHelpText>
         <label>Member</label>
@@ -161,7 +161,7 @@
     <fields>
         <fullName>FieloPLT__PointCost__c</fullName>
         <deprecated>false</deprecated>
-        <description>Result of Transaction Points multiplied by Point Cost established in Program.</description>
+        <description>It shows the result of &quot;Points&quot; from a Transaction multiplied by the &quot;Point Cost&quot; established in &quot;Program&quot;.</description>
         <externalId>false</externalId>
         <inlineHelpText>Result of Transaction Points multiplied by Point Cost established in Program.</inlineHelpText>
         <label>Point Cost</label>
@@ -189,7 +189,7 @@
         <fullName>FieloPLT__RevertedTransaction__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
-        <description>Transaction that was reverted.</description>
+        <description>It shows a Transaction that was reverted.</description>
         <externalId>false</externalId>
         <inlineHelpText>Transaction that was reverted.</inlineHelpText>
         <label>Reverted Transaction</label>
@@ -204,7 +204,7 @@
         <fullName>FieloPLT__Reward__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
-        <description>Transaction Reward.</description>
+        <description>It shows the Reward related to a Transaction.</description>
         <externalId>false</externalId>
         <inlineHelpText>Transaction Reward.</inlineHelpText>
         <label>Reward</label>
@@ -219,7 +219,7 @@
         <fullName>FieloPLT__SkipEngine__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
-        <description>Automatically completed when a Reverted Transaction is chosen.</description>
+        <description>When ticked, Rule Engine is skipped and Members obtain &quot;Points&quot; from Transactions. This field is automatically completed when a Reverted &quot;Transaction&quot; is chosen.</description>
         <externalId>false</externalId>
         <inlineHelpText>When ticked, Rule Engine is skipped and Member obtains the Transaction Points.</inlineHelpText>
         <label>Skip Engine</label>
@@ -227,10 +227,38 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>FieloPLT__Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Adjustment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Challenge Reward</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Expiration</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reversion</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>FieloPLT__Value__c</fullName>
         <defaultValue>0</defaultValue>
         <deprecated>false</deprecated>
-        <description>Transaction purchase value.</description>
+        <description>It shows the Transaction purchase value.</description>
         <externalId>false</externalId>
         <inlineHelpText>Enter Transaction purchase value.</inlineHelpText>
         <label>Value</label>
@@ -280,9 +308,9 @@
     <validationRules>
         <fullName>FieloPLT__ValidateProcessedPoints</fullName>
         <active>true</active>
-        <description>A processed Transaction cannot have null points.</description>
+        <description>A processed Transaction cannot have null &quot;Points&quot;.</description>
         <errorConditionFormula>FieloPLT__IsProcessed__c &amp;&amp; ISNULL(FieloPLT__Points__c)</errorConditionFormula>
         <errorDisplayField>FieloPLT__Points__c</errorDisplayField>
-        <errorMessage>A processed Transaction cannot have null points.</errorMessage>
+        <errorMessage>A processed Transaction cannot have null &quot;Points&quot;.</errorMessage>
     </validationRules>
 </CustomObject>
