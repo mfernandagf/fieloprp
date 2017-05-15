@@ -17,7 +17,7 @@ public class TestRESTInvoice {
         public String message {get;set;}
     }
 
-	@isTest
+    @isTest
     static void itShouldGetInvoices(){
         //Given
         programs = MockUpFactory.createPrograms('Default', 1);
@@ -525,12 +525,12 @@ public class TestRESTInvoice {
         programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
-        members = MockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,1);
         insert members;
 
-        invoices = MockUpFactory.createInvoices(members[0].Id,2);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         invoices[0].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
-        invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
+        //invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
 
         items = new List<InvoiceItem__c>{
             new InvoiceItem__c(
@@ -545,11 +545,11 @@ public class TestRESTInvoice {
             )
         };
 
-        List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
+        //List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
         
-        RESTInvoice.RESTInvoiceWrapper riw;
+        //RESTInvoice.RESTInvoiceWrapper riw;
 
-        riw = new RESTInvoice.RESTInvoiceWrapper();
+        /*riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[0];
         riw.invoiceItems = new List<InvoiceItem__c>();
         riw.invoiceItems.addAll(items);
@@ -559,7 +559,7 @@ public class TestRESTInvoice {
         riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[1];
 
-        RESTInvoiceWrapperList.add(riw);
+        RESTInvoiceWrapperList.add(riw);*/
 
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
@@ -575,13 +575,14 @@ public class TestRESTInvoice {
         RestContext.response = res;
 
         Test.startTest();
-            RESTInvoice.createInvoice(RESTInvoiceWrapperList);
+            //RESTInvoice.createInvoice(RESTInvoiceWrapperList);
+            RESTInvoice.submitInvoice(invoices[0], items, null);
         Test.stopTest();
 
         List<Invoice__c> svcInvoices = (List<Invoice__c>) System.JSON.deserialize(RestContext.response.responseBody.toString(), List<Invoice__c>.class);
 
         System.assert( svcInvoices[0].Id != null );
-        System.assert( svcInvoices[1].Id != null );
+        //System.assert( svcInvoices[1].Id != null );
 
         System.assert( [SELECT Id, Name From FieloPRP__InvoiceItem__c WHERE Invoice__c in :svcInvoices].size()>0 );
     }
@@ -593,16 +594,16 @@ public class TestRESTInvoice {
         programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
-        members = MockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,1);
         insert members;
 
         members[0].FieloPLT__Status__c = 'Blocked';
 
         update members;
 
-        invoices = MockUpFactory.createInvoices(members[0].Id,2);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         invoices[0].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
-        invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
+        //invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
 
         items = new List<InvoiceItem__c>{
             new InvoiceItem__c(
@@ -617,7 +618,7 @@ public class TestRESTInvoice {
             )
         };
 
-        List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
+        /*List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
         
         RESTInvoice.RESTInvoiceWrapper riw;
 
@@ -631,7 +632,7 @@ public class TestRESTInvoice {
         riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[1];
 
-        RESTInvoiceWrapperList.add(riw);
+        RESTInvoiceWrapperList.add(riw);*/
 
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
@@ -647,7 +648,8 @@ public class TestRESTInvoice {
         RestContext.response = res;
 
         Test.startTest();
-            RESTInvoice.createInvoice(RESTInvoiceWrapperList);
+            //RESTInvoice.createInvoice(RESTInvoiceWrapperList);
+            RESTInvoice.submitInvoice(invoices[0], items, null);
         Test.stopTest();
 
         System.assertEquals(404, RestContext.response.statusCode );
@@ -664,12 +666,12 @@ public class TestRESTInvoice {
         programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
-        members = MockUpFactory.createMembers(programs[0].Id,2);
+        members = MockUpFactory.createMembers(programs[0].Id,1);
         insert members;
 
-        invoices = MockUpFactory.createInvoices(members[0].Id,2);
+        invoices = MockUpFactory.createInvoices(members[0].Id,1);
         invoices[0].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
-        invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
+        //invoices[1].FieloPRP__Date__c = Date.newinstance(2017, 1, 2);
 
         items = new List<InvoiceItem__c>{
             new InvoiceItem__c(
@@ -684,7 +686,7 @@ public class TestRESTInvoice {
             )
         };
 
-        List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
+        /*List<RESTInvoice.RESTInvoiceWrapper> RESTInvoiceWrapperList = new List<RESTInvoice.RESTInvoiceWrapper>();
         
         RESTInvoice.RESTInvoiceWrapper riw;
 
@@ -698,7 +700,7 @@ public class TestRESTInvoice {
         riw = new RESTInvoice.RESTInvoiceWrapper();
         riw.invoice = invoices[1];
 
-        RESTInvoiceWrapperList.add(riw);
+        RESTInvoiceWrapperList.add(riw);*/
 
         //Cause Exception
         programs[0].FieloPRP__RequestInvoiceProducts__c = false;
@@ -718,7 +720,8 @@ public class TestRESTInvoice {
         RestContext.response = res;
 
         Test.startTest();
-            RESTInvoice.createInvoice(RESTInvoiceWrapperList);
+            //RESTInvoice.createInvoice(RESTInvoiceWrapperList);
+            RESTInvoice.submitInvoice(invoices[0], items, null);
         Test.stopTest();
 
         System.assertEquals(404, RestContext.response.statusCode );
