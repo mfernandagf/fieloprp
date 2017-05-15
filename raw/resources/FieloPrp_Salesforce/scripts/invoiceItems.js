@@ -121,6 +121,9 @@
         sObject[element.getAttribute(this.Constant_.DATA_FIELD_NAME)] =
             sObjectValue;
       }, this);
+      if (item.getAttribute('data-record-id') !== '') {
+        sObject.Id = item.getAttribute('data-record-id');
+      }
       sObjectList.push(sObject);
     }, this);
     return sObjectList;
