@@ -64,4 +64,17 @@ public class InvoiceItemsSelector extends SObjectSelector{
                     getLimitCondition(),
                     getOffsetCondition() } ));
     }
+
+    public List<InvoiceItem__c> selectByInvoiceId(Set<Id> invoiceIds, Set<Id> excludedItemIds){
+        return (List<InvoiceItem__c>) Database.query(String.format(
+                'select {0} ' +
+                  'from {1} ' +
+                  'where Id not In : excludedItemIds ' +
+                  'and Invoice__c in : invoiceIds ' +
+                  'order by {2}',
+                new List<String> {
+                    getFieldListString(),
+                    getSObjectName(),
+                    getOrderBy() } ));
+    }
 }
