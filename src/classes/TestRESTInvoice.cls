@@ -576,7 +576,7 @@ public class TestRESTInvoice {
 
         Test.startTest();
             //RESTInvoice.createInvoice(RESTInvoiceWrapperList);
-            RESTInvoice.submitInvoice(invoices[0], items, null);
+            RESTInvoice.createInvoice(invoices[0], items, null);
         Test.stopTest();
 
         List<Invoice__c> svcInvoices = (List<Invoice__c>) System.JSON.deserialize(RestContext.response.responseBody.toString(), List<Invoice__c>.class);
@@ -649,7 +649,7 @@ public class TestRESTInvoice {
 
         Test.startTest();
             //RESTInvoice.createInvoice(RESTInvoiceWrapperList);
-            RESTInvoice.submitInvoice(invoices[0], items, null);
+            RESTInvoice.createInvoice(invoices[0], items, null);
         Test.stopTest();
 
         System.assertEquals(404, RestContext.response.statusCode );
@@ -721,7 +721,7 @@ public class TestRESTInvoice {
 
         Test.startTest();
             //RESTInvoice.createInvoice(RESTInvoiceWrapperList);
-            RESTInvoice.submitInvoice(invoices[0], items, null);
+            RESTInvoice.createInvoice(invoices[0], items, null);
         Test.stopTest();
 
         System.assertEquals(404, RestContext.response.statusCode );
