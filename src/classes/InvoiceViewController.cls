@@ -130,7 +130,7 @@ public class InvoiceViewController extends PageSettingsController {
         RemoteActionResult result = new RemoteActionResult();
 
         try{
-            Invoice__c invoice = InvoiceService.closeInvoices(new Set<Id>{recordId})[0];
+            Invoice__c invoice = InvoiceService.closeInvoice(recordId);
             if(invoice.Status__c == 'Pending for Approval'){
                 result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.CONFIRM, String.format(Label.InvoiceChangeStatusSuccess, new List<String> {'sent for approval'})) );
             }else{
