@@ -48,7 +48,7 @@ global with sharing class RESTInvoice {
     }
 
     @HttpPatch
-    global static void closeInvoice(){
+    global static void updateInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
         RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
         RestAPIResponse response = new RestAPIResponse();
@@ -63,7 +63,9 @@ global with sharing class RESTInvoice {
                 String invoiceId = requestUri.substring( requestUri.indexOf('/invoices/')  , requestUri.length() );
                 invoiceId = invoiceId.replace('/members/', '');
                 invoiceId = invoiceId.replace('/invoices', '');
-                invoiceId = invoiceId.replace('/closeInvoice', '');
+                
+                Boolean isCloseOperation = invoiceId.contains('/close');                
+                invoiceId = invoiceId.replace('/close', '');
 
                 resp.addHeader('Accept', 'application/json');
                 resp.addHeader('Content-Type', 'application/json');
@@ -75,10 +77,15 @@ global with sharing class RESTInvoice {
                     resp.responseBody = Blob.valueOf( JSON.serialize(response) );
                     RestContext.response.responseBody = Blob.valueOf( JSON.serialize( response ) );
                 } else {
-                    Invoice__c closedInvoice = InvoiceService.closeInvoice(invoiceId);
+                    Invoice__c updatedInvoice;
+                    if(isCloseOperation){
+                        updatedInvoice = InvoiceService.closeInvoice(invoiceId);
+                    }else{
+                        updatedInvoice = InvoiceService.submitInvoice(invoice, items, attachments);
+                    }
 
                     resp.statusCode = 201;
-                    resp.responseBody = Blob.valueOf( JSON.serialize(closedInvoice) );
+                    resp.responseBody = Blob.valueOf( JSON.serialize(updatedInvoice) );
                 }
             }
             catch(Exception e){
@@ -97,7 +104,7 @@ global with sharing class RESTInvoice {
     }
 
     @HttpPost
-    global static void submitInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
+    global static void createInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
         RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
         RestAPIResponse response = new RestAPIResponse();
