@@ -15,48 +15,47 @@ An Invoice Item is created
 ### Basic Flow
 
 1. The system receives the information for the Invoice items
-2. The system creates an Invoice Item with some of its fields filled up with the received information
-3. The system analyzes the following fields of each Invoice Item: Quantity, Unit Price and Total Price
-4. The system checks that the Unit Price and Quantity fields were received
-5. The system calculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
-6. The system fills the Total Price field with the value calculated in the previous step
-7. The system saves the Invoice Item
-8. Enf of flow
+2. The system analyzes the following fields of each Invoice Item: Quantity, Unit Price and Total Price
+3. The system checks that the Unit Price and Quantity fields were received
+4. The system calculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+5. The system fills the Total Price field with the value calculated in the previous step
+6. The system saves the Invoice Item
+7. Enf of flow
 
 
 ### Alternative Flows
 
-##### 1. The received fields are Total Price and Quantity (step 4 of the basic flow)
+##### 1. The received fields are Total Price and Quantity (step 3 of the basic flow)
    1. The system checks that the Total Price and Quantity fields were received
    2. The system calculates the value of Unit Price field by dividing the value in the Total Price field by the value in the Quantity field.
    3. The system fills the Unit Price field with the value calculated in the previous step.
    4. End of flow
 
-##### 2. The received fields are Unit Price and Total Price (step 4 of the basic flow)
+##### 2. The received fields are Unit Price and Total Price (step 3 of the basic flow)
    1. The system checks that the Total Price and Unit Price fields were received
    2. The system calculates the value of Quantity field by dividing the value in the Total Price field by the value in the Unit Price field.
    3. The system fills the Quantity field with the value calculated in the previous step.
    4. End of flow
    
-##### 3. All three fields were received (step 4 of the basic flow)
+##### 3. All three fields were received (step 3 of the basic flow)
    1. The system receives values for all three fields (Unit price, Quantity and Total price)
    2. The system calculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field.
    3. The system ignores the received Total Price and fills the Total Price field with the value calculated in the previous step.
    4. End of flow
 
-##### 4. Only the Total Price field is received (step 4 of the basic flow)
+##### 4. Only the Total Price field is received (step 3 of the basic flow)
    1. The system receives only the value of the Total Price field
    2. The system fills the Total Price field with the received value
    3. End of flow
    
-##### 5. Only the Quantity field is received (step 4 of the basic flow)
+##### 5. Only the Quantity field is received (step 3 of the basic flow)
    1. The system receives only the value for Quantity field
    2. The system fills the Unit Price field with 0 (zero)
    3. The system calculates the value of Total Price field by multiplying the value in the Quantity field by 0 (zero)
    4. The system fills the Total Price field with the value calculated in the previous step
    5. End of flow
    
-##### 6. Only the Unit Price field is received (step 4 of the basic flow)
+##### 6. Only the Unit Price field is received (step 3 of the basic flow)
    1. The system receives only the value for Unit Price field
    2. The system displays an error message
    3. End of flow
@@ -66,12 +65,12 @@ An Invoice Item is created
    2. The system displays an error message
    3. End of flow
    
-##### 8. The received Quantity value is invalid (step 4 of the basic flow)
+##### 8. The received Quantity value is invalid (step 3 of the basic flow)
    1. The system verifies that the Quantity field is filled with a negative value
    2. The system displays an error message
    3. End of flow
    
-##### 9. The administrator edits the Total Price field when Quantity and Unit Price fields are zero (step 7 of the basic flow) 
+##### 9. The administrator edits the Total Price field when Quantity and Unit Price fields are zero (step 6 of the basic flow) 
    1. The system verifies that the status of the related Invoice is Pending
    2. The administrator edits the Total Price field
    3. The system verifies that Quantity and Unit Price fields are filled with 0 (zero)
@@ -79,105 +78,105 @@ An Invoice Item is created
    5. The system maintains the edited value in the Total Price field
    6. End of flow
    
-##### 10. The administrator edits the Quantity field (step 7 of the basic flow)
+##### 10. The administrator edits the Quantity field (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The administrator edits the Quantity field 
    3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
    4. The system updates the Total Price field with the calculated value
    5. End of flow
    
-##### 11. The administrator edits Quantity and Total Price fields (step 7 of the basic flow)
+##### 11. The administrator edits Quantity and Total Price fields (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The administrator edits the Quantity and Total Price fields
    3. The system recalculates the value of Unit Price field by dividing the value in the Total Price field by the value in the Quantity field.
    4. The system updates the Unit Price field with the calculated value
    5. End of flow
    
-##### 12. The administrator edits the Unit Price field (step 7 of the basic flow)
+##### 12. The administrator edits the Unit Price field (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The administrator edits the Unit Price field
    3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
    4. The system updates the Total Price field with the calculated value
    5. End of flow
    
-##### 13. The administrator edits the Unit Price and Total Price fields (step 7 of the basic flow)
+##### 13. The administrator edits the Unit Price and Total Price fields (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The administrator edits the Unit Price and the Total Price fields
    3. The system recalculates the value of Quantity field by dividing the value in the Total Price field by the value in the Unit Price field.
    4. The system updates the Quantity field with the calculated value
    5. End of flow
    
-##### 14. The administrator edits the Unit Price and Quantity fields (step 7 of the basic flow)
+##### 14. The administrator edits the Unit Price and Quantity fields (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The administrator edits the Unit Price and the Quantity fields
    3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
    4. The system updates the Total Price field with the calculated value
    5. End of flow
    
-##### 15. The administrator edits the Unit Price, Quantity and Total Price fields (step 7 of the basic flow)
+##### 15. The administrator edits the Unit Price, Quantity and Total Price fields (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is set to Pending
    2. The administrator edits the Unit Price, Quantity and Total Price fields
    3. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
    4. The system updates the Total Price field with the calculated value
    5. End of flow
 
-##### 16. The administrator tries to edit the Invoice Item that is related to an Invoice not in status Pending (step 7 of the basic flow)
+##### 16. The administrator tries to edit the Invoice Item that is related to an Invoice not in status Pending (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is different from Pending
    2. The administrator presses the Edit button in the detail view of the Invoice Item
    3. The system displays an error message
    4. End of flow
    
-##### 17. The administrator tries to edit the Invoice Item with invalid values (step 7 of the basic flow)
+##### 17. The administrator tries to edit the Invoice Item with invalid values (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The system verifies that the Quantity or Unit Price fields are updated with 0 (zero) and The Total Price is updated with a valid value 
    3. The system displays an error message
    4. End of flow
 
-##### 18. The administrator deletes an Invoice Item (step 7 of the basic flow)
+##### 18. The administrator deletes an Invoice Item (step 6 of the basic flow)
    1. The administrator selects the option to Delete the Invoice Item
    2. The system verifies that the status of the related Invoice is Pending
    3. The system delets the invoice item
    4. The system updates the Amount field of the related Invoice with the summarize of the Total Price field of its remaining related Invoice Items
    5. End of flow
    
-##### 19. The administrator tries to edit the Invoice Lookup (step 7 of the basic flow)
+##### 19. The administrator tries to edit the Invoice Lookup (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is set to Pending
    2. The administrator tries to edit the Invoice Lookup field
    4. The system displays an error message
    5.	End of flow
    
-##### 20. The administrator tries to edit all the fields Quantity, Unit Price and Total Price with zero or null (step 7 of the basic flow)
+##### 20. The administrator tries to edit all the fields Quantity, Unit Price and Total Price with zero or null (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The system verifies that the Quantity, Unit Price and Total Price fields are updated with 0 (zero) or are left blank
    3. The system displays an error message
    4. End of flow
    
-##### 21. The received Unit Price value is invalid (step 4 of the basic flow)
+##### 21. The received Unit Price value is invalid (step 3 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The system verifies that the Unit Price field is filled with a negative value
    3. The system displays an error message
    4. End of flow
    
-##### 22. The administrator tries to edit the Unit Price field with an invalid value (step 7 of the basic flow)
+##### 22. The administrator tries to edit the Unit Price field with an invalid value (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The system verifies that the Unit Price field is updated with a negative value
    3. The system displays an error message
    4. End of flow
 
-##### 23. The administrator tries to edit the Invoice Item with invalid values for Quantity and Total Price (step 7 of the basic flow)
+##### 23. The administrator tries to edit the Invoice Item with invalid values for Quantity and Total Price (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The system verifies that both Quantity and Total Price fields are updated with 0 (zero) or are left blank
    3. The system displays an error message
    4. End of flow
    
-##### 24. The administrator tries to edit the Invoice Item with invalid values for Unit Price and a valid value for Total Price (step 7 of the basic flow)
+##### 24. The administrator tries to edit the Invoice Item with invalid values for Unit Price and a valid value for Total Price (step 6 of the basic flow)
    1. The system verifies that the status of the related Invoice is Pending
    2. The system verifies that the Unit Price field is updated with 0 (zero) or is left blank
    3. The system verifies that Total Price waas updated with a valid value
    4. The system displays an error message
    5. End of flow
    
-##### 25. The administrator edits the Total Price field when Quantity and Unit Price fields are not zero (step 7 of the basic flow) 
+##### 25. The administrator edits the Total Price field when Quantity and Unit Price fields are not zero (step 6 of the basic flow) 
    1. The system verifies that the status of the related Invoice is Pending
    2. The administrator edits the Total Price field
    3. The system verifies that Quantity and Unit Price fields are filled with values different from 0 (zero)
