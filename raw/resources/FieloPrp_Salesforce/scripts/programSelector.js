@@ -65,9 +65,11 @@
     // disparo los paginadores
     [].forEach.call(this.listOfPaginators_, function(paginator) {
       // Seteo el paginador
-      paginator.FieloPaginator.setFilters(filter);
-      paginator.FieloPaginator.setPage();
-      paginator.FieloPaginator.getRecords();
+      if ($(paginator).is(':visible')) {
+        paginator.FieloPaginator.setFilters(filter);
+        paginator.FieloPaginator.setPage();
+        paginator.FieloPaginator.getRecords();
+      }
     }, this);
 
     this.callback();

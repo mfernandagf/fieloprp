@@ -29,8 +29,10 @@ global with sharing class InvoiceService {
 
         if(invoice.Id == null){
             uow.registerNew(invoice);
-            for(InvoiceItem__c item : invoiceItems){
-                uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
+            if (invoiceItems != null) {
+                for(InvoiceItem__c item : invoiceItems){
+                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
+                }
             }
 
             if(attachments != null){
