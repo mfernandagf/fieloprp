@@ -5,7 +5,7 @@ global with sharing class InvoiceService {
         selector.setOrderBy(orderBy);
         selector.setLimit(quantity);
         selector.setOffset(offset);
-        return selector.selectByProgramAndStatus(status, programId);
+        return  selector.selectByProgramAndStatus(status, programId);
     }
 
     public static List<Invoice__c> updateInvoiceStatus(Set<Id> invoiceIds, String status){
