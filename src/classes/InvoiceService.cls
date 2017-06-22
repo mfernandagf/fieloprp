@@ -53,28 +53,6 @@ global with sharing class InvoiceService {
             uow.registerDeleted(new InvoiceItemsSelector().selectByInvoiceId(new Set<Id>{invoice.Id}, existingItems));
         }
 
-
-
-        /*Set<Id> invoiceIds = new Set<Id>();            
-        for(InvoiceWrapper invoiceWrapper : invoices){
-            uow.registerDirty(invoiceWrapper.invoice);
-            invoiceIds.add(invoiceWrapper.invoice.Id);
-
-            if(invoiceWrapper.invoiceItems != null){
-                for(InvoiceItem__c item : invoiceWrapper.invoiceItems){
-                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoiceWrapper.invoice);
-                }
-            }
-
-            if(invoiceWrapper.attachments != null){
-                for(Attachment attachment : invoiceWrapper.attachments){
-                    //uow.registerNew(attachment, Attachment.ParentId, invoiceWrapper.invoice);
-                }
-            }
-        }
-
-        uow.registerDeleted(new InvoiceItemsSelector().selectByMemberIdAndInvoiceId(invoiceIds, null));
-*/
         Savepoint sp = Database.setSavepoint();
         try {
            uow.commitWork();
@@ -84,22 +62,6 @@ global with sharing class InvoiceService {
             throw e;
         }
     }
-
-    /*global class InvoiceWrapper{
-        public Invoice__c invoice;
-        public List<InvoiceItem__c> invoiceItems;
-        public List<Attachment> attachments;
-
-        global InvoiceWrapper(Invoice__c invoice, List<InvoiceItem__c> invoiceItems, List<Attachment> attachments){
-            this.invoice = invoice;
-            this.invoiceItems = invoiceItems;
-            this.attachments = attachments;
-        }
-    }*/
-
-    /*global static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices){
-        return createInvoices(invoices, 'New');
-    }*/
 
     global static Invoice__c closeInvoice(Id invoiceId){
         return closeInvoices(new Set<Id>{invoiceId})[0];
@@ -123,73 +85,6 @@ global with sharing class InvoiceService {
         }
         return null;
     }
-
-    /*global static List<Invoice__c> submitInvoices(Set<Id> invoiceIds){
-        return updateInvoiceStatus(invoiceIds, 'Open');
-    }*/
-
-    /*public static List<Invoice__c> createInvoices(List<InvoiceWrapper> invoices, String status){
-        SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType, Attachment.SObjectType});
-        
-        for(InvoiceWrapper invoiceWrapper : invoices){
-            invoiceWrapper.invoice.Status__c = status;
-            uow.registerNew(invoiceWrapper.invoice);
-            
-            if(invoiceWrapper.invoiceItems != null){
-                for(InvoiceItem__c item : invoiceWrapper.invoiceItems){
-                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoiceWrapper.invoice);
-                }
-            }
-
-            if(invoiceWrapper.attachments != null){
-                for(Attachment attachment : invoiceWrapper.attachments){
-                    //uow.registerNew(attachment, Attachment.ParentId, invoiceWrapper.invoice);
-                }
-            }
-        }
-
-        Savepoint sp = Database.setSavepoint();
-        try {
-           uow.commitWork();
-           return (List<Invoice__c>)uow.m_newListByType.get('FieloPRP__Invoice__c');
-        }catch(DMLException e){
-            Database.rollback(sp);       
-            throw e;
-        }
-    }*/
-
-    /*global static List<Invoice__c> updateInvoices(List<InvoiceWrapper> invoices){
-        SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{Invoice__c.SObjectType, InvoiceItem__c.SObjectType, Attachment.SObjectType});
-        
-        Set<Id> invoiceIds = new Set<Id>();            
-        for(InvoiceWrapper invoiceWrapper : invoices){
-            uow.registerDirty(invoiceWrapper.invoice);
-            invoiceIds.add(invoiceWrapper.invoice.Id);
-
-            if(invoiceWrapper.invoiceItems != null){
-                for(InvoiceItem__c item : invoiceWrapper.invoiceItems){
-                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoiceWrapper.invoice);
-                }
-            }
-
-            if(invoiceWrapper.attachments != null){
-                for(Attachment attachment : invoiceWrapper.attachments){
-                    //uow.registerNew(attachment, Attachment.ParentId, invoiceWrapper.invoice);
-                }
-            }
-        }
-
-        uow.registerDeleted(new InvoiceItemsSelector().selectByMemberIdAndInvoiceId(invoiceIds, null));
-
-        Savepoint sp = Database.setSavepoint();
-        try {
-           uow.commitWork();
-           return (List<Invoice__c>)uow.m_dirtyMapByType.get('FieloPRP__Invoice__c').values();
-        }catch(DMLException e){
-            Database.rollback(sp);       
-            throw e;
-        }
-    }*/
 
     public static void reprocessInvoice(Set<Id> invoiceIds){
         List<Invoice__c> invoices = new InvoicesSelector( Schema.getGlobalDescribe().get('FieloPRP__Invoice__c').getDescribe().fields.getMap().keySet() ).selectById(invoiceIds);
