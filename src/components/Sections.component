@@ -1,0 +1,57 @@
+<apex:component controller="SectionController" layout="none">
+    <apex:attribute name="formId" type="String" default="form" description="" assignTo="{!cFormId}"/>
+    <apex:attribute name="fieldset" type="String" default="" description="Form Fields" assignTo="{!cFieldset}" />
+    <apex:attribute name="sObjectName" type="String" default="" description="" assignTo="{!csObjectName}" />
+    <apex:attribute name="mode" description="new, update, view" type="String" />
+    <apex:attribute name="layout" description="horizontal, stacked, inline, compound" default="compound" type="String" assignTo="{!cLayout}"/>
+    <apex:attribute name="record" type="SObject" description="" assignTo="{!cRecord}" />
+
+    <div class="{! IF( layout<> '', 'slds-form--' + layout, '') }">
+
+      <div id="{!formId}-Id" data-field-name="Id" class="slds-form-element slds-hide" data-type="hidden" >
+        <input id="{!formId}-Id-input" type="hidden" name="{!formId}-Id" value="" data-sobject-type="{!sObjectName}" />
+      </div>
+
+        <apex:repeat value="{!sections}" var="s">
+            <div class="slds-panel__section">
+            <apex:panelGroup layout="none" rendered="{! !IsBlank(s.Name) }">
+              <h3 class="slds-text-heading--small slds-m-bottom--medium">{!s.Name}</h3>
+            </apex:panelGroup>
+              <div class="slds-form-element__group slds-hint-parent">
+                <apex:repeat value="{!s.Rows}" var="r">
+                    <div class="slds-form-element__row slds-p-bottom--small">
+                    <apex:repeat value="{!r}" var="d">
+                            <apex:panelGroup layout="none" rendered="{! d.Type == 'hidden'}" >
+                              <div class="slds-form-element slds-hide" data-component-id="{!d.Name}" >
+                                <input type="hidden" name="{!d.Name}" value="{!d.Value}" />
+                              </div>
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'input' || d.Type == 'date' || d.Type == 'datetime'}" >
+                                <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!mode}" value="{!d.Value}"/>
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'checkbox'}" >
+                                <c:Checkbox toggle="true" required="{!d.RequiredValue}" formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!mode}" value="{!d.Value}"/>
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'picklist'}" >
+                                <c:Picklist formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!mode}" value="{!d.Value}" picklistEntries="{!mapPicklistOptions[d.Name]}"/>
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'multipicklist'}" >
+                                <c:MultiSelect formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!mode}" value="{!d.Value}" picklistEntries="{!mapPicklistOptions[d.Name]}"/>
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'radio'}" >
+                                <c:Radio formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!mode}" value="{!d.Value}" picklistEntries="{!mapPicklistOptions[d.Name]}"/>
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none" rendered="{! d.Type == 'lookup'}" >
+                                <c:Lookup formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" sObjectName="{!$ObjectType[sObjectName].Fields[d.Name].ReferenceTo[0]}" mode="{!mode}" value="{!d.Value}" whereCondition="{!d.WhereCondition}" />
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none" rendered="{! d.Type == 'photo'}" >
+                 <!--<c:photoupload myObject="{!cRecord}" fieldName="d.Name" recordName="Name" />-->
+                            </apex:panelGroup>
+                        </apex:repeat>
+                        </div>
+                    </apex:repeat>
+              </div>
+            </div>
+        </apex:repeat>
+   </div>
+</apex:component>
