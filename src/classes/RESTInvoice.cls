@@ -3,10 +3,10 @@
  * \~English
  * @details    This REST Service interacts with the Fielo Invoice Module Services.
  */
-@RestResource(urlMapping='/v1/members/*/invoices/*')
-global with sharing class RESTInvoice {
+//@RestResource(urlMapping='/v1/members/*/invoices/*')
+public with sharing class RESTInvoice {
 
-    @HttpGet
+    //@HttpGet
     /**
      * @details     This method retuns invoice information related to a given Id
      * @param       invoiceId           Optional parameter, if it is present the method will return a specific record
@@ -24,7 +24,7 @@ global with sharing class RESTInvoice {
      *          curl -X GET -H "Content-Type:application/json" -k -H 'Authorization: Bearer sessionId' 'https://{instance}.salesforce.com/services/apexrest/FieloEE/RestRedemption'
      * @endcode
      */
-    global static void getInvoices(){
+    public static void getInvoices(){
         RestAPIResponse response = new RestAPIResponse();
         RestResponse resp = RestContext.response;
         try{
@@ -47,8 +47,8 @@ global with sharing class RESTInvoice {
         }        
     }
 
-    @HttpPatch
-    global static void updateInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
+    //@HttpPatch
+    public static void updateInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
         RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
         RestAPIResponse response = new RestAPIResponse();
@@ -103,8 +103,8 @@ global with sharing class RESTInvoice {
         }
     }
 
-    @HttpPost
-    global static void createInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
+    //@HttpPost
+    public static void createInvoice(Invoice__c invoice, List<InvoiceItem__c> items, List<Attachment> attachments){
         RestRequest req = RestContext.request;
         RestResponse resp = RestContext.response;
         RestAPIResponse response = new RestAPIResponse();

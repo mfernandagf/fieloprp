@@ -17,12 +17,32 @@ public with sharing class InvoiceLandingController extends PageSettingsSetContro
 
         initPageSettings('FieloPRP__Invoice__c','','','');
 
+
+        this.newSettings.FieloPLT__Sections__c = getSectionsWithMemberWhereCondition(this.newSettings.FieloPLT__Sections__c, currentProgram.Id);
+
         System.debug('newSettings: ' + this.newSettings);
+
         System.debug('landingSettings: ' + this.landingSettings);
     }
 
     public List<SelectOption> getListViews() {
         return controller.getListViewOptions();
+    }
+
+    public static String getSectionsWithMemberWhereCondition(String sectionsString, String programId){
+        List<Section> sections = (List<Section>) JSON.deserialize( sectionsString, List<Section>.class );
+        for ( Section s :sections ) {
+          for ( List<FormField> r :s.rows ) {
+            for ( FormField f :r ) {
+              if(f.Name != null) {
+                if(f.Name == 'FieloPRP__Member__c') {
+                    f.WhereCondition = ' FieloPLT__Program__c IN ( /' + programId + '/ ) ';
+                }
+              }
+            }
+          }
+        }
+        return JSON.serialize(sections);
     }
 
     @RemoteAction
@@ -39,5 +59,19 @@ public with sharing class InvoiceLandingController extends PageSettingsSetContro
         }
 
         return InvoiceService.getInvoices( fieldset, null, programId, recordsPerPage,  offset, orderBy);
+    }
+
+    public class Section {
+        public String Name{get;set;}
+        public List<List<FormField>> Rows{get;set;}
+    }
+
+    public class FormField {
+        public String Type{get;set;}
+        public String Name{get;set;}
+        public String onchange{get;set;}
+        public String Label{get;set;}
+        public String Value{get;set;}
+        public String WhereCondition{get;set;}
     }
 }
