@@ -33,7 +33,7 @@ public class TestInvoiceLandingController {
         insert invoices;
 
         ApexPages.Standardsetcontroller standardController = new ApexPages.Standardsetcontroller(invoices);
-        InvoiceLandingController controller = new InvoiceLandingController(standardController);
+        /*InvoiceLandingController controller = new InvoiceLandingController(standardController);
         
         // List<SelectOption> statusList = InvoiceLandingController.getStatusViews();
 
@@ -41,7 +41,7 @@ public class TestInvoiceLandingController {
 
         List<SObject> records = InvoiceLandingController.getInvoices('FieloPRP__Invoice__c','Name',1,null,jsonFilter,10);
 
-        FieloPLT__Program__c currentProgram = controller.currentProgram;
+        FieloPLT__Program__c currentProgram = controller.currentProgram;*/
 	}
 
 	@isTest static void unitTest2(){
@@ -59,6 +59,6 @@ public class TestInvoiceLandingController {
         Test.setCurrentPageReference(new PageReference('Page.InvoiceLanding')); 
 		System.currentPageReference().getParameters().put('view', 'Pending for Approval');
         ApexPages.Standardsetcontroller standardController = new ApexPages.Standardsetcontroller(invoices);
-        InvoiceLandingController controller = new InvoiceLandingController(standardController);
+        // InvoiceLandingController controller = new InvoiceLandingController(standardController);
 	}
 }
