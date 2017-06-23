@@ -43,12 +43,14 @@ global with sharing class InvoiceService {
         }else{
             uow.registerDirty(invoice);
             Set<Id> existingItems = new Set<Id>();
-            for(InvoiceItem__c item : invoiceItems){
-                if(item.Id == null){
-                    uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
-                }else{
-                    uow.registerDirty(item);
-                    existingItems.add(item.Id);
+            if(invoiceItems != null){
+                for(InvoiceItem__c item : invoiceItems){
+                    if(item.Id == null){
+                        uow.registerNew(item, InvoiceItem__c.Invoice__c, invoice);
+                    }else{
+                        uow.registerDirty(item);
+                        existingItems.add(item.Id);
+                    }
                 }
             }
             
