@@ -26,7 +26,9 @@
    * @private
    */
   FieloProgramSelectorPRP.prototype.Constant_ = {
-    PROGRAM: 'FieloPRP__Program__c'
+    PROGRAM: 'FieloPRP__Program__c',
+    PROGRAM_PLT: 'FieloPLT__Program__c',
+    MEMBER: 'FieloPRP__Member__c'
   };
 
   /**
@@ -37,7 +39,8 @@
    * @private
    */
   FieloProgramSelectorPRP.prototype.CssClasses_ = {
-    PAGINATOR: 'fielosf-paginator'
+    PAGINATOR: 'fielosf-paginator',
+    RECENT: 'fielosf-recent-records'
   };
 
   FieloProgramSelectorPRP.prototype.onChange = function() {
@@ -65,10 +68,30 @@
     // disparo los paginadores
     [].forEach.call(this.listOfPaginators_, function(paginator) {
       // Seteo el paginador
-      if ($(paginator).is(':visible')) {
+      if ($(paginator).closest('.' + this.CssClasses_.RECENT).is(':visible')) {
         paginator.FieloPaginator.setFilters(filter);
         paginator.FieloPaginator.setPage();
         paginator.FieloPaginator.getRecords();
+      }
+    }, this);
+
+    // Update the member's where condition
+    [].forEach.call(this.listOfMemberFields_, function(memberField) {
+      if (memberField.getAttribute('data-where')
+        .includes(this.Constant_.PROGRAM_PLT)) {
+        if (this.oldProgramId_) {
+          if (this.oldProgramId_ !== this.programId_) {
+            memberField.setAttribute('data-where',
+              memberField.getAttribute('data-where').replace(
+                this.oldProgramId_,
+                this.programId_
+              )
+            );
+            if (memberField.FieloFormElement) {
+              memberField.FieloFormElement.init();
+            }
+          }
+        }
       }
     }, this);
 
@@ -79,6 +102,7 @@
    * Guarda el programId
    */
   FieloProgramSelectorPRP.prototype.getProgramId_ = function() {
+    this.oldProgramId_ = this.programId_;
     this.programId_ = this.element_.FieloFormElement.get('value');
   };
 
@@ -98,10 +122,21 @@
       this.listOfPaginators_ =
         document.getElementsByClassName(this.CssClasses_.PAGINATOR);
 
+      this.listOfMemberFields_ =
+        document.querySelectorAll('[data-field-name=' +
+          this.Constant_.MEMBER + ']');
+
       // Registro los input hidden dependientes del program
       this.programActions_ = document.querySelectorAll(
         '.slds-button[data-parameters*="' + this.Constant_.PROGRAM + '"]'
       );
+
+      // if programId was not set get from the selected program.
+      if (!this.programId_) {
+        this.programId_ = $(this.element_)
+          .find('.slds-is-selected')[0]
+            .getAttribute('data-value');
+      }
     }
   };
 

@@ -48,7 +48,7 @@
           <div id="promotions-panel" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
             <c:RecentRecords namespace="FieloPRP" sObjectName="FieloPRP__Invoice__c"
               fieldset="{!landingSettings.FieloPLT__Fieldset__c}"
-              async="false"
+              show="true"
               dataController="InvoiceLandingController.getInvoices"
               dataBinding="fielosf-invoices-landing--binding"
               dataFilters="{'FieloPRP__Member__r.FieloPLT__Program__c':'{!currentProgram.Id}'}"
