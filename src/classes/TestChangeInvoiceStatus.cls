@@ -26,14 +26,14 @@ public class TestChangeInvoiceStatus {
         programs[0].FieloPRP__RequestInvoiceProducts__c = true;
         insert programs;
 
-        programPointType = new FieloPLT__ProgramPointType__c(
+        /*programPointType = new FieloPLT__ProgramPointType__c(
             FieloPLT__AuditPoints__c=false,
             FieloPLT__ExpirationMode__c='Total',
             FieloPLT__PointType__c=pointType.Id,
             FieloPLT__Program__c=programs[0].Id,
             FieloPLT__RequestPointApproval__c=false
         );
-        insert programPointType;
+        insert programPointType;*/
 
         members = MockUpFactory.createMembers(programs[0].Id,2);
         insert members;
