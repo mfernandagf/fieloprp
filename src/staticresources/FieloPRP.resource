@@ -2,7 +2,7 @@
 {
   "Libraries" : [ {
     "Name" : "FieloPRP",
-	"ruletriggers" : [ {
+    "ruletriggers" : [ {
       "Name" : "Invoice",
       "FieloPLT__ConditionField__c" : "FieloPRP__Status__c",
       "FieloPLT__ConditionType__c" : "Text",
@@ -11,13 +11,8 @@
       "FieloPLT__LookupFromTransaction__c" : "FieloPRP__Invoice__c",
       "FieloPLT__LookupfromTracker__c" : "FieloPRP__Invoice__c",
       "FieloPLT__Object__c" : "FieloPRP__Invoice__c",
-      "FieloPLT__Prefix__c" : "a0f",
       "actions" : [ {
         "Name" : "Invoice > FieloPRP__Member__c",
-        "FieloPLT__CriteriaFields__c" : "{\"missions\":{\"isUsingCriterionGroup\":false,\"isMasterDetail\":false,\"isCrossField\":false,\"fieldsByObject\":{}},\"rules\":{\"isUsingCriterionGroup\":false,\"isMasterDetail\":false,\"isCrossField\":false,\"fieldsByObject\":{\"FieloPRP__Invoice__c\":[\"FieloPRP__Status__c\"]}}}",
-        "FieloPLT__DeveloperName__c" : "FieloPRP__Invoice__c.FieloPRP__Status__c[Approved]>FieloPRP__Member__c",
-        "FieloPLT__MissionsQuantity__c" : 0,
-        "FieloPLT__RulesQuantity__c" : 2,
         "FieloPLT__TargetMember__c" : "FieloPRP__Member__c"
       } ]
     } ],
@@ -39,13 +34,13 @@
       "FieloPLT__Object__c" : "FieloPLT__Program__c",
       "FieloPLT__Order__c" : 2,
       "FieloPLT__Type__c" : "Edit",
-      "FieloPLT__Sections__c" : "{\"Name\" : \"Invoice Settings\", \r\n\"Rows\" :[ \r\n[{\"Name\" : \"FieloPRP__RequestInvoiceAuthorization__c\" , \"Type\" : \"checkbox\" }, \r\n{\"Name\" : \"FieloPRP__DetailedInvoice__c\" , \"Type\" : \"checkbox\" }] \r\n] \r\n}"
+      "FieloPLT__Sections__c" : "{\"Name\" : \"Invoice Settings\", \r\n\t\"Rows\" :[ \r\n\t\t[\r\n\t\t\t{\"Name\" : \"FieloPRP__RequestInvoiceAuthorization__c\" , \"Type\" : \"checkbox\" }, \r\n\t\t\t{\"Name\" : \"FieloPRP__RequestInvoiceProducts__c\" , \"Type\" : \"checkbox\" }\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\" : \"FieloPRP__ProductInjectQuery__c\" , \"Type\" : \"input\" }\r\n\t\t] \r\n\t] \r\n}"
     }, {
       "Name" : "Program > New",
       "FieloPLT__Object__c" : "FieloPLT__Program__c",
       "FieloPLT__Order__c" : 2,
       "FieloPLT__Type__c" : "New",
-      "FieloPLT__Sections__c" : "{\"Name\" : \"Invoice Settings\", \r\n\"Rows\" :[ \r\n[{\"Name\" : \"FieloPRP__RequestInvoiceAuthorization__c\" , \"Type\" : \"checkbox\" }, \r\n{\"Name\" : \"FieloPRP__DetailedInvoice__c\" , \"Type\" : \"checkbox\" }] \r\n] \r\n}"
+      "FieloPLT__Sections__c" : "{\"Name\" : \"Invoice Settings\", \r\n\t\"Rows\" :[ \r\n\t\t[\r\n\t\t\t{\"Name\" : \"FieloPRP__RequestInvoiceAuthorization__c\" , \"Type\" : \"checkbox\" }, \r\n\t\t\t{\"Name\" : \"FieloPRP__RequestInvoiceProducts__c\" , \"Type\" : \"checkbox\" }\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\" : \"FieloPRP__ProductInjectQuery__c\" , \"Type\" : \"input\" }\r\n\t\t] \r\n\t] \r\n}"
     }, {
       "Name" : "Member > Related > Invoice",
       "FieloPLT__Fieldset__c" : "[\r\n\t{ \"Name\" : \"FieloPRP__Status__c\" },\r\n\t{ \"Name\" : \"FieloPRP__Amount__c\" },\r\n        { \"Name\" : \"FieloPRP__Date__c\" }\r\n]",
@@ -59,20 +54,22 @@
       "FieloPLT__Object__c" : "FieloPLT__Program__c",
       "FieloPLT__Order__c" : 2,
       "FieloPLT__Type__c" : "Detail",
-      "FieloPLT__Sections__c" : "{\"Name\" : \"Invoice Settings\",\r\n\t\"Rows\" :[\r\n\t\t[{\"Name\" : \"FieloPRP__RequestInvoiceAuthorization__c\" , \"Type\" : \"input\" },\r\n                {\"Name\" : \"FieloPRP__DetailedInvoice__c\" , \"Type\" : \"input\" }]\r\n\t]\r\n}"
+      "FieloPLT__Sections__c" : "{\"Name\" : \"Invoice Settings\",\r\n\t\"Rows\" :[\r\n\t\t[\r\n\t\t\t{\"Name\" : \"FieloPRP__RequestInvoiceAuthorization__c\" , \"Type\" : \"input\" },\r\n            {\"Name\" : \"FieloPRP__RequestInvoiceProducts__c\" , \"Type\" : \"input\" },\r\n\t\t\t{\"Name\" : \"FieloPRP__ProductInjectQuery__c\" , \"Type\" : \"input\" }\r\n\t\t]\r\n\t]\r\n}"
     }, {
       "Name" : "Invoice > Edit",
-      "FieloPLT__Fieldset__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"}]]}",
+      "FieloPLT__Fieldset__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Distributor__c\",\"Type\":\"lookup\"}]]}",
       "FieloPLT__Object__c" : "FieloPRP__Invoice__c",
       "FieloPLT__Type__c" : "Edit",
       "FieloPLT__Filters__c" : "[{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}]",
-      "FieloPLT__Sections__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"}]]}",
+      "FieloPLT__Sections__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Distributor__c\",\"Type\":\"lookup\"}]]}",
       "FieloPLT__StandardActions__c" : "Settings"
     }, {
       "Name" : "Invoice > View",
-      "FieloPLT__Fieldset__c" : "{ \"Name\": \"FieloPRP__Status__c\"} ,{ \"Name\": \"FieloPRP__InvoiceNumber__c\"} ,{ \"Name\": \"FieloPRP__Member__r.Name\"} ,{ \"Name\": \"FieloPRP__Amount__c\"} ,{ \"Name\": \"FieloPRP__Date__c\"}",
+      "FieloPLT__Fieldset__c" : "{\"Name\":\"FieloPRP__Status__c\"},\r\n{\"Name\":\"FieloPRP__InvoiceNumber__c\"},\r\n{\"Name\":\"FieloPRP__Distributor__r.Name\"},\r\n{\"Name\":\"FieloPRP__Member__r.Name\"},\r\n{\"Name\":\"FieloPRP__Amount__c\"},\r\n{\"Name\":\"FieloPRP__Date__c\"},\r\n{\"Name\":\"FieloPRP__Description__c\"}",
       "FieloPLT__Object__c" : "FieloPRP__Invoice__c",
-      "FieloPLT__Type__c" : "View"
+      "FieloPLT__Type__c" : "View",
+      "FieloPLT__StandardActions__c" : "View;Settings",
+      "FieloPLT__StandardRelated__c" : "ProcessSteps"
     }, {
       "Name" : "Invoice > Landing",
       "FieloPLT__Buttons__c" : "{'Label': 'New', 'Type': 'Modal', 'Action': 'invoiceForm' }",
@@ -83,7 +80,7 @@
       "FieloPLT__StandardActions__c" : "Settings"
     }, {
       "Name" : "Invoice > Related > Invoice Item",
-      "FieloPLT__Fieldset__c" : "{'Name': 'FieloPRP__Product__r.Name'},{'Name':'FieloPRP__Description__c'},{'Name': 'FieloPRP__Quantity__c'},{'Name': 'FieloPRP__UnitPrice__c'},{'Name':'FieloPRP__TotalPrice__c'}",
+      "FieloPLT__Fieldset__c" : "{'Name':'FieloPRP__Product__r.Name'},\r\n{'Name':'FieloPRP__Description__c'},\r\n{'Name':'FieloPRP__Quantity__c'},\r\n{'Name':'FieloPRP__UnitPrice__c'},\r\n{'Name':'FieloPRP__TotalPrice__c'}",
       "FieloPLT__Object__c" : "FieloPRP__Invoice__c",
       "FieloPLT__Order__c" : 0,
       "FieloPLT__TargetField__c" : "FieloPRP__Invoice__c",
@@ -99,11 +96,11 @@
       "FieloPLT__Type__c" : "Related"
     }, {
       "Name" : "Invoice > New",
-      "FieloPLT__Fieldset__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"}]]}",
+      "FieloPLT__Fieldset__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Distributor__c\",\"Type\":\"lookup\"}]]}",
       "FieloPLT__Object__c" : "FieloPRP__Invoice__c",
       "FieloPLT__Type__c" : "New",
       "FieloPLT__Filters__c" : "[{'Rows':[[{'Name':'Name', 'Type':'input'},{'Name':'Family','Type':'picklist'},{'Name':'ProductCode','Type':'input'}]]}]",
-      "FieloPLT__Sections__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"}]]}",
+      "FieloPLT__Sections__c" : "{\"Name\":\"Information\",\"Rows\":[[{\"Name\":\"FieloPRP__Member__c\",\"Type\":\"lookup\"},{\"Name\":\"FieloPRP__HasDetails__c\",\"Type\":\"checkbox\"}],[{\"Name\":\"FieloPRP__InvoiceNumber__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Amount__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Date__c\",\"Type\":\"input\"}],[{\"Name\":\"FieloPRP__Description__c\",\"Type\":\"input\"},{\"Name\":\"FieloPRP__Distributor__c\",\"Type\":\"lookup\"}]]}",
       "FieloPLT__StandardActions__c" : "Settings"
     } ]
   } ]
