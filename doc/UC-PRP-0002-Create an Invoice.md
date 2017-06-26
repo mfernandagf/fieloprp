@@ -56,19 +56,21 @@ An Invoice is created
    4. End of flow
 
 ##### 5. The administrator tries to edit the Member Lookup (step 11 of the basic flow)
-   1. The administrator changes the Member of the invoice
+   1. The administrator presses the Edit button in the detail view of the Invoice
+   2. The administrator changes the Member of the invoice
    2. The administrator presses the Save button
    3. The system does not update the invoice
    4. The system displays an error message
    5. End of flow
 
 ##### 6. The administrator tries to edit the Invoice when its status is not Open or New (step 7 of the basic flow)
-   1. The system verifies that the status of the Invoice is not "Open" or "New"
+   1. The administrator presses the Edit button in the detail view of the Invoice
    2. The administrator tries to edit the Amount or Invoice Number or Date fields
    3. The administrator presses the Save button
-   4. The system does not update the invoice
-   5. The system displays an error message
-   5. End of flow
+   4. The system verifies that the status of the Invoice is not "Open" or "New"
+   5. The system does not update the invoice
+   6. The system displays an error message
+   7. End of flow
    
 ##### 7. The date field is null (step 4 of basic flow)
    1. The system verifies that the Date field is null
