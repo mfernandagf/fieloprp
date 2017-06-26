@@ -41,5 +41,5 @@ Invoices for the selected Program and View were displayed
    
 ##### 4. The administrator selects an Invoice of the list (step 5 of the basic flow)
    1. The administrator selects an Invoice
-   2. The system displays the Invoice detail page
+   2. The system calls the Use Case [*Display Invoice Details*](https://github.com/FieloIncentiveAutomation/fieloprp/blob/develop/doc/UC-PRP-0005-Display%20Invoice%20Details%20Page.md)
    3. End of flow
