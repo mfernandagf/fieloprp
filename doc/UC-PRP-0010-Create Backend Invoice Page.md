@@ -1,7 +1,7 @@
 ## Create Backend Invoice Page
 
 ### Objectives
-The present use case describes how the system creates an Invoice in its backend
+The present use case describes how the system creates an Invoice through the backend page
 
 ### Preconditions
 The administrator must be logged in
@@ -13,27 +13,33 @@ The Invoice was created
 
 ### Basic Flow
 1. The administrator goes to the Invoices tab
-2. The system shows the Invoices landing page 
-3. The administrator selects a Program that considers invoice items
+2. The system shows the Invoices landing page
+3. The administrator selects a Program that requests invoice products
 4. The administrator presses the New button
 5. The system displays the New Invoice page
-6. The system displays the header fieldset of the Invoice, with its fields blank
-7. The system displays a button to New item
-8. The system displays a button to Add Products in advanced mode
-9. The system displays the option to upload an image for the Invoice
-10. The system displays the buttons Save and Cancel
-11. The administrator fills the invoice header fields
-12. The administrator presses the button to add a new item
-13. The system displays a new line with a lookup for product and the fieldset for invoice items
-14. The administrator selects the product by typing in the product field
-15. The system starts showing the products that match the typed text
-16. The administrator selects the product
-17. The administrator fills the quantity and price fields
-18. The system displays for each item line a corresponding delete button
+6. The system displays the fieldset defined for the New Invoice page, with its fields blank
+7. The system displays the Items area, containing:
+   - Add Products button to search products in advanced mode
+   - New button to insert a new item line
+   - Item lines to insert products information with the fields Quantity, Product, Unit Price and Total price.
+   - For each item line, a corresponding Remove icon
+   - Amount field that summarizes the Total Price of all inserted products
+8. The system displays the option to upload an image for the Invoice
+9. The system displays the Save and Cancel buttons 
+10. The administrator fills the invoice fields
+11. The administrator starts typing in the product field
+12. The system displays the products that match the typed text
+13. The administrator selects the product
+14. The administrator fills the quantity and price fields
+15. The administrator presses the New button
+16. The system displays a new item line
+17. The administrator selects the product
+18. The administrator fills the quantity and price fields
 19. The administrator uploads the image
-20. The administrator presses the button Save
-21. The system calls the basic flow of use case [Create Invoice](?name=UC-PRP-0002)
-22. End of flow
+20. The administrator presses the Save button 
+21. The system calls the Use Case [Create Invoice](?name=UC-PRP-0002)
+22. The system displays the Invoice detail page
+23. End of flow
 
 ### Alternative Flows
 
