@@ -15,8 +15,8 @@ An Invoice is created
 
 1. The system receives the information for the invoice and for the invoice items 
 2. The system verifies that Member field is not null
-3. The system verifies that the option "Request Invoice Products" of the related member's program is set to true
-4. The system verifies that Date field is not null
+3. The system verifies that the option "Request Invoice Products" of the related member's program is set to true and that the Amount field is null
+4. The system verifies that the Date field is not null
 5. The system verifies that there is no other invoice with the same combination number (Distributor Id + Invoice Number) in status Approved.
 6. The system sets the status "Open" for the Invoice
 7. The system saves the Invoice
@@ -27,13 +27,14 @@ An Invoice is created
 
 ### Alternative flows
 
-##### 1. The option "Consider Invoice Detail" is set to false (step 1 of the basic flow)
-   1. The system verifies that the option "Consider Invoice Detail" of the related member's program is set to false
-   2. The system receives the information for the Invoice
-   3. The system creates an Invoice with its fields filled up with the received information
-   4. The system sets the Status of the Invoice to Draft
-   5. The system fills the Amount field with the received value 
-   6. End of flow
+##### 1. The option "Request Invoice Products" is set to false and the Amount field is not null (step 3 of the basic flow)
+   1. The system verifies that the option "Request Invoice Products" of the related member's program is set to false
+   2. The system verifies that the Amount field is not null
+   3. The system verifies that the Date field is not null
+   4. The system verifies that there is no other invoice with the same combination number (Distributor Id + Invoice Number) in status Approved.
+   5. The system sets the status "Open" for the Invoice
+   6. The system saves the Invoice
+   7. End of flow
 
 ##### 2. The administrator deletes the invoice (step 7 of the basic flow)
    1. The administrator selects the option to Delete the Invoice
