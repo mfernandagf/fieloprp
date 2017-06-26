@@ -28,7 +28,7 @@ The present use case describes how the system shows the Invoice details and the 
    - Related list of Transactions
    - Images of the invoice
    - Approval process steps
-6. The system displays the fieldset defined for the related lists
+6. The system displays for each related list its defined fieldset
 5. End of flow
 
 ### Alternative Flows
@@ -42,7 +42,7 @@ The present use case describes how the system shows the Invoice details and the 
       - Related list of Transactions
       - Images of the invoice
       - Approval process steps containing link to Approve or Reject the invoice
-   2. The system displays the fieldset defined for the related lists      
+   2. The system displays for each related list its defined fieldset      
    3. End of flow
    
 ##### 2. The administrator selects an Invoice which status is "Approved" belonging to a Program that requests invoice authorization and requests invoice products (step 3 of basic flow)
@@ -55,7 +55,7 @@ The present use case describes how the system shows the Invoice details and the 
         - Related list of Transactions
         - Images of the invoice
         - Approval process steps
-    2. The system displays the fieldset defined for the related lists
+    2. The system displays for each related list its defined fieldset
     3. End of flow
     
 ##### 3. The administrator selects an Invoice which status is "Rejected" belonging to a Program that requests invoice authorization and requests invoice products (step 3 of basic flow)
@@ -67,39 +67,49 @@ The present use case describes how the system shows the Invoice details and the 
         - Related list of Transactions
         - Images of the invoice
         - Approval process steps
-   2. The system displays the fieldset defined for the related lists
+   2. The system displays for each related list its defined fieldset
+   3. End of flow
+
+##### 4. The administrator selects an Invoice which status is "Canceled" belonging to a Program that requests invoice authorization and requests invoice products (step 3 of basic flow)
+   1. The system displays the Invoice details page, containing:
+        - Reopen button
+        - Reprocess button
+        - Tools button (with the options View and Settings)
+        - Fieldset for the Invoice view
+        - Related list of invoice items
+        - Related list of Transactions
+        - Images of the invoice
+        - Approval process steps
+   2. The system displays for each related list its defined fieldset
+   3. End of flow
+   
+##### 5. The administrator selects an Invoice which status is “Open” belonging to a Program that requests invoice authorization and does not request invoice products (step 3 of basic flow)
+   1. The system displays the Invoice details page, containing:
+      - Edit button
+      - Close button
+      - Tools button (with the options View and Settings)
+      - Fieldset for the Invoice view
+      - Related list of Transactions
+      - Images of the invoice
+      - Approval process steps
+   2. The system displays for the Invoice Items related list its defined fieldset
+   3. End of flow
+
+##### 6. The administrator selects an Invoice which status is "Pending for Approval" belonging to a Program that requests invoice authorization and does not request invoice products (step 3 of basic flow)
+   1. The system displays the Invoice details page, containing:
+      - Record locked icon
+      - Tools button (with the options View and Settings)
+      - Fieldset for the Invoice view
+      - Related list of Transactions
+      - Images of the invoice
+      - Approval process steps containing link to Approve or Reject the invoice
+   2. The system displays for the Invoice Items related list its defined fieldset
    3. End of flow
 
 
 
 
-   
-##### 1. The administrator selects an Invoice which status is “Open” belonging to a Program that does not request invoice authorization (step 3 of basic flow)
-   1. The administrator selects a Program that does not request invoice authorization
-   2. The administrator selects one of the Invoices of the selected Program which status is “Open”
-   3. The system displays the Invoice details page, containing:
-      - Edit button
-      - Close button
-      - Submit for Approval button
-      - Tools button (with th options View and Settings)
-      - Fieldset for the Invoice view
-      - Related list of Transactions
-      - Images of the invoice
-      - Approval process steps
-   4. End of flow
 
-
-
-##### 3. The administrator selects an Invoice which status is "Pending" belonging to a Program that does not consider invoice items (step 3 of basic flow)
-   1. The administrator selects a Program that does not consider invoice items
-   2. The administrator selects one of the Invoices of the selected Program, which status is "Pending"
-   3. The system displays the Invoice details page, containing:
-       - Reopen button
-       - Fieldset for Invoice
-       - Images of the invoice
-       - Approval process steps containing link to Approve or Reject the invoice
-   4. End of flow
-   
 
  
 ##### 5. The administrator selects an Invoice which status is "Approved" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
@@ -113,8 +123,6 @@ The present use case describes how the system shows the Invoice details and the 
         - Approval process steps
    4. End of flow
    
-
-   
 ##### 7. The administrator selects an Invoice which status is "Rejected" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
    1. The administrator selects a Program that does not consider invoice items
    2. The administrator selects one of the Invoices of the selected Program, which status is "Rejected"
@@ -124,17 +132,6 @@ The present use case describes how the system shows the Invoice details and the 
         - Images of the invoice
         - Approval process steps
    4. End of flow
-   
-##### 8. The administrator selects an Invoice which status is "Canceled" belonging to a Program that considers Invoice Items (step 4 of basic flow)
-   1. The administrator selects one of the Invoices of the selected Program, which status is "Canceled"
-   2. The system displays the Invoice details page, containing:
-        - Reprocess button
-        - Reopen button
-        - Fieldset for Invoice
-        - Related list of invoice items
-        - Images of the invoice
-        - Approval process steps
-   3. End of flow
    
 ##### 9. The administrator selects an Invoice which status is "Canceled" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
    1. The administrator selects one of the Invoices of the selected Program, which status is "Canceled"
