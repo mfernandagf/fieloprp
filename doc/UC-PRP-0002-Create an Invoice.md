@@ -17,7 +17,7 @@ An Invoice is created
 2. The system verifies that Member field is not null
 3. The system verifies that the option "Request Invoice Products" of the related member's program is set to true and that the Amount field is null
 4. The system verifies that the Date field is not null
-5. The system verifies that there is no other invoice with the same combination number (Distributor Id + Invoice Number) in status Approved.
+5. The system verifies that there is no other invoice with the same combination number (Distributor Id + Invoice Number) in status Approved
 6. The system sets the status "Open" for the Invoice
 7. The system saves the Invoice
 8. The system calls the use case [Create an Invoice Item](https://github.com/FieloIncentiveAutomation/fieloprp/blob/develop/doc/UC-PRP-0001-Create%20an%20Invoice%20Item.md)
@@ -69,3 +69,15 @@ An Invoice is created
    4. The system does not update the invoice
    5. The system displays an error message
    5. End of flow
+   
+##### 7. The date field is null (step 4 of basic flow)
+   1. The system verifies that the Date field is null
+   2. The system does not create the invoice
+   3. The system displays an error message
+   4. End of flow
+   
+##### 8. There is already an invoice with the same combination (Invoice Number + Distributor) in status approved (step 5 of basic flow)
+   1. The system verifies that there is another invoice with the same combination number (Distributor Id + Invoice Number) in status Approved
+   2. The system does not create the invoice
+   3. The system displays an error message
+   4. End of flow
