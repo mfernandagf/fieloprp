@@ -49,19 +49,23 @@ An Invoice is created
    4. The system displays an error message
    5. End of flow
    
-##### 4. The administrator tries to create an Invoice with no member (step 3 of the basic flow)
-   1. The administrator tries to save the Invoice without filling the Member field
-   2. The system displays an error message
-   3. End of flow
+##### 4. The Member field is null (step 2 of the basic flow)
+   1. The system verifies that the Member field is null
+   2. The system does not create the invoice
+   3. The system displays an error message
+   4. End of flow
 
-##### 5. The administrator tries to edit the Member Lookup (step 7 of the basic flow)
-   1. The system verifies that the status of the Invoice is set to Draft
-   2. The administrator tries to edit the Member Lookup field
+##### 5. The administrator tries to edit the Member Lookup (step 11 of the basic flow)
+   1. The administrator changes the Member of the invoice
+   2. The administrator presses the Save button
+   3. The system does not update the invoice
    4. The system displays an error message
    5. End of flow
 
-##### 6. The administrator tries to edit the Invoice when its status is not Draft (step 7 of the basic flow)
-   1. The system verifies that the status of the Invoice is not Draft
-   2. The administrator tries to edit the Invoice
-   4. The system displays an error message
+##### 6. The administrator tries to edit the Invoice when its status is not Open or New (step 7 of the basic flow)
+   1. The system verifies that the status of the Invoice is not "Open" or "New"
+   2. The administrator tries to edit the Amount or Invoice Number or Date fields
+   3. The administrator presses the Save button
+   4. The system does not update the invoice
+   5. The system displays an error message
    5. End of flow
