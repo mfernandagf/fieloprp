@@ -4,8 +4,9 @@
 The present use case describes how the system shows the Invoice details and the action buttons for each invoice status
 
 ### Preconditions
-- There must be Invoices created for Programs that consider invoice items and for Programs that do not consider invoice items
-- There must be Invoices in all status (Draft, Pending, Approved, Rejected and Canceled) for each Program
+- There must be Invoices created for Programs that request invoice authorization and for Programs that do not request invoice authorization
+- There must be Invoices created for Programs that request invoice products and for Programs that do not request invoice products
+- There must be Invoices in all status (Open, Pending for Approval, Approved, Rejected and Canceled) for each Program
 - The administrator must be logged in
 
 ### Postconditions
@@ -17,41 +18,77 @@ The present use case describes how the system shows the Invoice details and the 
 ### Basic Flow
 1. The administrator presses the Invoices tab
 2. The system shows the Invoices landing page
-3. The administrator selects a Program that considers invoice items
-4. The administrator selects one of the Invoices of the selected Program, which status is “Draft”
-5. The system displays the Invoice details page, containing:
+3. The administrator selects an invoice which status is "Open" belonging to a Program that requests invoice authorization and requests invoice products
+4. The system displays the Invoice details page, containing:
    - Edit button
-   - Approve button
-   - Submit for Approval button
-   - Fieldset for the Invoice
+   - Close button
+   - Tools button (with the options View and Settings)
+   - Fieldset for the Invoice view
    - Related list of invoice items
+   - Related list of Transactions
    - Images of the invoice
    - Approval process steps
-6. End of flow
+6. The system displays the fieldset defined for the related lists
+5. End of flow
 
 ### Alternative Flows
 
-##### 1. The administrator selects an Invoice which status is “Draft” belonging to a Program that does not consider invoice items (step 3 of basic flow)
-   1. The administrator selects a Program that does not consider invoice items
-   2. The administrator selects one of the Invoices of the selected Program, which status is “Draft”
+##### 1. The administrator selects an Invoice which status is “Pending for Approval” belonging to a Program that requests invoice authorization and requests invoice products (step 3 of basic flow)
+   1. The system displays the Invoice details page, containing:
+      - Record locked icon
+      - Tools button (with the options View and Settings)
+      - Fieldset for the Invoice view
+      - Related list of invoice items
+      - Related list of Transactions
+      - Images of the invoice
+      - Approval process steps containing link to Approve or Reject the invoice
+   2. The system displays the fieldset defined for the related lists      
+   3. End of flow
+   
+##### 2. The administrator selects an Invoice which status is "Approved" belonging to a Program that requests invoice authorization and requests invoice products (step 3 of basic flow)
+   1. The system displays the Invoice details page, containing:
+        - Revert button
+        - Reprocess button
+        - Tools button (with the options View and Settings)
+        - Fieldset for the Invoice view
+        - Related list of invoice items
+        - Related list of Transactions
+        - Images of the invoice
+        - Approval process steps
+    2. The system displays the fieldset defined for the related lists
+    3. End of flow
+    
+##### 3. The administrator selects an Invoice which status is "Rejected" belonging to a Program that requests invoice authorization and requests invoice products (step 3 of basic flow)
+   1. The system displays the Invoice details page, containing:
+        - Reopen button
+        - Tools button (with the options View and Settings)
+        - Fieldset for the Invoice view
+        - Related list of invoice items
+        - Related list of Transactions
+        - Images of the invoice
+        - Approval process steps
+   2. The system displays the fieldset defined for the related lists
+   3. End of flow
+
+
+
+
+   
+##### 1. The administrator selects an Invoice which status is “Open” belonging to a Program that does not request invoice authorization (step 3 of basic flow)
+   1. The administrator selects a Program that does not request invoice authorization
+   2. The administrator selects one of the Invoices of the selected Program which status is “Open”
    3. The system displays the Invoice details page, containing:
       - Edit button
-      - Approve button
+      - Close button
       - Submit for Approval button
-      - Fieldset for Invoice
+      - Tools button (with th options View and Settings)
+      - Fieldset for the Invoice view
+      - Related list of Transactions
       - Images of the invoice
       - Approval process steps
    4. End of flow
 
-##### 2. The administrator selects an Invoice which status is “Pending” belonging to a Program that considers invoice items (step 4 of basic flow)
-   1. The administrator selects one of the Invoices of the selected Program, which status is "Pending"
-   2. The system displays the Invoice details page, containing:
-      - Reopen button
-      - Fieldset for Invoice
-      - Related list of invoice items
-      - Images of the invoice
-      - Approval process steps containing link to Approve or Reject the invoice
-   3. End of flow
+
 
 ##### 3. The administrator selects an Invoice which status is "Pending" belonging to a Program that does not consider invoice items (step 3 of basic flow)
    1. The administrator selects a Program that does not consider invoice items
@@ -63,16 +100,7 @@ The present use case describes how the system shows the Invoice details and the 
        - Approval process steps containing link to Approve or Reject the invoice
    4. End of flow
    
-##### 4. The administrator selects an Invoice which status is "Approved" belonging to a Program that considers Invoice Items (step 4 of basic flow)
-   1. The administrator selects one of the Invoices of the selected Program, which status is "Approved"
-   2. The system displays the Invoice details page, containing:
-        - Reprocess  button
-        - Cancel button
-        - Fieldset for Invoice
-        - Related list of invoice items
-        - Images of the invoice
-        - Approval process steps
-    3. End of flow
+
  
 ##### 5. The administrator selects an Invoice which status is "Approved" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
    1. The administrator selects a Program that does not consider invoice items
@@ -85,15 +113,7 @@ The present use case describes how the system shows the Invoice details and the 
         - Approval process steps
    4. End of flow
    
-##### 6. The administrator selects an Invoice which status is "Rejected" belonging to a Program that considers Invoice Items (step 4 of basic flow)
-   1. The administrator selects one of the Invoices of the selected Program, which status is "Rejected"
-   2. The system displays the Invoice details page, containing:
-        - Reopen button
-        - Fieldset for Invoice
-        - Related list of invoice items
-        - Images of the invoice
-        - Approval process steps
-   3. End of flow
+
    
 ##### 7. The administrator selects an Invoice which status is "Rejected" belonging to a Program that does not consider Invoice Items (step 3 of basic flow)
    1. The administrator selects a Program that does not consider invoice items
