@@ -74,102 +74,123 @@ An Invoice Item was created
    3. The system displays an error message
    4. End of flow
    
-##### 9. The administrator edits the Total Price field when Quantity and Unit Price fields are zero (step 6 of the basic flow) 
+##### 9. The administrator edits the Total Price field when Quantity and Unit Price fields are zero (step 7 of the basic flow) 
    1. The administrator presses the Edit button in the detail view of the Invoice Item
    2. The administrator changes the Total Price field
-   3. The system verifies that the status of the related Invoice is "Open" or "New"
-   4. The system verifies that Quantity and Unit Price fields are filled with 0 (zero)
-   5. The system does not recalculate the Total Price
-   6. The system udates the Total Price field with the edited value 
-   7. End of flow
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system verifies that Quantity and Unit Price fields are filled with 0 (zero)
+   6. The system does not recalculate the Total Price
+   7. The system udates the Total Price field with the edited value 
+   8. End of flow
    
-##### 10. The administrator edits the Quantity field (step 6 of the basic flow)
+##### 10. The administrator edits the Quantity field (step 7 of the basic flow)
    1. The administrator presses the Edit button in the detail view of the Invoice Item
    2. The administrator changes the Quantity field
-   3. The system verifies that the status of the related Invoice is "Open" or "New"
-   4. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
-   5. The system updates the Total Price field with the calculated value
-   6. End of flow
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   6. The system updates the Total Price field with the calculated value
+   7. End of flow
    
-##### 11. The administrator edits Quantity and Total Price fields (step 6 of the basic flow)
+##### 11. The administrator edits Quantity and Total Price fields (step 7 of the basic flow)
    1. The administrator presses the Edit button in the detail view of the Invoice Item
    2. The administrator changes the Quantity and Total Price fields
-   3. The system verifies that the status of the related Invoice is "Open" or "New"
-   4. The system recalculates the value of Unit Price field by dividing the value in the Total Price field by the value in the Quantity field.
-   5. The system updates the Unit Price field with the calculated value
-   6. End of flow
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system recalculates the value of Unit Price field by dividing the value in the Total Price field by the value in the Quantity field.
+   6. The system updates the Unit Price field with the calculated value
+   7. End of flow
    
-##### 12. The administrator edits the Unit Price field (step 6 of the basic flow)
+##### 12. The administrator edits the Unit Price field (step 7 of the basic flow)
    1. The administrator presses the Edit button in the detail view of the Invoice Item
    2. The administrator changes the Unit Price field
-   3. The system verifies that the status of the related Invoice is "Open" or "New"
-   4. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
-   5. The system updates the Total Price field with the calculated value
-   6. End of flow
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   6. The system updates the Total Price field with the calculated value
+   7. End of flow
    
 ##### 13. The administrator edits the Unit Price and Total Price fields (step 7 of the basic flow)
    1. The administrator presses the Edit button in the detail view of the Invoice Item
    2. The administrator changes the Unit Price and the Total Price fields
-   3. The system verifies that the status of the related Invoice is "Open" or "New"
-   4. The system recalculates the value of Quantity field by dividing the value in the Total Price field by the value in the Unit Price field.
-   5. The system updates the Quantity field with the calculated value
-   6. End of flow
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system recalculates the value of Quantity field by dividing the value in the Total Price field by the value in the Unit Price field.
+   6. The system updates the Quantity field with the calculated value
+   7. End of flow
    
 ##### 14. The administrator edits the Unit Price and Quantity fields (step 7 of the basic flow)
    1. The administrator presses the Edit button in the detail view of the Invoice Item
    2. The administrator changes the Unit Price and the Quantity fields
-   3. The system verifies that the status of the related Invoice is "Open" or "New"
-   4. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
-   5. The system updates the Total Price field with the calculated value
-   6. End of flow
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   6. The system updates the Total Price field with the calculated value
+   7. End of flow
    
 ##### 15. The administrator edits the Unit Price, Quantity and Total Price fields (step 7 of the basic flow)
    1. The administrator presses the Edit button in the detail view of the Invoice Item
    2. The administrator changes the Unit Price, Quantity and Total Price fields
-   3. The system verifies that the status of the related Invoice is "Open" or "New"
-   4. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
-   5. The system updates the Total Price field with the calculated value
-   6. End of flow
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system recalculates the value of Total Price field by multiplying the value in the Unit Price field by the value in the Quantity field
+   6. The system updates the Total Price field with the calculated value
+   7. End of flow
 
 ##### 16. The administrator tries to edit the Invoice Item that is related to an Invoice not in status Open or New (step 7 of the basic flow)
    1. The administrator presses the Edit button in the detail view of the Invoice Item
-      2. The system verifies that the status of the related Invoice is different from "Open" or "New"
-   3. The system displays an error message
-   4. End of flow
+   2. The administrator changes the Product or Unit Price or Quantity or Total Price fields
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is different from "Open" or "New"
+   5. The system does not update the invoice item
+   6. The system displays an error message
+   7. End of flow
    
-##### 17. The administrator tries to edit the Invoice Item with invalid values (step 6 of the basic flow)
-   1. The system verifies that the status of the related Invoice is Pending
-   2. The system verifies that the Quantity or Unit Price fields are updated with 0 (zero) and The Total Price is updated with a valid value 
-   3. The system displays an error message
-   4. End of flow
+##### 17. The administrator tries to edit the Invoice Item with invalid values (step 7 of the basic flow)
+   1. The administrator presses the Edit button in the detail view of the Invoice Item
+   2. The administrator changes the Quantity or Unit Price fields to zero
+   3. The administrator changes the Total Price field with a valid value 
+   4. The administrator presses the Save button
+   5. The system verifies that the status of the related Invoice is "Open" or "New"
+   6. The system does not update the invoice item
+   7. The system displays an error message
+   8. End of flow
 
-##### 18. The administrator deletes an Invoice Item (step 6 of the basic flow)
+##### 18. The administrator deletes an Invoice Item (step 7 of the basic flow)
    1. The administrator selects the option to Delete the Invoice Item
-   2. The system verifies that the status of the related Invoice is Pending
-   3. The system delets the invoice item
+   2. The system verifies that the status of the related Invoice is "Open" or "New"
+   3. The system deletes the invoice item
    4. The system updates the Amount field of the related Invoice with the summarize of the Total Price field of its remaining related Invoice Items
    5. End of flow
    
-##### 19. The administrator tries to edit the Invoice Lookup (step 6 of the basic flow)
-   1. The system verifies that the status of the related Invoice is set to Pending
-   2. The administrator tries to edit the Invoice Lookup field
-   4. The system displays an error message
-   5.	End of flow
+##### 19. The administrator tries to edit the Invoice Lookup (step 7 of the basic flow)
+   1. The administrator presses the Edit button in the detail view of the Invoice Item
+   2. The administrator changes the Invoice lookup field
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is set to "Open" or "New"
+   5. The system does not update the invoice item
+   6. The system displays an error message
+   7.	End of flow
    
-##### 20. The administrator tries to edit all the fields Quantity, Unit Price and Total Price with zero or null (step 6 of the basic flow)
-   1. The system verifies that the status of the related Invoice is Pending
-   2. The system verifies that the Quantity, Unit Price and Total Price fields are updated with 0 (zero) or are left blank
-   3. The system displays an error message
-   4. End of flow
+##### 20. The administrator tries to edit all the fields Quantity, Unit Price and Total Price with zero or null (step 7 of the basic flow)
+   1. The administrator presses the Edit button in the detail view of the Invoice Item
+   2. The administrator changes the Quantity, Unit Price and Total Price fields to 0 (zero) or leave them blank
+   3. The administrator presses the Save button
+   4. The system verifies that the status of the related Invoice is "Open" or "New"
+   5. The system does not update the invoice item
+   6. The system displays an error message
+   7. End of flow
    
 ##### 21. The received Unit Price value is invalid (step 3 of the basic flow)
-   1. The system verifies that the status of the related Invoice is Pending
+   1. The system verifies that the status of the related Invoice is "Open" or "New"
    2. The system verifies that the Unit Price field is filled with a negative value
-   3. The system displays an error message
-   4. End of flow
+   3. The system does not update the invoice item
+   4. The system displays an error message
+   5. End of flow
    
-##### 22. The administrator tries to edit the Unit Price field with an invalid value (step 6 of the basic flow)
-   1. The system verifies that the status of the related Invoice is Pending
+##### 22. The administrator tries to edit the Unit Price field with an invalid value (step 7 of the basic flow)
+   1. The system verifies that the status of the related Invoice is "Open" or "New"
    2. The system verifies that the Unit Price field is updated with a negative value
    3. The system displays an error message
    4. End of flow
