@@ -13,14 +13,17 @@ An Invoice is created
 
 ### Basic Flow
 
-1. The system verifies that the option "Consider Invoice Detail" of the related member's program is set to true
-2. The system receives the information for the invoice and for the invoice items
-3. The system creates an Invoice with its fields filled up with the received information
-4. The system sets the status Draft for the Invoice
-5. The system calls the use case [Create an Invoice Item](?name=UC-PRP-0001)
-6. The system updates Amount field with the summarize of the Total Price field of the related Invoice Items 
+1. The system receives the information for the invoice and for the invoice items 
+2. The system verifies that Member field is not null
+3. The system verifies that the option "Request Invoice Products" of the related member's program is set to true
+4. The system verifies that Date field is not null
+5. The system verifies that there is no other invoice with the same combination number (Distributor Id + Invoice Number) in status Approved.
+6. The system sets the status "Open" for the Invoice
 7. The system saves the Invoice
-8. End of flow
+8. The system calls the use case [Create an Invoice Item](https://github.com/FieloIncentiveAutomation/fieloprp/blob/develop/doc/UC-PRP-0001-Create%20an%20Invoice%20Item.md)
+9. The system updates the Amount field ot the invoice with the summarize of the Total Price field of the related Invoice Items 
+10. The system saves the Invoice
+11. End of flow
 
 ### Alternative flows
 
