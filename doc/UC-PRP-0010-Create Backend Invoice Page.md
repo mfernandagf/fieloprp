@@ -37,7 +37,7 @@ The Invoice was created
 18. The administrator fills the quantity and price fields
 19. The administrator uploads the image
 20. The administrator presses the Save button 
-21. The system calls the Use Case [Create Invoice](?name=UC-PRP-0002)
+21. The system calls the Use Case [*Create Invoice*](https://github.com/FieloIncentiveAutomation/fieloprp/blob/develop/doc/UC-PRP-0002-Create%20an%20Invoice.md)
 22. The system displays the Invoice detail page
 23. End of flow
 
