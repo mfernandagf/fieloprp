@@ -35,7 +35,8 @@ An Invoice is created
    4. The system verifies that there is no other invoice with the same combination number (Distributor Id + Invoice Number) in status Approved.
    5. The system sets the status "Open" for the Invoice
    6. The system saves the Invoice
-   7. End of flow
+   7. The system does not allow the creation of invoice items
+   8. End of flow
 
 ##### 2. The administrator deletes the invoice (step 11 of the basic flow)
    1. The administrator selects the option to Delete the Invoice
