@@ -31,7 +31,7 @@ An Invoice is created
 ##### 1. The option "Request Invoice Products" is set to false and the Amount field is not null (step 3 of the basic flow)
    1. The system verifies that the option "Request Invoice Products" of the related member's program is set to false
    2. The system verifies that the Amount field is not null
-   3. The system verifies that the Date field is not null
+   3. The system verifies that the Date field is filled with a date equal or prior to the current date
    4. The system verifies that there is no other invoice with the same combination number (Distributor Id + Invoice Number) in status Approved.
    5. The system sets the status "Open" for the Invoice
    6. The system saves the Invoice
@@ -80,6 +80,12 @@ An Invoice is created
    
 ##### 8. There is already an invoice with the same combination (Invoice Number + Distributor) in status approved (step 5 of basic flow)
    1. The system verifies that there is another invoice with the same combination number (Distributor Id + Invoice Number) in status Approved
+   2. The system does not create the invoice
+   3. The system displays an error message
+   4. End of flow
+   
+##### 9. Date field is later than the current date (step 4 of basic flow)
+   1. The system verifies that the Date field is filled with a date later than the current date
    2. The system does not create the invoice
    3. The system displays an error message
    4. End of flow
