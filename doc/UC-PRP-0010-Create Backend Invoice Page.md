@@ -136,7 +136,15 @@ The Invoice was created
    5. The system displays an error message
    6. End of flow
  
-##### 10. Quantity filed is not filled (step 14 of basic flow)
+##### 10. Product field is not filled (step 13 of basic flow)
+   1. The administrator does not fill the Product field
+   2. The administrator correctly fills the remaining fields
+   3. The administrator presses the Save button
+   4. The system does not create the invoice
+   5. The system displays an error message
+   6. End of flow
+   
+##### 11. Quantity field is not filled (step 14 of basic flow)
    1. The administrator does not fill the Quantity field
    2. The administrator correctly fills the remaining fields
    3. The administrator presses the Save button
@@ -144,10 +152,4 @@ The Invoice was created
    5. The system displays an error message
    6. End of flow
    
-##### 11. Product filed is not filled (step 13 of basic flow)
-   1. The administrator does not fill the Product field
-   2. The administrator correctly fills the remaining fields
-   3. The administrator presses the Save button
-   4. The system does not create the invoice
-   5. The system displays an error message
-   6. End of flow
+
