@@ -111,3 +111,43 @@ The Invoice was created
    10. The system calls the Use Case [*Create Invoice*](https://github.com/FieloIncentiveAutomation/fieloprp/blob/develop/doc/UC-PRP-0002-Create%20an%20Invoice.md)
    11. The system returns to the Invoice Details Page
    12. End of flow
+   
+##### 7. Member field is null (step 10 of basic flow)
+   1. The administrator does not fill the Member field
+   2. The administrator correctly fills the remaining fields
+   3. The administrator presses the Save button
+   4. The system does not create the invoice
+   5. The system displays an error message
+   6. End of flow
+   
+##### 8. Date field is null (step 10 of basic flow)
+   1. The administrator does not fill the Date field
+   2. The administrator correctly fills the remaining fields
+   3. The administrator presses the Save button
+   4. The system does not create the invoice
+   5. The system displays an error message
+   6. End of flow
+   
+##### 9. There is already an invoice with the same combination (Invoice Number + Distributor) in status approved (step 10 of basic flow)
+   1. The administrator fills the Invoice Number and Distributor fields with the same values of an already approved invoice
+   2. The administrator correctly fills the remaining fields
+   3. The administrator presses the Save button
+   4. The system does not create the invoice
+   5. The system displays an error message
+   6. End of flow
+ 
+##### 10. Quantity filed is not filled (step 14 of basic flow)
+   1. The administrator does not fill the Quantity field
+   2. The administrator correctly fills the remaining fields
+   3. The administrator presses the Save button
+   4. The system does not create the invoice
+   5. The system displays an error message
+   6. End of flow
+   
+##### 11. Product filed is not filled (step 13 of basic flow)
+   1. The administrator does not fill the Product field
+   2. The administrator correctly fills the remaining fields
+   3. The administrator presses the Save button
+   4. The system does not create the invoice
+   5. The system displays an error message
+   6. End of flow
