@@ -366,13 +366,13 @@ The Invoice has its status changed
    12. The system displays the "Approve" and "Reject" buttons to the selected approver
    13. End of flow
 
-##### 25. The back office user submits for approval a pending for approval invoice that belongs to a program that has the option "Request Invoice Authorization" set to TRUE and there is an ACTIVE Approval Process for Invoices where an invalid approver is manually set (step 1 of basic flow)
-1. The back office user selects, in the Invoices landing page, an invoice which status is "Pending for Approval" from a program where the option "Request Invoice Authorization" is set to true and there is an active Approval Process for Invoices where the approver is set manually
-   2. The system displays the Invoice details page
-   3. The system displays the "Approve", "Reject" and "Submit for Approval" buttons
-   4. The back office user presses the "Submit for Approval" button
-   5. The system opens a modal with the field "User"
-   6. The back office user selects no user or an invalid user from the available options for the "User" field
-   7. The back office user presses the "Save" button
-   8. The system displays an error message
-   9. End of flow
+##### 25. The back office user submits for approval a pending for approval invoice that belongs to a program that has the option "Request Invoice Authorization" set to TRUE and there is an ACTIVE Approval Process for Invoices where an invalid approver is manually set (step 1 of basic flow)  
+   1. The back office user selects, in the Invoices landing page, an invoice which status is "Pending for Approval" from a program where the option "Request Invoice Authorization" is set to true and there is an active Approval Process for Invoices where the approver is set manually  
+   2. The system displays the Invoice details page  
+   3. The system displays the "Approve", "Reject" and "Submit for Approval" buttons  
+   4. The back office user presses the "Submit for Approval" button  
+   5. The system opens a modal with the field "User"  
+   6. The back office user selects no user or an invalid user from the available options for the "User" field  
+   7. The back office user presses the "Save" button  
+   8. The system displays an error message  
+   9. End of flow  
